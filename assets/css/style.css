@@ -1,0 +1,201 @@
+body {
+    background-color: #111319;
+}
+
+/** Global header layout */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    white-space: nowrap;
+    gap: 24px;
+    font-family: Inter, sans-serif;
+    background-color: #0C0E14D9;
+}
+
+header > div {
+    gap: 24px;
+    display: flex;
+    align-items: center;
+}
+
+header div.right_container {
+    gap: 16px;
+}
+
+header a {
+    text-decoration: none;
+}
+
+/** Logo container */
+
+header .main_logo_container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Space Grotesk", sans-serif;
+}
+
+header .main_logo_container::after {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: #D0BCFF;
+    border-radius: 50%;
+    box-shadow: 0 0 8px 0 #D0BCFF;
+
+}
+
+header .main_logo_container .logo {
+    height: 32px;
+}
+
+header .main_logo_container h2 {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.9px;
+    color: #E2E2EB;
+}
+
+/** Navigation menu */
+
+header nav {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+}
+
+header nav a {
+    color: #CBC3D7;
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+header nav a.selected {
+    color: #D0BCFF;
+    font-weight: 600;
+}
+
+header nav a .inline_level_indicator {
+    background-color: #33343B;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.25px;
+    color: #FFB95F;
+    font-family: "JetBrains Mono", sans-serif;
+}
+
+header nav a .inline_admin_indicator {
+    background-color: #6001D1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #C9AEFF;
+    font-family: "JetBrains Mono", sans-serif;
+}
+
+/** Search bar */
+
+header .search_bar {
+    display: flex;
+    align-items: center;
+    background-color: #191B22;
+    gap: 4px;
+    padding: 4px 16px;
+    border-radius: 8px;
+}
+
+header .search_bar input {
+    min-width: 256px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+header .search_bar .icon {
+    height: 13.5px;
+}
+
+header .search_bar .keyboard_indicator {
+    padding: 2px 4px;
+    background-color: #1E1F26;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 10px;
+    color: #958EA0;
+    letter-spacing: -0.25px;
+    line-height: 12px;
+    font-family: "JetBrains Mono", sans-serif;
+}
+
+header .search_bar input::placeholder {
+    font-size: 12px;
+    font-weight: 500;
+    vertical-align: middle;
+    color: #958EA0;
+    font-family: "JetBrains Mono", sans-serif;
+}
+
+/** Level container */
+
+header .level_container {
+    display: flex;
+    align-items: center;
+    padding: 6px 16px;
+    background-color: #191B22;
+    border-radius: 12px;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: "JetBrains Mono", sans-serif;
+}
+
+header .level_container .level_indicator {
+    height: 20px;
+}
+
+header .level_container .level {
+    color: #FFB95F;
+}
+
+header .level_container .dot_separator {
+    font-weight: 400;
+    font-family: Inter, sans-serif;
+    color: #958EA0;
+}
+
+header .level_container .xp {
+    font-size: 10px;
+    font-weight: 500;
+    color: #CBC3D7;
+}
+
+/** Account menu */
+
+header .account_menu {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px;
+}
+
+header .account_menu .profile_picture {
+    height: 32px;
+    border-radius: 12px;
+    border: 1px solid #D0BCFF66;
+}
+
+header .account_menu .caret {
+    width: 7px;
+}
