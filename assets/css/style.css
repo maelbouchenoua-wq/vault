@@ -28,6 +28,7 @@ body > header div.right_container {
 
 body > header a {
     text-decoration: none;
+    color: inherit;
 }
 
 /** Logo container */
@@ -163,6 +164,11 @@ body > header .level_container {
 
 body > header .level_container .level_indicator {
     height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, #191B22 79%, transparent 80% 100%),
+    /* ---------------------------------| Place here the percentage of completion*/
+    conic-gradient(#33343B calc(100% - 25%), #FFB95F 0);
 }
 
 body > header .level_container .level {
