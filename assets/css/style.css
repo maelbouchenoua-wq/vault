@@ -200,4 +200,259 @@ body > header .account_menu .caret {
     width: 7px;
 }
 
+body > main {
+    padding: 24px 48px;
+}
+
 /** ---- PAGE PROFILE ---- */
+
+/** -- Section Badge -- */
+main section#badges {
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+}
+
+main section#badges .title_container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+main section#badges .title_container > div {
+    display: flex;
+    flex-flow: column;
+    gap: 0;
+}
+
+main section#badges .title_container > div p {
+    font-family: "JetBrains Mono", sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: #958EA0;
+}
+
+main section#badges .title_container > div p span {
+    color: #D0BCFF;
+}
+
+main section#badges .title_container .subtitle {
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #958EA0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+main section#badges .title_container .subtitle::before {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background-color: #D0BCFF;
+}
+
+main section#badges .title_container h2 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #E2E2EB;
+}
+
+main section#badges .badges_container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/** Badge */
+
+main section#badges .badges_container .badge {
+
+}
+
+main section#badges .badges_container .badge .content {
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+    border-radius: 8px 8px 0 0;
+    padding: 16px 16px 24px 16px;
+    position: relative;
+    background-color: #191B22;
+    overflow: hidden;
+}
+
+main section#badges .badges_container .badge.locked .content {
+    background-color: #191B2299;
+}
+
+main section#badges .badges_container .badge .content::before {
+    content: "";
+    width: 112px;
+    height: 112px;
+    display: block;
+    position: absolute;
+    right: -64px;
+    top: -64px;
+    filter: blur(40px);
+}
+
+main section#badges .badges_container .badge.purple .content::before {
+    background-color: #D0BCFF33;
+}
+
+main section#badges .badges_container .badge.gold .content::before {
+    background-color: #FFB95F33;
+}
+
+main section#badges .badges_container .badge .content header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main section#badges .badges_container .badge .content header .icon_container {
+    width: 48px;
+    height: 48px;
+    background-color: #33343B;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main section#badges .badges_container .badge.locked .content header .icon_container {
+    background-color: #1E1F26;
+}
+
+main section#badges .badges_container .badge.purple .content header .icon_container {
+    box-shadow: 0 0 16px 0 #D0BCFF66;
+}
+
+main section#badges .badges_container .badge.gold .content header .icon_container {
+    box-shadow: 0 0 16px 0 #FFB95F59;
+}
+
+main section#badges .badges_container .badge .content header .status {
+    font-family: "JetBrains Mono", sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+main section#badges .badges_container .badge.locked .content header .status {
+    background-color: #33343B;
+    color: #958EA0;
+}
+
+main section#badges .badges_container .badge.purple .content header .status {
+    background-color: #D0BCFF33;
+}
+
+main section#badges .badges_container .badge.gold .content header .status {
+    background-color: #FFB95F33;
+}
+
+main section#badges .badges_container .badge.purple .content header .status {
+    color: #D0BCFF;
+}
+
+main section#badges .badges_container .badge.gold .content header .status {
+    color: #FFB95F;
+}
+
+main section#badges .badges_container .badge .content main {
+    display: flex;
+    flex-flow: column;
+    gap: 4px;
+}
+
+main section#badges .badges_container .badge .content main h3 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #E2E2EB;
+}
+
+main section#badges .badges_container .badge .content main p {
+    font-family: "Inter", sans-serif;
+    line-height: 18px;
+    font-size: 12px;
+    color: #CBC3D7;
+    width: 252px;
+}
+
+main section#badges .badges_container .badge.locked .content main h3,
+main section#badges .badges_container .badge.locked .content main p {
+    color: #958EA0;
+}
+
+main section#badges .badges_container .badge footer {
+    display: flex;
+    background-color: #0C0E1499;
+    padding: 4px 8px 8px 8px;
+    border-radius: 0 0 16px 16px;
+}
+
+main section#badges .badges_container .badge footer > div {
+    display: flex;
+
+}
+
+main section#badges .badges_container .badge footer .objective p {
+    font-family: "JetBrains Mono", sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #958EA0;
+}
+
+main section#badges .badges_container .badge footer .objective p.colored {
+    font-weight: 700;
+}
+
+main section#badges .badges_container .badge.purple footer .objective p.colored {
+    color: #D0BCFF;
+}
+
+main section#badges .badges_container .badge.gold footer .objective p.colored {
+    color: #FFB95F;
+}
+
+main section#badges .badges_container .badge footer .progress {
+    display: flex;
+    flex-flow: column;
+    gap: 6px;
+    width: 100%;
+}
+
+main section#badges .badges_container .badge footer .progress .header {
+    font-family: "JetBrains Mono", sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #958EA0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main section#badges .badges_container .badge footer .progress .header p.obj {
+    font-weight: 700;
+    color: #CBC3D7;
+}
+
+main section#badges .badges_container .badge footer .progress .progress_bar {
+    height: 4px;
+    width: 100%;
+    background-color: #1E1F26;
+    border-radius: 12px;
+}
