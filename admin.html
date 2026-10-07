@@ -15,45 +15,83 @@
           rel="stylesheet">
 </head>
 <body>
-<header>
-    <nav class="navigation">
-    <h2>
-        <a href="index.html">
-        <img src="./assets/images/VAULT Logo.png" alt="">
-        VAULT
-        <img src="./assets/images/point violet.png" alt="">
-        </a>
-    </h2>
-    <p>SUPERVISION &amp; CATALOGUE</p>
-    <ul>
-        <li>
-            <a href="#">
-                <img src="./assets/images/Icon admin 1.png" alt="">
-                Console Generale
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <img src="./assets/images/Icon admin 2.png" alt="">
-                Gestion d'oeuvres
-            </a>
-        </li>
-        <li>
-            <a href ="#">
-                <img src="./assets/images/Icon admin 3.png" alt="">
-                Comptes et XP
-            </a>
-        </li>
-    </ul>
-</nav>
-</header>
-<main>
+    <body class="admin_page">
 
-    <!--- Le contenu de la page ICI --->
+    <header class="admin_sidemenu">
+        <nav class="navigation">
+            <h2>
+                <a href="index.html">
+                    <img src="./assets/images/VAULT Logo.png" alt="">
+                    VAULT
+                    <img src="./assets/images/point violet.png" alt="">
+                </a>
+            </h2>
 
-</main>
-<footer>
-    <!-- TODO -->
-</footer>
+            <p>SUPERVISION &amp; CATALOGUE</p>
+
+            <ul>
+                <li>
+                    <a href="#">
+                        <img src="./assets/images/Icon admin 1.png" alt="">
+                        Console Generale
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <img src="./assets/images/Icon admin 2.png" alt="">
+                        Gestion d'oeuvres
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <img src="./assets/images/Icon admin 3.png" alt="">
+                        Comptes et XP
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="top_bar">
+        <div class="console">
+            <div class="console_title">
+                <span class="console_mode">MODE ADMINITRATEUR</span>
+                <span class="console_separator">//</span>
+                <h1>Console Système</h1>
+            </div>
+
+            <div class="console_account">
+                <div class="console_experience">
+                    <img
+                        src="./assets/images/level-indicator.svg"
+                        alt=""
+                        class="console_indicator"
+                    >
+                    <span class="console_level">Niv. 2</span>
+                    <span class="console_dot">•</span>
+                    <span>13 XP</span>
+                </div>
+
+                <div class="console_profile">
+                    <img
+                        src="./assets/images/profil-picture.jpg"
+                        alt="Photo de profil"
+                        class="console_avatar"
+                    >
+                    <span class="console_arrow">⌄</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page content -->
+    </main>
+
+    <footer class="admin_footer">
+        <!-- TODO -->
+    </footer>
+
+</body>
 </body>
 </html>
