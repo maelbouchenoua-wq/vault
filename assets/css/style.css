@@ -465,6 +465,7 @@ main section#badges .badges_container .badge .footer .progress .progress_bar {
     width: 100%;
     background-color: #1E1F26;
     border-radius: 12px;
+    border: none;
 }
 
 /*** page admin ***/
