@@ -28,6 +28,7 @@ header div.right_container {
 
 header a {
     text-decoration: none;
+    color: inherit;
 }
 
 /** Logo container */
