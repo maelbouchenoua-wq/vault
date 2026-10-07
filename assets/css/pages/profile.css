@@ -99,6 +99,7 @@
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
 }
+
 .statut {
     display: flex;
     align-items: center;
@@ -123,6 +124,7 @@ main section#badges .title_container {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 main section#badges .title_container > div {
@@ -140,6 +142,7 @@ main section#badges .title_container > div p {
 
 main section#badges .title_container > div p span {
     color: #D0BCFF;
+    white-space: nowrap;
 }
 
 main section#badges .title_container .subtitle {
@@ -170,7 +173,9 @@ main section#badges .title_container h2 {
 
 main section#badges .badges_container {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
@@ -311,7 +316,10 @@ main section#badges .badges_container .badge .footer {
 
 main section#badges .badges_container .badge .footer > div {
     display: flex;
-
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 main section#badges .badges_container .badge .footer .objective p {
@@ -362,4 +370,16 @@ main section#badges .badges_container .badge .footer .progress .progress_bar {
     background-color: #1E1F26;
     border-radius: 12px;
     border: none;
+}
+
+@media screen and (max-width: 1240px) {
+    main section#badges .badges_container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 660px) {
+    main section#badges .badges_container {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
