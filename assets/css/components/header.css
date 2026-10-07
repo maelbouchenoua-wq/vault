@@ -168,8 +168,8 @@ body > header .level_container .level_indicator {
     border-radius: 50%;
     /** Radial progress copied from https://nikitahl.com/circle-progress-bar-css */
     background: radial-gradient(closest-side, #191B22 79%, transparent 80% 100%),
-        /* ---------------------------------| Place here the percentage of completion*/
     conic-gradient(#33343B calc(100% - 25%), #FFB95F 0);
+    /* ---------------------------------| Place here the percentage of completion*/
 }
 
 body > header .level_container .level {
@@ -205,4 +205,33 @@ body > header .account_menu .profile_picture {
 
 body > header .account_menu .caret {
     width: 7px;
+}
+
+@media screen and (max-width: 1170px) {
+    body > header .level_container {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    body > header .search_bar {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    body > header nav a .inline_level_indicator,
+    body > header nav a .inline_admin_indicator {
+        display: none;
+    }
+
+    body > header {
+        padding: 0 15px;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    body > header nav a:not(.selected) {
+        display: none;
+    }
 }
