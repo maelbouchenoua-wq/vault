@@ -55,6 +55,10 @@ body > header .main_logo_container .logo {
     height: 32px;
 }
 
+body > header .main_logo_container .logo img {
+    height: 100%;
+}
+
 body > header .main_logo_container h2 {
     font-weight: 700;
     font-size: 18px;
