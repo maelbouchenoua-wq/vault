@@ -1,3 +1,117 @@
+/*
+------ section profile ------
+ */
+
+
+.profile {
+    border-radius: 16px;
+    background: #191B22;
+    width: 90%;
+    padding: 40px;
+    margin: auto;
+}
+
+.profile2 {
+    display: flex;
+    gap: 24px;
+
+}
+
+.info-profile{
+    display: flex;
+
+
+}
+
+.profile_picture2{
+    object-fit: cover;
+    width: 104px;
+    height: 104px;
+    border-radius: 14px;
+    border: 3px solid #6001D1;
+}
+
+
+
+.title-ref-div{
+    display: flex;
+    gap: 4px;
+    padding-bottom: 4px;
+}
+
+.title{
+
+    border-radius: 2px;
+    background: #1E1F26;
+    text-align: center;
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+    color: #D0BCFF;
+}
+.ref{
+
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+    color: #958EA0;
+}
+
+
+.name{
+    display: flex;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 32px;
+    color: #E2E2EB ;
+
+}
+
+
+
+.id-infoDate-div{
+    display: flex;
+    gap: 24px;
+
+}
+
+
+.id{
+
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 12px;
+    color: #D0BCFF;
+
+}
+
+.info-date{
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+    color: #958EA0;
+
+}
+
+.rang{
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 6px;
+    background: #1E1F26;
+    border-radius: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+}
+.statut {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 6px;
+    background: #1E1F26;
+    border-radius: 12px;
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+}
+
+
 
 /** -- Section Badge -- */
 main section#badges {
