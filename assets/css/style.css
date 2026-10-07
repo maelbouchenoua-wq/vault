@@ -320,13 +320,13 @@ main section#badges .badges_container .badge.gold .content::before {
     background-color: #FFB95F33;
 }
 
-main section#badges .badges_container .badge .content header {
+main section#badges .badges_container .badge .content .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-main section#badges .badges_container .badge .content header .icon_container {
+main section#badges .badges_container .badge .content .header .icon_container {
     width: 48px;
     height: 48px;
     background-color: #33343B;
@@ -336,19 +336,19 @@ main section#badges .badges_container .badge .content header .icon_container {
     justify-content: center;
 }
 
-main section#badges .badges_container .badge.locked .content header .icon_container {
+main section#badges .badges_container .badge.locked .content .header .icon_container {
     background-color: #1E1F26;
 }
 
-main section#badges .badges_container .badge.purple .content header .icon_container {
+main section#badges .badges_container .badge.purple .content .header .icon_container {
     box-shadow: 0 0 16px 0 #D0BCFF66;
 }
 
-main section#badges .badges_container .badge.gold .content header .icon_container {
+main section#badges .badges_container .badge.gold .content .header .icon_container {
     box-shadow: 0 0 16px 0 #FFB95F59;
 }
 
-main section#badges .badges_container .badge .content header .status {
+main section#badges .badges_container .badge .content .header .status {
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 700;
     font-size: 10px;
@@ -359,41 +359,41 @@ main section#badges .badges_container .badge .content header .status {
     border-radius: 12px;
 }
 
-main section#badges .badges_container .badge.locked .content header .status {
+main section#badges .badges_container .badge.locked .content .header .status {
     background-color: #33343B;
     color: #958EA0;
 }
 
-main section#badges .badges_container .badge.purple .content header .status {
+main section#badges .badges_container .badge.purple .content .header .status {
     background-color: #D0BCFF33;
 }
 
-main section#badges .badges_container .badge.gold .content header .status {
+main section#badges .badges_container .badge.gold .content .header .status {
     background-color: #FFB95F33;
 }
 
-main section#badges .badges_container .badge.purple .content header .status {
+main section#badges .badges_container .badge.purple .content .header .status {
     color: #D0BCFF;
 }
 
-main section#badges .badges_container .badge.gold .content header .status {
+main section#badges .badges_container .badge.gold .content .header .status {
     color: #FFB95F;
 }
 
-main section#badges .badges_container .badge .content main {
+main section#badges .badges_container .badge .content .main {
     display: flex;
     flex-flow: column;
     gap: 4px;
 }
 
-main section#badges .badges_container .badge .content main h3 {
+main section#badges .badges_container .badge .content .main h3 {
     font-family: "Space Grotesk", sans-serif;
     font-weight: 700;
     font-size: 18px;
     color: #E2E2EB;
 }
 
-main section#badges .badges_container .badge .content main p {
+main section#badges .badges_container .badge .content .main p {
     font-family: "Inter", sans-serif;
     line-height: 18px;
     font-size: 12px;
@@ -401,50 +401,50 @@ main section#badges .badges_container .badge .content main p {
     width: 252px;
 }
 
-main section#badges .badges_container .badge.locked .content main h3,
-main section#badges .badges_container .badge.locked .content main p {
+main section#badges .badges_container .badge.locked .content .main h3,
+main section#badges .badges_container .badge.locked .content .main p {
     color: #958EA0;
 }
 
-main section#badges .badges_container .badge footer {
+main section#badges .badges_container .badge .footer {
     display: flex;
     background-color: #0C0E1499;
     padding: 4px 8px 8px 8px;
     border-radius: 0 0 16px 16px;
 }
 
-main section#badges .badges_container .badge footer > div {
+main section#badges .badges_container .badge .footer > div {
     display: flex;
 
 }
 
-main section#badges .badges_container .badge footer .objective p {
+main section#badges .badges_container .badge .footer .objective p {
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 600;
     font-size: 10px;
     color: #958EA0;
 }
 
-main section#badges .badges_container .badge footer .objective p.colored {
+main section#badges .badges_container .badge .footer .objective p.colored {
     font-weight: 700;
 }
 
-main section#badges .badges_container .badge.purple footer .objective p.colored {
+main section#badges .badges_container .badge.purple .footer .objective p.colored {
     color: #D0BCFF;
 }
 
-main section#badges .badges_container .badge.gold footer .objective p.colored {
+main section#badges .badges_container .badge.gold .footer .objective p.colored {
     color: #FFB95F;
 }
 
-main section#badges .badges_container .badge footer .progress {
+main section#badges .badges_container .badge .footer .progress {
     display: flex;
     flex-flow: column;
     gap: 6px;
     width: 100%;
 }
 
-main section#badges .badges_container .badge footer .progress .header {
+main section#badges .badges_container .badge .footer .progress .header {
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 600;
     font-size: 10px;
@@ -455,12 +455,12 @@ main section#badges .badges_container .badge footer .progress .header {
     justify-content: space-between;
 }
 
-main section#badges .badges_container .badge footer .progress .header p.obj {
+main section#badges .badges_container .badge .footer .progress .header p.obj {
     font-weight: 700;
     color: #CBC3D7;
 }
 
-main section#badges .badges_container .badge footer .progress .progress_bar {
+main section#badges .badges_container .badge .footer .progress .progress_bar {
     height: 4px;
     width: 100%;
     background-color: #1E1F26;
