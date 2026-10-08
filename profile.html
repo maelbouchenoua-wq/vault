@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/components/header.css">
+    <link rel="stylesheet" href="./assets/css/components/footer.css">
     <link rel="stylesheet" href="./assets/css/pages/profile.css">
     <!-- Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,6 +54,7 @@
 <main>
     <div class="profile">
         <div class="profile2">
+
             <img class="profile_picture2" src="./assets/images/profil-picture2.jpg" alt="Photo de profil">
             <div>
 
@@ -86,6 +88,85 @@
             </div>
 
             <div class="info-profile">
+                <div class="xp-div">
+                    <div class="lightning-frame">
+                        <img src="assets/images/lightning-icon.svg" alt="icone">
+                    </div>
+                    <div>
+                        <div class="xp-info">
+                            EXPERIENCE TOTALE
+                        </div>
+                        <div class =xp-points-label-div>
+                            <p class="xp-points"> 135 </p>
+                            <p class="xp-label"> XP POINTS </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="current-tier">
+                            PALIER ACTUEL
+                        </div>
+                        <div class="current-level">
+                            NIVEAU 2
+                        </div>
+                    </div>
+                </div>
+                <div class="progression-info">
+                    <div class="title-value-div">
+                        <div class="progress-title">
+                            Progression vers le niveau 3
+                        </div>
+                        <div class="progress-value">
+                            35 / 100 XP (35%)
+                        </div>
+
+                    </div>
+                </div>
+                <div class="progress-bar-xp">
+                </div>
+                <div class="level-current-next-div">
+                    <div class="level-current">
+                        Niv. 2 (100 XP cumulés)
+                    </div>
+                    <div class="level-next">
+                        Prochain palier : 200 XP
+                    </div>
+                </div>
+                <!-- creation of the experience point scale -->
+                <div class="scale">
+                    <div class="information-scale">
+                        <img src="assets/images/info-icon.svg" alt="icone">
+                        <p> BAREME DES GAINS D'EXPÉRIENCE (VAULT PROTOCOLE) </p>
+                    </div>
+
+                    <div class="new-xp">
+                        <div class ="new-xp-info">
+                            <p class="xp-count">
+                                +10 XP
+                            </p>
+                            <p class="xp-label2">
+                                Ajout collection
+                            </p>
+                        </div>
+                        <div class ="new-xp-info">
+                            <p class="xp-count">
+                                +20 XP
+                            </p>
+                            <p class="xp-label2">
+                                Statut "Terminé"
+                            </p>
+                        </div>
+                        <div class ="new-xp-info">
+                            <p class="xp-count">
+                                +5 XP
+                            </p>
+                            <p class="xp-label2">
+                                Note valide (★)
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
 
 
             </div>
@@ -187,7 +268,7 @@
                         </div>
                         <div class="status">
                             <img src="assets/images/lock.svg" alt="Icon de cadenas">
-                            <p>OBTENU</p>
+                            <p>VERROUILLÉ</p>
                         </div>
                     </div>
                     <div class="main">
@@ -209,8 +290,24 @@
     </section>
 
 </main>
-<footer>
-    <!-- TODO -->
-</footer>
+<footer class="footer">
+        <div class="footer-div">
+            <div class="footer-projet">
+                <p><span class="vault-section">VAULT</span><span class="text-projet">// Plateforme Pop-Culture</span></p>
+                <p class="text-projet">Projet Web Bac+1 • 4 Sprints • Architecture native HTML/CSS/PHP/JS</p>
+            </div>
+            <div class="footer-section">
+                <p class="text-section">Catalogue</p>
+                <p class="text-section">Progression</p>
+                <p class="text-section">Audit & Sprints</p>
+                <div class="text-section" style="display: flex; align-items: center; gap: 8px;">
+                    <p class="color-dot"></p>
+                    <span>v1.4.0-stable</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    
 </body>
 </html>
