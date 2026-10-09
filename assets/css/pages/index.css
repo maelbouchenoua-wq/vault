@@ -315,3 +315,15 @@ body main section#catalogue .card .footer .status_container .status .state_actio
 body main section#catalogue .card .footer .status_container .status .state_action .purple {
     color: #D0BCFF;
 }
+
+@media screen and (max-width: 1000px) {
+    body main section#catalogue {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    body main section#catalogue {
+        grid-template-columns: 1fr;
+    }
+}
