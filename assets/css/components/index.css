@@ -1,0 +1,79 @@
+/** Section hero banner*/
+
+.hero-banner{
+    margin-bottom: 40px;
+
+}
+
+.sprint-bdd-info{
+    display: flex;
+    width: 100%;
+}
+
+.number-index-div{
+    display: flex;
+    gap: 16px;
+}
+
+.sprint-number{
+    padding: 2px  8px;
+    background: #282A30;
+    border-radius: 4px;
+    color: #D0BCFF;
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+}
+.index{
+    padding: 2px  8px;
+    color: #CBC3D7;
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+}
+
+.bdd-xp-div{
+    display: flex;
+    justify-content: space-between;
+    gap: 3px;
+    align-items: center;
+
+}
+.bdd-icon{
+    margin-left: 443px ;
+}
+
+.bdd-info {
+    display: flex;
+    color: #958EA0;
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+    margin-right: 16px;
+}
+
+
+
+.xp-active{
+    display: flex;
+    gap: 1px;
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 10px;
+    color: #FFB95F;
+
+}
+h1{
+    margin-top: 24px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 48px;
+
+}
+.h1-color{
+    color: transparent;
+    background-clip: text;
+    background-image: linear-gradient(90deg, #D0BCFF 0%, #D2BBFF 50%, #FFB95F 100%);
+}
+
+.banner-txt {
+    margin-top: 4px;
+    font-family: Inter, serif;
+    font-size: 16px;
+    color: #CBC3D7;
+}
