@@ -7,6 +7,7 @@
     <title>Vault - Accueil</title>
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/pages/index.css">
     <link rel="stylesheet" href="./assets/css/components/header.css">
     <link rel="stylesheet" href="./assets/css/components/footer.css">
     <!-- Fonts  -->
@@ -51,25 +52,267 @@
     </div>
 </header>
 <main>
-    <!--- Le contenu de la page ICI --->
-</main>
-<footer class="footer">
-        <div class="footer-div">
-            <div class="footer-projet">
-                <p><span class="vault-section">VAULT</span><span class="text-projet">// Plateforme Pop-Culture</span></p>
-                <p class="text-projet">Projet Web Bac+1 • 4 Sprints • Architecture native HTML/CSS/PHP/JS</p>
-            </div>
-            <div class="footer-section">
-                <p class="text-section">Catalogue</p>
-                <p class="text-section">Progression</p>
-                <p class="text-section">Audit & Sprints</p>
-                <div class="text-section" style="display: flex; align-items: center; gap: 8px;">
-                    <p class="color-dot"></p>
-                    <span>v1.4.0-stable</span>
+    <section id="catalogue">
+        <div class="card">
+            <div class="header">
+                <p class="tag movie">FILM</p>
+                <div class="element_status finished">
+                    <div class="dot"></div>
+                    <p>TERMINÉ</p>
                 </div>
             </div>
-
+            <div class="overlay_container">
+                <img class="cover" src="./assets/images/content/blade_runner_cover.jpg" alt="Image de couverture de">
+            </div>
+            <div class="footer">
+                <p class="element_infos">
+                    2017 • 2h 44m
+                </p>
+                <div class="information_container">
+                    <h2>Blade Runner 2049</h2>
+                    <p class="description">Trente ans après les événements du premier film, un nouveau blade runner, l'officier K, déterre un secret…</p>
+                </div>
+                <div class="status_container">
+                    <div class="note">
+                        <p>EVALUATION :</p>
+                        <div class="star_container">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 1/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 2/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 3/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 4/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 5/5">
+                        </div>
+                    </div>
+                    <div class="status">
+                        <p class="state">Statut: Terminé</p>
+                        <div class="state_action">
+                            <img src="./assets/images/mark_check.svg" alt="Icon de marque page">
+                            <p class="purple">Dans la loge</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+        <div class="card">
+            <div class="header">
+                <p class="tag movie">FILM</p>
+                <div class="element_status finished">
+                    <div class="dot"></div>
+                    <p>TERMINÉ</p>
+                </div>
+            </div>
+            <div class="overlay_container">
+                <img class="cover" src="./assets/images/content/dune_cover.jpg" alt="Image de couverture de dune">
+            </div>
+            <div class="footer">
+                <p class="element_infos">
+                    2024 • 2h 46m
+                </p>
+                <div class="information_container">
+                    <h2>Dune: Deuxième Partie</h2>
+                    <p class="description">Paul Atreides s'unit à Chani et aux Fremen tout en préparant sa revanche contre les conspirateurs qui ont…</p>
+                </div>
+                <div class="status_container">
+                    <div class="note">
+                        <p>EVALUATION :</p>
+                        <div class="star_container">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 1/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 2/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 3/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 4/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 5/5">
+                        </div>
+                    </div>
+                    <div class="status">
+                        <p class="state">Statut: Terminé</p>
+                        <div class="state_action">
+                            <img src="./assets/images/pen.svg" alt="Icon de crayon">
+                            <p>Éditer statut</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <p class="tag movie">FILM</p>
+                <div class="element_status discover">
+                    <div class="dot"></div>
+                    <p>À DÉCOUVRIR</p>
+                </div>
+            </div>
+            <div class="overlay_container">
+                <img class="cover" src="./assets/images/content/interstellar_cover.jpg" alt="Image de couverture du film interstellar">
+            </div>
+            <div class="footer">
+                <p class="element_infos">
+                    2014 • 2h 49m
+                </p>
+                <div class="information_container">
+                    <h2>Interstellar</h2>
+                    <p class="description">Une équipe d'explorateurs franchit un trou de ver récemment découvert afin de surpasser les limites du…</p>
+                </div>
+                <div class="status_container">
+                    <div class="note">
+                        <p>EVALUATION :</p>
+                        <div class="star_container">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 1/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 2/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 3/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 4/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 5/5">
+                        </div>
+                    </div>
+                    <div class="status">
+                        <p class="state">Statut: Terminé</p>
+                        <div class="state_action to_add">
+                            <img src="./assets/images/plus.svg" alt="Icon de plus">
+                            <p>Ajouter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="header">
+                <p class="tag serie">SÉRIE</p>
+                <div class="element_status ongoing">
+                    <div class="dot"></div>
+                    <p>EN COURS</p>
+                </div>
+            </div>
+            <div class="overlay_container">
+                <img class="cover" src="./assets/images/content/arcane_cover.jpg" alt="Image de couverture de Arcane">
+            </div>
+            <div class="footer">
+                <p class="element_infos">
+                    2021 • 2 Saisons
+                </p>
+                <div class="information_container">
+                    <h2>Arcane</h2>
+                    <p class="description">Au cœur du conflit entre les cités jumelles de Piltover et de Zaun, deux sœurs se battent dans des camps opposés</p>
+                </div>
+                <div class="status_container">
+                    <div class="note">
+                        <p>EVALUATION :</p>
+                        <div class="star_container">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 1/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 2/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 3/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 4/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 5/5">
+                        </div>
+                    </div>
+                    <div class="status">
+                        <p class="state">Statut: Terminé</p>
+                        <div class="state_action">
+                            <img src="./assets/images/rewind.svg" alt="Icon de retours en arrière">
+                            <p>Épisode S2E03</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <p class="tag serie">SÉRIE</p>
+                <div class="element_status finished">
+                    <div class="dot"></div>
+                    <p>TERMINÉ</p>
+                </div>
+            </div>
+            <div class="overlay_container">
+                <img class="cover" src="./assets/images/content/the_last_of_us_cover.jpg" alt="Image de couverture de The last of us">
+            </div>
+            <div class="footer">
+                <p class="element_infos">
+                    2023 • 9 Épisodes
+                </p>
+                <div class="information_container">
+                    <h2>The Last of Us</h2>
+                    <p class="description">Quand le monde s'effondre sous l'emprise d'un champignon parasite muté, un survivant endurci prend en</p>
+                </div>
+                <div class="status_container">
+                    <div class="note">
+                        <p>EVALUATION :</p>
+                        <div class="star_container">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 1/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 2/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 3/5">
+                            <img src="./assets/images/star.svg" alt="Etoile de notation 4/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 5/5">
+                        </div>
+                    </div>
+                    <div class="status">
+                        <p class="state">Statut: En cours</p>
+                        <div class="state_action">
+                            <img src="./assets/images/check_list.svg" alt="Icon de crayon">
+                            <p>Revue écrite</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <p class="tag serie">SÉRIE</p>
+                <div class="element_status discover">
+                    <div class="dot"></div>
+                    <p>À DÉCOUVRIR</p>
+                </div>
+            </div>
+            <div class="overlay_container">
+                <img class="cover" src="./assets/images/content/severance_cover.jpg" alt="Image de couverture de la série Severance">
+            </div>
+            <div class="footer">
+                <p class="element_infos">
+                    2022 • 1 Saison
+                </p>
+                <div class="information_container">
+                    <h2>Severance</h2>
+                    <p class="description">Mark mène une équipe dont les employés ont subi une procédure chirurgicale séparant leurs souvenirs…</p>
+                </div>
+                <div class="status_container">
+                    <div class="note">
+                        <p>EVALUATION :</p>
+                        <div class="star_container">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 1/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 2/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 3/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 4/5">
+                            <img src="./assets/images/star_empty.svg" alt="Etoile de notation 5/5">
+                        </div>
+                    </div>
+                    <div class="status">
+                        <p class="state">Statut: À découvrir</p>
+                        <div class="state_action to_add">
+                            <img src="./assets/images/plus.svg" alt="Icon de plus">
+                            <p>Ajouter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="footer">
+    <div class="footer-div">
+        <div class="footer-projet">
+            <p><span class="vault-section">VAULT</span><span class="text-projet">// Plateforme Pop-Culture</span></p>
+            <p class="text-projet">Projet Web Bac+1 • 4 Sprints • Architecture native HTML/CSS/PHP/JS</p>
+        </div>
+        <div class="footer-section">
+            <p class="text-section">Catalogue</p>
+            <p class="text-section">Progression</p>
+            <p class="text-section">Audit & Sprints</p>
+            <div class="text-section" style="display: flex; align-items: center; gap: 8px;">
+                <p class="color-dot"></p>
+                <span>v1.4.0-stable</span>
+            </div>
+        </div>
+
+    </div>
+</footer>
 </body>
 </html>
