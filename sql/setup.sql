@@ -48,9 +48,9 @@ CREATE TABLE user_media
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
     user_id  INT         NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     media_id INT         NOT NULL,
-    FOREIGN KEY (media_id) REFERENCES media(id)ON DELETE CASCADE,
+    FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE CASCADE,
     status   VARCHAR(50) NOT NULL,
     rating   INT DEFAULT NULL,
 
@@ -70,11 +70,12 @@ CREATE TABLE badges
 
 -- TABLE user_badges
 
-CREATE TABLE user_badges(
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id INT UNSIGNED ,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    badge_id INT UNSIGNED,
-    FOREIGN KEY (badge_id) REFERENCES badges(id) ON DELETE restrict,
+CREATE TABLE user_badges
+(
+    id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    badge_id   INT UNSIGNED,
+    FOREIGN KEY (badge_id) REFERENCES badges (id) ON DELETE restrict,
     awarded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
