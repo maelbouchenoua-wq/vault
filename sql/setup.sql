@@ -53,6 +53,8 @@ CREATE TABLE user_media
     FOREIGN KEY (media_id) REFERENCES medias (id) ON DELETE CASCADE,
     statut   ENUM ('planned', 'in_progress', 'completed') NOT NULL,
     rating   INT DEFAULT NULL,
+    check (rating > 0),
+
 
     CONSTRAINT uq_user_media UNIQUE (user_id, media_id)
 );
