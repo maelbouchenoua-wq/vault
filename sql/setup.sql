@@ -63,12 +63,11 @@ CREATE TABLE badges
 
 -- TABLE user_badges
 
-CREATE TABLE user_badges
-(
-    id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id    INT,
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    badge_id   INT,
-    FOREIGN KEY (badge_id) REFERENCES badges (id),
+CREATE TABLE user_badges(
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED ,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    badge_id INT UNSIGNED,
+    FOREIGN KEY (badge_id) REFERENCES badges(id),
     awarded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
