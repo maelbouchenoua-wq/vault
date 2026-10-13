@@ -31,7 +31,7 @@ VALUES ('Catégorie 1'),
        ('Catégorie 3');
 
 -- create table media.
-CREATE TABLE media
+CREATE TABLE medias
 (
     id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     category_id  INT UNSIGNED NOT NULL UNIQUE,
@@ -50,7 +50,7 @@ CREATE TABLE user_media
     user_id  INT UNSIGNED                                 NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     media_id INT UNSIGNED                                 NOT NULL,
-    FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE CASCADE,
+    FOREIGN KEY (media_id) REFERENCES medias (id) ON DELETE CASCADE,
     statut   ENUM ('planned', 'in_progress', 'completed') NOT NULL,
     rating   INT DEFAULT NULL,
 
