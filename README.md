@@ -6,7 +6,8 @@ Ceci est un projet de site web, un réseau social centré sur la Pop-culture.
 
 ## Schéma de la base de donnée
 
-<img width="2420" height="1475" alt="image" src="https://github.com/user-attachments/assets/443f5ccd-09ce-4487-869f-78aa61048772" />
+<img width="2420" height="1475" alt="image" src="https://github.com/user-attachments/assets/d566aa6b-09de-442f-a36e-856ad9090b2a" />
+
 
 ## Mise en place
 
