@@ -42,8 +42,10 @@ CREATE TABLE media
 CREATE TABLE user_media
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
-    user_id  INT         NOT NULL,
-    media_id INT         NOT NULL,
+    user_id INT UNSIGNED ,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    media_id INT UNSIGNED,
+    FOREIGN KEY (media_id) REFERENCES media(id),
     status   VARCHAR(50) NOT NULL,
     rating   INT DEFAULT NULL,
 
