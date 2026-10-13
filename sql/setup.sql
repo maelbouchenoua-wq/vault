@@ -51,7 +51,7 @@ CREATE TABLE user_media
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     media_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE CASCADE,
-    status   VARCHAR(50)  NOT NULL,
+    statut ENUM('planned', 'in_progress', 'completed') NOT NULL,
     rating   INT DEFAULT NULL,
 
     CONSTRAINT uq_user_media UNIQUE (user_id, media_id)
@@ -85,6 +85,6 @@ CREATE TABLE user_badges
     user_id    INT UNSIGNED,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     badge_id   INT UNSIGNED,
-    FOREIGN KEY (badge_id) REFERENCES badges (id) ON DELETE restrict,
+    FOREIGN KEY (badge_id) REFERENCES badges (id) ON DELETE CASCADE,
     awarded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
