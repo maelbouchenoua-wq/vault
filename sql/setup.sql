@@ -47,11 +47,11 @@ CREATE TABLE media
 CREATE TABLE user_media
 (
     id       INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id  INT UNSIGNED NOT NULL,
+    user_id  INT UNSIGNED                                 NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    media_id INT UNSIGNED NOT NULL,
+    media_id INT UNSIGNED                                 NOT NULL,
     FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE CASCADE,
-    statut ENUM('planned', 'in_progress', 'completed') NOT NULL,
+    statut   ENUM ('planned', 'in_progress', 'completed') NOT NULL,
     rating   INT DEFAULT NULL,
 
     CONSTRAINT uq_user_media UNIQUE (user_id, media_id)
@@ -62,20 +62,20 @@ CREATE TABLE user_media
 CREATE TABLE badges
 (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    code        VARCHAR(50)  NOT NULL,
+    code        VARCHAR(50) NOT NULL,
     name        VARCHAR(50) NOT NULL,
     description TEXT        NOT NULL
 ) ENGINE = InnoDB;
 
-INSERT INTO badges(code, name, description) VALUES
-     ('collector', 'collector',
-      'Posséder au moins 5 œuvres dans sa collection personnelle.'),
-     ('cinephile', 'cinephile',
-      'Avoir terminé le visionnage d au moins 3 films du catalogue.'),
-     ('gamer','gamer',
-      'Avoir terminé au moins 3 jeux vidéo répertoriés.'),
-     ('explorer', 'explorer',
-      'Enregistrer un score d au moins 15 au mini-jeu interactif.');
+INSERT INTO badges(code, name, description)
+VALUES ('collector', 'collector',
+        'Posséder au moins 5 œuvres dans sa collection personnelle.'),
+       ('cinephile', 'cinephile',
+        'Avoir terminé le visionnage d au moins 3 films du catalogue.'),
+       ('gamer', 'gamer',
+        'Avoir terminé au moins 3 jeux vidéo répertoriés.'),
+       ('explorer', 'explorer',
+        'Enregistrer un score d au moins 15 au mini-jeu interactif.');
 
 -- TABLE user_badges
 
