@@ -27,9 +27,21 @@ INSERT INTO categories (name) VALUES
     ('Catégorie 2'),
     ('Catégorie 3');
 
+-- create table media.
 CREATE TABLE media(
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     categorie VARCHAR(120)NOT NULL UNIQUE,
     title VARCHAR(90),
     release_year DATETIME  NOT NULL UNIQUE
     )
+
+    -- create table user_media.
+CREATE TABLE user_media (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    media_id INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    rating INT DEFAULT NULL,
+
+    CONSTRAINT uq_user_media UNIQUE (user_id, media_id)
+);
