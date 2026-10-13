@@ -18,7 +18,9 @@ CREATE TABLE badges(
 
 CREATE TABLE user_badges(
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_user INT UNSIGNED REFERENCES id users,
-    id_badge INT UNSIGNED REFERENCES id badges,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    badge_id INT,
+    FOREIGN KEY (badge_id) REFERENCES badges(id),
     awarded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
