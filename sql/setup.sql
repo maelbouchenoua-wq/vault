@@ -51,7 +51,7 @@ CREATE TABLE user_media
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     media_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE CASCADE,
-    status   VARCHAR(50)  NOT NULL,
+    statut ENUM('planned', 'in_progress', 'completed') NOT NULL,
     rating   INT DEFAULT NULL,
 
     CONSTRAINT uq_user_media UNIQUE (user_id, media_id)
@@ -62,10 +62,16 @@ CREATE TABLE user_media
 CREATE TABLE badges
 (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    code        INT UNIQUE  NOT NULL,
+    code        VARCHAR(50)  NOT NULL,
     name        VARCHAR(50) NOT NULL,
     description TEXT        NOT NULL
 ) ENGINE = InnoDB;
+
+INSERT INTO badges(code) VALUES
+     ('collector'),
+     ('cinephile'),
+     ('gamer'),
+     ('explorer');
 
 -- TABLE user_badges
 
