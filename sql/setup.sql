@@ -75,6 +75,6 @@ CREATE TABLE user_badges
     user_id    INT UNSIGNED,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     badge_id   INT UNSIGNED,
-    FOREIGN KEY (badge_id) REFERENCES badges (id) ON DELETE restrict,
+    FOREIGN KEY (badge_id) REFERENCES badges (id) ON DELETE CASCADE,
     awarded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
