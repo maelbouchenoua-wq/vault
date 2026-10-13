@@ -4,10 +4,11 @@
 
 Ceci est un projet de site web, un réseau social centré sur la Pop-culture.
 
-## Schéma de la base de donnée
+## Base de donnée
+
+> MySQL - InnoDB version 8.0
 
 <img width="2420" height="1475" alt="image" src="https://github.com/user-attachments/assets/d566aa6b-09de-442f-a36e-856ad9090b2a" />
-
 
 ## Mise en place
 
