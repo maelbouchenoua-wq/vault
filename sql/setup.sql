@@ -14,3 +14,15 @@ CREATE TABLE users
     best_score INT UNSIGNED           NOT NULL DEFAULT 0,
     created_at DATETIME               NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
+
+
+-- Create table categories.
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL UNIQUE
+);
+
+INSERT INTO categories (name) VALUES
+    ('Catégorie 1'),
+    ('Catégorie 2'),
+    ('Catégorie 3');
