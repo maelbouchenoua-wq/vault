@@ -20,7 +20,7 @@ CREATE TABLE users
 -- Create table categories.
 CREATE TABLE categories
 (
-    id   INT AUTO_INCREMENT PRIMARY KEY,
+    id   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(200) NOT NULL UNIQUE
 );
 
@@ -34,7 +34,7 @@ VALUES ('Catégorie 1'),
 CREATE TABLE media
 (
     id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    category_id  VARCHAR(120) NOT NULL UNIQUE,
+    category_id  INT UNSIGNED NOT NULL UNIQUE,
     FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT,
     title        VARCHAR(90),
     release_year DATETIME     NOT NULL UNIQUE,
@@ -46,14 +46,13 @@ CREATE TABLE media
 -- create table user_media.
 CREATE TABLE user_media
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    user_id  INT         NOT NULL,
+    id       INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id  INT UNSIGNED NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    media_id INT         NOT NULL,
+    media_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE CASCADE,
-    status   VARCHAR(50) NOT NULL,
+    status   VARCHAR(50)  NOT NULL,
     rating   INT DEFAULT NULL,
-
 
     CONSTRAINT uq_user_media UNIQUE (user_id, media_id)
 );
