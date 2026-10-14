@@ -19,9 +19,15 @@ VALUES (1, 'Blade Runner 2049', 2017, 'Trente ans après les événements du pre
 ;
 
 
+INSERT INTO users (username, email, password, role)
+VALUES ('Bob', 'bob@gmail.com', 'mysuper_password', 'user'),
+       ('Pat', 'patOch_@proton.com', 'haaaaaa', 'admin'),
+       ('Max', 'maximax_malveillance_max@yahoo.com', 'béééééé', 'user')
+;
+
 
 INSERT INTO badges(code, name, description)
-VALUES ('collector', 'collector', 'Posséder au moins 5 œuvres dans sa collection personnelle.'),
-       ('cinephile', 'cinephile', 'Avoir terminé le visionnage d au moins 3 films du catalogue.'),
-       ('gamer', 'gamer', 'Avoir terminé au moins 3 jeux vidéo répertoriés.'),
-       ('explorer', 'explorer', 'Enregistrer un score d au moins 15 au mini-jeu interactif.');
+VALUES (1001, 'collector', 'Posséder au moins 5 œuvres dans sa collection personnelle.'),
+       (1002, 'cinephile', 'Avoir terminé le visionnage d au moins 3 films du catalogue.'),
+       (1003, 'gamer', 'Avoir terminé au moins 3 jeux vidéo répertoriés.'),
+       (1004, 'explorer', 'Enregistrer un score d au moins 15 au mini-jeu interactif.');

@@ -60,7 +60,7 @@ CREATE TABLE user_media
 CREATE TABLE badges
 (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    code        VARCHAR(50) NOT NULL,
+    code        INT UNIQUE NOT NULL,
     name        VARCHAR(50) NOT NULL,
     description TEXT        NOT NULL
 ) ENGINE = InnoDB;
