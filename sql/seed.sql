@@ -7,15 +7,15 @@ INSERT INTO media (category_id, title, release_year, description, image_path)
 VALUES (1, 'Blade Runner 2049', 2017, 'Trente ans après les événements du premier film, un nouveau blade runner, l''officier K, déterre un secret...', 'blade_runner_cover.jpg'),
        (1, 'Dune: Deuxième Partie', 2024, 'Paul Atreides s''unit à Chani et aux Fremen tout en préparant sa revanche contre les conspirateurs qui ont...', 'dune_2_cover.jpg'),
        (1, 'Interstellar', 2014, 'Une équipe d''explorateurs franchit un trou de ver récemment découvert afin de surpasser les limites du...', 'interstellar_cover.jpg'),
-       (1, 'Avatar', 2009, 'Avatar (2009) raconte l’histoire de Jake Sully, un ancien marine envoyé sur la planète Pandora. Il découvre le peuple Na’vi et leur monde fascinant, ce qui va bouleverser sa vie et le pousser à choisir entre deux camps.', 'avatar_cover.jpg'),
-       (2, '', 0000, '', ''),
-       (2, '', 0000, '', ''),
-       (2, '', 0000, '', ''),
-       (2, '', 0000, '', ''),
-       (3, '', 0000, '', ''),
-       (3, '', 0000, '', ''),
-       (3, '', 0000, '', ''),
-       (3, '', 0000, '', '')
+       (1, 'Avatar', 2009, 'Avatar (2009) raconte l''histoire de Jake Sully, un ancien marine envoyé sur la planète Pandora. Il découvre le peuple Na''vi et leur monde fascinant, ce qui va bouleverser sa vie et le pousser à choisir entre deux camps.', 'avatar_cover.jpg'),
+       (2, 'Breaking Bad', 2008, 'Un professeur de chimie se transforme en fabricant de méthamphétamine pour subvenir aux besoins de sa famille.', 'breaking_bad_cover.jpg'),
+       (2, 'Game of Thrones', 2011, 'Des nobles families se battent pour le contrôle du Trône de Fer dans un monde fictif.', 'game_of_thrones_cover.jpg'),
+       (2, 'Stranger Things', 2016, 'Des enfants découvrent un mystère surnaturel dans leur petite ville.', 'stranger_things_cover.jpg'),gg
+       (2, 'The Crown', 2016, 'L''histoire de la reine Elizabeth II et de sa famille au cours du XXe siècle.', 'the_crown_cover.jpg'),
+       (3, 'The Legend of Zelda: Breath of the Wild', 2017, 'Link explore le royaume d''Hyrule dans ce jeu d''aventure en monde ouvert.', 'zelda_botw_cover.jpg'),
+       (3, 'The Witcher 3: Wild Hunt', 2015, 'Geralt de Rivia voyage à travers un monde en pleine guerre à la recherche de sa fille adoptive.', 'witcher_3_cover.jpg'),
+       (3, 'The Elder Scrolls V: Skyrim', 2011, 'Joueur incarne un chevalier dans le monde de Tamriel, où il peut choisir son chemin et ses alliances.', 'skyrim_cover.jpg'),
+       (3, 'Red Dead Redemption 2', 2018, 'Un cow-boy dans le Far West à la fin du XIXe siècle, confronté aux changements de société.', 'rdr2_cover.jpg')
 ;
 
 
