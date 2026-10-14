@@ -10,7 +10,7 @@ VALUES (1, 'Blade Runner 2049', 2017, 'Trente ans après les événements du pre
        (1, 'Avatar', 2009, 'Avatar (2009) raconte l''histoire de Jake Sully, un ancien marine envoyé sur la planète Pandora. Il découvre le peuple Na''vi et leur monde fascinant, ce qui va bouleverser sa vie et le pousser à choisir entre deux camps.', 'avatar_cover.jpg'),
        (2, 'Breaking Bad', 2008, 'Un professeur de chimie se transforme en fabricant de méthamphétamine pour subvenir aux besoins de sa famille.', 'breaking_bad_cover.jpg'),
        (2, 'Game of Thrones', 2011, 'Des nobles families se battent pour le contrôle du Trône de Fer dans un monde fictif.', 'game_of_thrones_cover.jpg'),
-       (2, 'Stranger Things', 2016, 'Des enfants découvrent un mystère surnaturel dans leur petite ville.', 'stranger_things_cover.jpg'),gg
+       (2, 'Stranger Things', 2016, 'Des enfants découvrent un mystère surnaturel dans leur petite ville.', 'stranger_things_cover.jpg'),
        (2, 'The Crown', 2016, 'L''histoire de la reine Elizabeth II et de sa famille au cours du XXe siècle.', 'the_crown_cover.jpg'),
        (3, 'The Legend of Zelda: Breath of the Wild', 2017, 'Link explore le royaume d''Hyrule dans ce jeu d''aventure en monde ouvert.', 'zelda_botw_cover.jpg'),
        (3, 'The Witcher 3: Wild Hunt', 2015, 'Geralt de Rivia voyage à travers un monde en pleine guerre à la recherche de sa fille adoptive.', 'witcher_3_cover.jpg'),
