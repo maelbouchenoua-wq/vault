@@ -25,15 +25,14 @@ CREATE TABLE categories
 );
 
 
-
 -- create table media.
 CREATE TABLE medias
 (
     id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    category_id  INT UNSIGNED NOT NULL UNIQUE,
+    category_id  INT UNSIGNED NOT NULL,
     FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT,
     title        VARCHAR(90),
-    release_year DATETIME     NOT NULL UNIQUE,
+    release_year INT UNSIGNED NOT NULL,
     description  VARCHAR(512) NOT NULL,
     image_path   VARCHAR(521) NOT NULL
 );
@@ -60,7 +59,7 @@ CREATE TABLE user_media
 CREATE TABLE badges
 (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    code        INT UNIQUE NOT NULL,
+    code        INT UNIQUE  NOT NULL,
     name        VARCHAR(50) NOT NULL,
     description TEXT        NOT NULL
 ) ENGINE = InnoDB;
