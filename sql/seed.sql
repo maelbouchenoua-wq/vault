@@ -35,7 +35,7 @@ VALUES (1001, 'collector', 'Posséder au moins 5 œuvres dans sa collection pers
        (1003, 'gamer', 'Avoir terminé au moins 3 jeux vidéo répertoriés.'),
        (1004, 'explorer', 'Enregistrer un score d au moins 15 au mini-jeu interactif.');
 
-INSERT INTO user_media(user_id, media_id, tatut, rating)
+INSERT INTO user_media(user_id, media_id, statut, rating)
 VALUES (1,1,'planned', null),
        (2,2,'in_progress', null),
        (3,3,'completed', 2),
