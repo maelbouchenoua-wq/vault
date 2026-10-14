@@ -46,7 +46,7 @@ CREATE TABLE user_media
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     media_id INT UNSIGNED                                 NOT NULL,
     FOREIGN KEY (media_id) REFERENCES medias (id) ON DELETE CASCADE,
-    statut   ENUM ('planned', 'in_progress', 'completed') NOT NULL,
+    status   ENUM ('planned', 'in_progress', 'completed') NOT NULL,
     rating   INT DEFAULT NULL,
     check (rating > 0),
 
