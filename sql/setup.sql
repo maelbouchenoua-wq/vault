@@ -25,10 +25,6 @@ CREATE TABLE categories
 );
 
 
-INSERT INTO categories (name)
-VALUES ('Catégorie 1'),
-       ('Catégorie 2'),
-       ('Catégorie 3');
 
 -- create table media.
 CREATE TABLE medias
@@ -68,16 +64,6 @@ CREATE TABLE badges
     name        VARCHAR(50) NOT NULL,
     description TEXT        NOT NULL
 ) ENGINE = InnoDB;
-
-INSERT INTO badges(code, name, description)
-VALUES ('collector', 'collector',
-        'Posséder au moins 5 œuvres dans sa collection personnelle.'),
-       ('cinephile', 'cinephile',
-        'Avoir terminé le visionnage d au moins 3 films du catalogue.'),
-       ('gamer', 'gamer',
-        'Avoir terminé au moins 3 jeux vidéo répertoriés.'),
-       ('explorer', 'explorer',
-        'Enregistrer un score d au moins 15 au mini-jeu interactif.');
 
 -- TABLE user_badges
 
