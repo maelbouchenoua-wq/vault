@@ -22,9 +22,10 @@ VALUES (1, 'Blade Runner 2049', 2017, 'Trente ans après les événements du pre
 
 
 INSERT INTO users (username, email, password, role)
-VALUES ('Bob', 'bob@gmail.com', 'mysuper_password', 'user'),
-       ('Pat', 'patOch_@proton.com', 'haaaaaa', 'admin'),
-       ('Max', 'maximax_malveillance_max@yahoo.com', 'béééééé', 'user')
+VALUES ('Bob', 'bob@gmail.com', 'D769087D8F0A1658960207D90C196A2DEED7455AE93455C53A7F073743BDA41A', 'user'),
+       ('Pat', 'patOch_@proton.com', '45EB55D6F3B79B270C13BF4E48309DAB03EBC73D414AFFC52F7EE7514849F3E3', 'admin'),
+       ('Max', 'maximax_malveillance_max@yahoo.com', 'BCBBEDB20803C55455FBF48F0EBF1044DE2E4B5DA33C99AFDD0A01F35052C7F4', 'user'),
+       ('Jame', 'james@gmail.com', 'E46240714B5DB3A23EEE60479A623EFBA4D633D27FE4F03C904B9E219A7FBE60', 'user')
 ;
 
 
