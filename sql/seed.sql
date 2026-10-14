@@ -19,6 +19,12 @@ VALUES (1, 'Blade Runner 2049', 2017, 'Trente ans après les événements du pre
 ;
 
 
+INSERT INTO users (username, email, password, role)
+VALUES ('Bob', 'bob@gmail.com', 'mysuper_password', 'user'),
+       ('Pat', 'patOch_@proton.com', 'haaaaaa', 'admin'),
+       ('Max', 'maximax_malveillance_max@yahoo.com', 'béééééé', 'user')
+;
+
 
 INSERT INTO badges(code, name, description)
 VALUES (1001, 'collector', 'Posséder au moins 5 œuvres dans sa collection personnelle.'),
