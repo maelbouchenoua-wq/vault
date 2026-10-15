@@ -6,10 +6,9 @@ FROM user_media
          INNER JOIN medias ON medias.id = user_media.media_id
          INNER JOIN users ON users.id = user_media.user_id
          INNER JOIN categories ON categories.id = medias.category_id
-where users.id = 3;  
-F
+where users.id = 3;
 
---- moyenne request
+-- moyenne request --
     SELECT
     CASE
         WHEN COUNT(note) = 0 THEN 'Absence de moyenne'
@@ -18,7 +17,7 @@ F
 FROM notes;
 
 
---- calcule des XP d’un utilisateur une collection vide donne 0 et le jeu de test principal donne 135 ---
+-- calcule des XP d’un utilisateur une collection vide donne 0 et le jeu de test principal donne 135 --
 
 SELECT
     COALESCE (SUM(
@@ -39,7 +38,7 @@ WHERE user_id = 1;
 
 
 
---- Calcule du niveau et de la progression à partir des XP ---
+-- Calcule du niveau et de la progression à partir des XP --
 
 SELECT 
     total_xp,
