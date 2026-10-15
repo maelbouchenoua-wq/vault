@@ -1,0 +1,77 @@
+-- This file is used to set up the database on your device creating all tables.
+
+-- Create the database.
+CREATE DATABASE IF NOT EXISTS vault CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE vault;
+-- Table users
+CREATE TABLE users
+(
+    id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username   VARCHAR(50)            NOT NULL,
+    email      VARCHAR(80)            NOT NULL UNIQUE,
+    password   VARCHAR(1024)          NOT NULL,
+    role       ENUM ('user', 'admin') NOT NULL,
+    best_score INT UNSIGNED           NOT NULL DEFAULT 0,
+    created_at DATETIME               NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
+
+
+-- Create table categories.
+CREATE TABLE categories
+(
+    id   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL UNIQUE
+);
+
+
+-- create table media.
+CREATE TABLE medias
+(
+    id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    category_id  INT UNSIGNED NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT,
+    title        VARCHAR(90),
+    release_year INT UNSIGNED NOT NULL,
+    description  VARCHAR(512) NOT NULL,
+    image_path   VARCHAR(521) NOT NULL
+);
+
+
+-- create table user_media.
+CREATE TABLE user_media
+(
+    id       INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id  INT UNSIGNED                                 NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    media_id INT UNSIGNED                                 NOT NULL,
+    FOREIGN KEY (media_id) REFERENCES medias (id) ON DELETE CASCADE,
+    status   ENUM ('planned', 'in_progress', 'completed') NOT NULL,
+    rating   INT DEFAULT NULL,
+    check (rating > 0),
+
+
+    CONSTRAINT uq_user_media UNIQUE (user_id, media_id)
+);
+
+
+-- TABLE badges
+CREATE TABLE badges
+(
+    id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    code        INT UNIQUE  NOT NULL,
+    name        VARCHAR(50) NOT NULL,
+    description TEXT        NOT NULL
+) ENGINE = InnoDB;
+
+-- TABLE user_badges
+
+CREATE TABLE user_badges
+(
+    id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    badge_id   INT UNSIGNED,
+    FOREIGN KEY (badge_id) REFERENCES badges (id) ON DELETE CASCADE,
+    awarded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
