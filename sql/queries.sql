@@ -57,6 +57,12 @@ GROUP BY user_media.user_id
 HAVING COUNT(*) >= 3;
 
 
+-- Badge 'explorer' - Returns all users that 'Have achieved at least 15 to the hidden mini-game'
+SELECT users.id, best_score
+FROM users
+WHERE best_score >= 15
+GROUP BY users.id;
+
 
 -- Badge update requests
 -- Add badge 'collector'
@@ -96,3 +102,10 @@ WHERE category_id = 3
                 AND badge_id = 2) = 0
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 3;
+
+-- Badge 'explorer' - Returns all users that 'Have achieved at least 15 to the hidden mini-game'
+INSERT INTO user_badges (user_id, badge_id)
+SELECT users.id, (4) AS badge_id
+FROM users
+WHERE best_score >= 15
+GROUP BY users.id;
