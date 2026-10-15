@@ -109,3 +109,54 @@ SELECT users.id, (4) AS badge_id
 FROM users
 WHERE best_score >= 15
 GROUP BY users.id;
+
+-- Remove Badges
+-- remove collector badge from users with less than 5 media in their collection.
+
+DELETE ub
+FROM user_badges AS ub
+         JOIN badges AS b ON b.id = ub.badge_id
+WHERE b.code = 1001
+  AND (SELECT COUNT(*)
+       FROM user_media AS um
+       WHERE um.user_id = ub.user_id) < 5;
+
+
+-- remove cinephile badge from users with less than 3 completed films.
+
+DELETE ub
+FROM user_badges AS ub
+         JOIN badges AS b ON b.id = ub.badge_id
+WHERE b.code = 1002
+  AND (SELECT COUNT(*)
+       FROM user_media AS um
+                JOIN medias AS m ON m.id = um.media_id
+                JOIN categories AS c ON c.id = m.category_id
+       WHERE um.user_id = ub.user_id
+         AND um.status = 'completed'
+         AND c.name = 'film') < 3;
+
+
+-- remove gamer badge from users with less than 3 completed games.
+
+DELETE ub
+FROM user_badges AS ub
+         JOIN badges AS b ON b.id = ub.badge_id
+WHERE b.code = 1003
+  AND (SELECT COUNT(*)
+       FROM user_media AS um
+                JOIN medias AS m ON m.id = um.media_id
+                JOIN categories AS c ON c.id = m.category_id
+       WHERE um.user_id = ub.user_id
+         AND um.status = 'completed'
+         AND c.name = 'game') < 3;
+
+
+-- remove explorer badge from users with best_score less than 15.
+
+DELETE ub
+FROM user_badges AS ub
+         JOIN badges AS b ON b.id = ub.badge_id
+         JOIN users AS u ON u.id = ub.user_id
+WHERE b.code = 1004
+  AND u.best_score < 15;
