@@ -6,7 +6,7 @@ FROM user_media
          INNER JOIN medias ON medias.id = user_media.media_id
          INNER JOIN users ON users.id = user_media.user_id
          INNER JOIN categories ON categories.id = medias.category_id
-where users_id = 3;
+where user_id = 3;
 
 -- moyenne request --
     SELECT
