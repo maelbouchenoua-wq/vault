@@ -6,7 +6,7 @@ FROM user_media
          INNER JOIN medias ON medias.id = user_media.media_id
          INNER JOIN users ON users.id = user_media.user_id
          INNER JOIN categories ON categories.id = medias.category_id
-where users.id = 3;
+where users_id = 3;
 
 -- moyenne request --
     SELECT
@@ -14,7 +14,8 @@ where users.id = 3;
         WHEN COUNT(rating) = 0 THEN 'Absence de moyenne'
         ELSE CAST(ROUND(AVG(rating), 2) AS CHAR)
     END AS moyenne
-FROM user_media;
+FROM user_media INNER JOIN users ON users.id = user_media.user_id
+where user_id = 1;
 
 
 -- calcule des XP d’un utilisateur une collection vide donne 0 et le jeu de test principal donne 135 --
