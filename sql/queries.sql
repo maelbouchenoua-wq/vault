@@ -22,13 +22,27 @@ WHERE user_id = 4
 GROUP BY user_media.status;
 
 -- Badge eligibility requests
--- Badge 'collector' - Returns all users that 'Have at least 5 media with a status.' and doesn't already have this badge
+-- Badge 'collector' - Returns all users that 'Have at least 5 media with a status.' and doesn't already have this badge.
 SELECT user_media.user_id, COUNT(*) as collection_count
 FROM user_media
 # Get if the user has the badge
 WHERE EXISTS(SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 1) = 0
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 5;
+
+-- Badge 'cinephile' - Returns all users that 'Have finished watching at least 3 movies.' and doesn't already have this badge.
+SELECT user_id, COUNT(user_media.id) AS movies_count
+FROM user_media
+         JOIN medias ON user_media.media_id = medias.id
+WHERE category_id = 1
+  AND status = 'completed'
+  AND EXISTS (SELECT user_badges.badge_id
+              FROM user_badges
+              WHERE user_badges.user_id = user_media.user_id
+                AND badge_id = 2) = 0
+GROUP BY user_media.user_id
+HAVING COUNT(*) >= 3;
+
 
 -- Badge update requests
 -- Add badge 'collector'
@@ -40,3 +54,17 @@ FROM user_media
 WHERE EXISTS(SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 1) = 0
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 5;
+
+-- Add badge 'cinephile'
+INSERT INTO user_badges (user_id, badge_id)
+SELECT user_id, (2) AS badge_id
+FROM user_media
+         JOIN medias ON user_media.media_id = medias.id
+WHERE category_id = 1
+  AND status = 'completed'
+  AND EXISTS (SELECT user_badges.badge_id
+              FROM user_badges
+              WHERE user_badges.user_id = user_media.user_id
+                AND badge_id = 2) = 0
+GROUP BY user_media.user_id
+HAVING COUNT(*) >= 3;
