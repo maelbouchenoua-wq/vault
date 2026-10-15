@@ -1,7 +1,7 @@
 -- liste les œuvres d’un utilisateur avec leur titre
 -- leur catégorie, leur statut et leur note. --
 
-select users.id as utilisateur ,user_media.statut, user_media.rating, medias.title, categories.name as categories
+select users.id as utilisateur ,user_media.status, user_media.rating, medias.title, categories.name as categories
 FROM user_media
          INNER JOIN medias ON medias.id = user_media.media_id
          INNER JOIN users ON users.id = user_media.user_id
@@ -11,17 +11,17 @@ where users.id = 3;
 -- moyenne request --
     SELECT
     CASE
-        WHEN COUNT(note) = 0 THEN 'Absence de moyenne'
-        ELSE CAST(ROUND(AVG(note), 2) AS CHAR)
+        WHEN COUNT(rating) = 0 THEN 'Absence de moyenne'
+        ELSE CAST(ROUND(AVG(rating), 2) AS CHAR)
     END AS moyenne
-FROM notes;
+FROM user_media;
 
 
 -- calcule des XP d’un utilisateur une collection vide donne 0 et le jeu de test principal donne 135 --
 
 SELECT
     COALESCE (SUM(
-            CASE statut
+            CASE status
                 WHEN 'completed' THEN 30
                 WHEN 'in_progress' THEN 10
                 ELSE 0
@@ -47,7 +47,7 @@ SELECT
 FROM (
     SELECT
         COALESCE (SUM(
-                CASE statut
+                CASE status
                     WHEN 'completed' THEN 30
                     WHEN 'in_progress' THEN 10
                     ELSE 0
