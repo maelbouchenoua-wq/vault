@@ -43,6 +43,20 @@ WHERE category_id = 1
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 3;
 
+-- Badge 'gamer' - Returns all users that 'Have finished at least 3 video games'.
+SELECT user_id, COUNT(user_media.id) AS movies_count
+FROM user_media
+         JOIN medias ON user_media.media_id = medias.id
+WHERE category_id = 3
+  AND status = 'completed'
+  AND EXISTS (SELECT user_badges.badge_id
+              FROM user_badges
+              WHERE user_badges.user_id = user_media.user_id
+                AND badge_id = 2) = 0
+GROUP BY user_media.user_id
+HAVING COUNT(*) >= 3;
+
+
 
 -- Badge update requests
 -- Add badge 'collector'
@@ -61,6 +75,20 @@ SELECT user_id, (2) AS badge_id
 FROM user_media
          JOIN medias ON user_media.media_id = medias.id
 WHERE category_id = 1
+  AND status = 'completed'
+  AND EXISTS (SELECT user_badges.badge_id
+              FROM user_badges
+              WHERE user_badges.user_id = user_media.user_id
+                AND badge_id = 2) = 0
+GROUP BY user_media.user_id
+HAVING COUNT(*) >= 3;
+
+-- Add badge 'gamer'
+INSERT INTO user_badges (user_id, badge_id)
+SELECT user_id, (3) as badge_id
+FROM user_media
+         JOIN medias ON user_media.media_id = medias.id
+WHERE category_id = 3
   AND status = 'completed'
   AND EXISTS (SELECT user_badges.badge_id
               FROM user_badges
