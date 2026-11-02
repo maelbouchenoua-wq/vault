@@ -62,7 +62,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
     </div>
     <?php
     include "includes/templates/pages/index/catalogue/catalogue.php";
-    getCatalogue();
+    getCatalogue(4);
     ?>
     <section>
         <div class="banner">

@@ -6,7 +6,8 @@ require_once "card.php";
  * Generate the catalogue section on the index page.
  * Will fetch all the data from the database.
  */
-function getCatalogue()
+function getCatalogue(int $userId)
+    //TODO: Replace `$userId` with a proper user abstraction when implementing auth systems.
 {
     # Fetch data
     $pdo = getPDO();
@@ -16,7 +17,7 @@ function getCatalogue()
                          INNER JOIN medias ON medias.id = user_media.media_id
                          INNER JOIN users ON users.id = user_media.user_id
                          INNER JOIN categories ON categories.id = medias.category_id
-                WHERE user_id = 3;"
+                WHERE user_id = $userId;"
     );
 
 
