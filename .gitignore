@@ -1,6 +1,3 @@
 # Dossier special pour Webstorm / Phpstorm
 /.idea/
 /package.xml
-
-# Fichier de configuration PHP
-includes/config.php
