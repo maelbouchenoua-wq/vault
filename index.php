@@ -1,4 +1,9 @@
 <!doctype html>
+<?php
+
+require 'includes/db.php';
+$pdo = getPDO();
+?>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
