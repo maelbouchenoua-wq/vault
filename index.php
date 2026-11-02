@@ -20,15 +20,15 @@
 <header>
     <div>
         <div class="main_logo_container">
-            <a href="index.html" class="logo"><img src="./assets/images/icon-main.png" alt="Logo de Vault"></a>
-            <h2><a href="index.html">VAULT</a></h2>
+            <a href="index.php" class="logo"><img src="./assets/images/icon-main.png" alt="Logo de Vault"></a>
+            <h2><a href="index.php">VAULT</a></h2>
         </div>
         <nav>
-            <a class="selected" href="index.html">Catalogue</a>
-            <a href="profile.html">Mon Profil
+            <a class="selected" href="index.php">Catalogue</a>
+            <a href="profile.php">Mon Profil
                 <span class="inline_level_indicator">NIV. 2</span>
             </a>
-            <a href="admin.html">Administration
+            <a href="admin.php">Administration
                 <span class="inline_admin_indicator">ADMIN</span>
             </a>
         </nav>

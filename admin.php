@@ -19,7 +19,7 @@
     <aside class="admin_sidemenu">
         <nav class="navigation" aria-label="Administration">
             <h2>
-                <a href="index.html">
+                <a href="index.php">
                     <img class="brand_logo" src="./assets/images/VAULT Logo.png" alt="">
                     VAULT
                     <img class="brand_dot" src="./assets/images/point violet.png" alt="">
@@ -42,7 +42,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="profile.html">
+                    <a href="profile.php">
                         <img src="./assets/images/Icon admin 3.png" alt="">
                         Comptes &amp; XP
                     </a>
@@ -74,7 +74,7 @@
                     <span class="console_dot">•</span>
                     <span>135 XP</span>
                 </div>
-                <a class="console_profile" href="profile.html" aria-label="Mon profil">
+                <a class="console_profile" href="profile.php" aria-label="Mon profil">
                     <img class="console_avatar" src="./assets/images/profil-picture.jpg" alt="">
                     <img class="console_arrow" src="./assets/images/arrow-down.svg" alt="">
                 </a>
