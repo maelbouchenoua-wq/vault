@@ -17,40 +17,10 @@
           rel="stylesheet">
 </head>
 <body>
-<header>
-    <div>
-        <div class="main_logo_container">
-            <a href="index.php" class="logo"><img src="./assets/images/icon-main.png" alt="Logo de Vault"></a>
-            <h2><a href="index.php">VAULT</a></h2>
-        </div>
-        <nav>
-            <a href="index.php">Catalogue</a>
-            <a class="selected" href="profile.html">Mon Profil
-                <span class="inline_level_indicator">NIV. 2</span>
-            </a>
-            <a href="admin.php">Administration
-                <span class="inline_admin_indicator">ADMIN</span>
-            </a>
-        </nav>
-    </div>
-    <div class="right_container">
-        <div class="search_bar">
-            <img class="icon" src="./assets/images/magnifying-glass.svg" alt="icon de loupe">
-            <input type="text" placeholder="Rechercher film, série, jeu...">
-            <p class="keyboard_indicator">CTRL+K</p>
-        </div>
-        <div class="level_container">
-            <div class="level_indicator"></div>
-            <p class="level">Niv. 2</p>
-            <p class="dot_separator">•</p>
-            <p class="xp">135 XP</p>
-        </div>
-        <div class="account_menu">
-            <img class="profile_picture" src="./assets/images/profil-picture.jpg" alt="Photo de profil">
-            <img class="caret" src="./assets/images/arrow-down.svg" alt="Fleche vers le bas">
-        </div>
-    </div>
-</header>
+<?php
+    $current_page = "profil";
+    include __DIR__ . '/includes/templates/header.php';
+?>
 <main>
     <div class="profile">
         <div class="profile2">
@@ -60,7 +30,7 @@
 
                 <div class="title-ref-div">
                     <p class="title"> ARCHIVISTE AGREE</p>
-                    <p class="ref">  // REF #VX-8894</p>
+                    <p class="ref"> // REF #VX-8894</p>
                 </div>
                 <div class="name">
                     Alex Vance
@@ -96,7 +66,7 @@
                         <div class="xp-info">
                             EXPERIENCE TOTALE
                         </div>
-                        <div class =xp-points-label-div>
+                        <div class=xp-points-label-div>
                             <p class="xp-points"> 135 </p>
                             <p class="xp-label"> XP POINTS </p>
                         </div>
@@ -139,7 +109,7 @@
                     </div>
 
                     <div class="new-xp">
-                        <div class ="new-xp-info">
+                        <div class="new-xp-info">
                             <p class="xp-count">
                                 +10 XP
                             </p>
@@ -147,7 +117,7 @@
                                 Ajout collection
                             </p>
                         </div>
-                        <div class ="new-xp-info">
+                        <div class="new-xp-info">
                             <p class="xp-count">
                                 +20 XP
                             </p>
@@ -155,7 +125,7 @@
                                 Statut "Terminé"
                             </p>
                         </div>
-                        <div class ="new-xp-info">
+                        <div class="new-xp-info">
                             <p class="xp-count">
                                 +5 XP
                             </p>
@@ -166,7 +136,6 @@
 
                     </div>
                 </div>
-
 
 
             </div>
@@ -290,24 +259,6 @@
     </section>
 
 </main>
-<footer class="footer">
-        <div class="footer-div">
-            <div class="footer-projet">
-                <p><span class="vault-section">VAULT</span><span class="text-projet">// Plateforme Pop-Culture</span></p>
-                <p class="text-projet">Projet Web Bac+1 • 4 Sprints • Architecture native HTML/CSS/PHP/JS</p>
-            </div>
-            <div class="footer-section">
-                <p class="text-section">Catalogue</p>
-                <p class="text-section">Progression</p>
-                <p class="text-section">Audit & Sprints</p>
-                <div class="text-section" style="display: flex; align-items: center; gap: 8px;">
-                    <p class="color-dot"></p>
-                    <span>v1.4.0-stable</span>
-                </div>
-            </div>
-
-        </div>
-    </footer>
-    
+<?php include __DIR__ . '/includes/templates/footer.php'; ?>
 </body>
 </html>
