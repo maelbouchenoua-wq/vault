@@ -30,7 +30,7 @@
 
             <ul>
                 <li>
-                    <a class="nav_active" href="admin.html" aria-current="page">
+                    <a class="nav_active" href="admin.php" aria-current="page">
                         <img src="./assets/images/Icon admin 1.png" alt="">
                         Console Générale
                     </a>
