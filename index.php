@@ -17,40 +17,10 @@
           rel="stylesheet">
 </head>
 <body>
-<header>
-    <div>
-        <div class="main_logo_container">
-            <a href="index.html" class="logo"><img src="./assets/images/icon-main.png" alt="Logo de Vault"></a>
-            <h2><a href="index.html">VAULT</a></h2>
-        </div>
-        <nav>
-            <a class="selected" href="index.html">Catalogue</a>
-            <a href="profile.html">Mon Profil
-                <span class="inline_level_indicator">NIV. 2</span>
-            </a>
-            <a href="admin.html">Administration
-                <span class="inline_admin_indicator">ADMIN</span>
-            </a>
-        </nav>
-    </div>
-    <div class="right_container">
-        <div class="search_bar">
-            <img class="icon" src="./assets/images/magnifying-glass.svg" alt="icon de loupe">
-            <input type="text" placeholder="Rechercher film, série, jeu...">
-            <p class="keyboard_indicator">CTRL+K</p>
-        </div>
-        <div class="level_container">
-            <div class="level_indicator"></div>
-            <p class="level">Niv. 2</p>
-            <p class="dot_separator">•</p>
-            <p class="xp">135 XP</p>
-        </div>
-        <div class="account_menu">
-            <img class="profile_picture" src="./assets/images/profil-picture.jpg" alt="Photo de profil">
-            <img class="caret" src="./assets/images/arrow-down.svg" alt="Fleche vers le bas">
-        </div>
-    </div>
-</header>
+<?php
+$current_page = "index";
+include __DIR__ . '/includes/templates/header.php';
+?>
 <main>
     <div class="hero-banner">
         <div class="sprint-bdd-info">
@@ -86,27 +56,27 @@
         </div>
 
         <div class="div-filter">
-            <div class ="filter-bar">
-                <div class = "div-search-bar">
+            <div class="filter-bar">
+                <div class="div-search-bar">
                     <img class="icon-glass" src="./assets/images/icon_glass.svg" alt="icon de loupe">
                     <input class="search-bar2" type="text" placeholder="Rechercher une oeuvre...">
                 </div>
-                <div class ="div-nav-button">
+                <div class="div-nav-button">
 
-                    <div class ="nav-button1">
+                    <div class="nav-button1">
                         TOUS
                     </div>
-                    <div class ="nav-button2">
+                    <div class="nav-button2">
                         FILMS (3)
                     </div>
-                    <div class ="nav-button2">
+                    <div class="nav-button2">
                         SÉRIES (3)
                     </div>
-                    <div class ="nav-button2">
+                    <div class="nav-button2">
                         JEUX (3)
                     </div>
                 </div>
-                <div class = "div-dynamic-filter">
+                <div class="div-dynamic-filter">
                     <div class="info-trie">
                         TRIER PAR
                     </div>
@@ -121,8 +91,8 @@
                 <div class="funnel-icon">
                     <img class="drop-down-arrow" src="./assets/images/funnel_icon.svg" alt="icon">
                 </div>
-                <div class ="nb-media">
-                        9 oeuvres affichées sur 9
+                <div class="nb-media">
+                    9 oeuvres affichées sur 9
                 </div>
             </div>
 
@@ -375,62 +345,45 @@
         </div>
     </section>
     <section>
-    <div class="banner">
+        <div class="banner">
 
-        <div>
-            <p class="banner_texte">
-            <img class="banner_icon" width="14.67px" height="14px" src="./assets/icon/Icon.svg" alt="Logo de Vault">    
-            ARCHITECTURE WEB SPRINT 1 & 4
+            <div>
+                <p class="banner_texte">
+                    <img class="banner_icon" width="14.67px" height="14px" src="./assets/icon/Icon.svg" alt="Logo de Vault">
+                    ARCHITECTURE WEB SPRINT 1 & 4
 
-            </p>
-            <p class="banner_texte1"> Progression de votre Archivage Pop-Culture
+                </p>
+                <p class="banner_texte1"> Progression de votre Archivage Pop-Culture
 
-            </p>
-            <p class="banner_texte2">
-            <p>Chaque œuvre annotée enrichit votre rang et consolide la persistance locale de vos 
-                trésors culturels.
-            </p>
+                </p>
+                <p class="banner_texte2">
+                <p>Chaque œuvre annotée enrichit votre rang et consolide la persistance locale de vos
+                    trésors culturels.
+                </p>
 
-            
-            <div class="banner_text6">
-                <div>
-                    <p class="banner_text3">6/9
 
-                    </p>
-                    <P class="banner_text4">
-                        ŒUVRES AMORCÉES
-                    </P>
-                </div>
-                <div>
-                    <p class="banner_text5">4.8 / 5</p>
+                <div class="banner_text6">
+                    <div>
+                        <p class="banner_text3">6/9
+
+                        </p>
+                        <P class="banner_text4">
+                            ŒUVRES AMORCÉES
+                        </P>
+                    </div>
+                    <div>
+                        <p class="banner_text5">4.8 / 5</p>
+                    </div>
+
                 </div>
 
             </div>
+            <div>
 
+            </div>
         </div>
-        <div>
-
-        </div>
-    </div>
-</section>
+    </section>
 </main>
-<footer class="footer">
-    <div class="footer-div">
-        <div class="footer-projet">
-            <p><span class="vault-section">VAULT</span><span class="text-projet">// Plateforme Pop-Culture</span></p>
-            <p class="text-projet">Projet Web Bac+1 • 4 Sprints • Architecture native HTML/CSS/PHP/JS</p>
-        </div>
-        <div class="footer-section">
-            <p class="text-section">Catalogue</p>
-            <p class="text-section">Progression</p>
-            <p class="text-section">Audit & Sprints</p>
-            <div class="text-section" style="display: flex; align-items: center; gap: 8px;">
-                <p class="color-dot"></p>
-                <span>v1.4.0-stable</span>
-            </div>
-        </div>
-
-    </div>
-</footer>
+<?php include __DIR__ . '/includes/templates/footer.php'; ?>
 </body>
 </html>
