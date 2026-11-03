@@ -11,23 +11,14 @@ function getCatalogue(int $userId)
 {
     # Fetch data
     $pdo = getPDO();
-    $query = $pdo->prepare(
-    "SELECT
-        user_media.user_id AS utilisateur,
-        user_media.status,
-        user_media.rating,
-        media.title,
-        YEAR(media.release_year) AS release_year,
-        media.categorie AS categories,
-        '' AS description,
-        '../media.png' AS image_path
-    FROM user_media
-    INNER JOIN media ON media.id = user_media.media_id
-    WHERE user_media.user_id = :userId"
+    $query = $pdo->query(
+        "SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
+                FROM user_media
+                         INNER JOIN medias ON medias.id = user_media.media_id
+                         INNER JOIN users ON users.id = user_media.user_id
+                         INNER JOIN categories ON categories.id = medias.category_id
+                WHERE user_id = $userId;"
     );
-
-$query->execute(['userId' => $userId]);
-
 
     # Render the list and aggregates counters for display
     $content = '';
