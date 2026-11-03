@@ -40,7 +40,7 @@ function renderStarsNotation($starCount)
 {
     $content = '';
     for ($i = 1; $i <= $starCount; $i++) {
-        $content .= "<img src='/assets/images/star.svg' alt='Étoile de notation $i/5'>";
+        $content .= "<img src='/assets/images/star_filled.svg' alt='Étoile de notation $i/5'>";
     }
     for (; $i <= 5; $i++) {
         $content .= "<img src='/assets/images/star_empty.svg' alt='Étoile de notation $i/5'>";

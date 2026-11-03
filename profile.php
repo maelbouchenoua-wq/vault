@@ -18,8 +18,8 @@
 </head>
 <body>
 <?php
-    $current_page = "profil";
-    include __DIR__ . '/includes/templates/layout/header.php';
+$current_page = "profil";
+include __DIR__ . '/includes/templates/layout/header.php';
 ?>
 <main>
     <div class="profile">
@@ -254,6 +254,154 @@
                         <progress max="100" value="0" class="progress_bar"></progress>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id='collection'>
+        <div class='header'>
+            <div class='title-container'>
+                <div class='title'>
+                    <h2>Collection personnelle</h2>
+                    <p class='tag'>5 ŒUVRES</p>
+                </div>
+                <p class='description'>Équilibre exact du scénario de validation : 3 Films terminés notés + 2 Séries ajoutées notées = 135 XP.</p>
+            </div>
+            <div class='tag-container'>
+                <div class='tag'>
+                    <img src="./assets/images/movie_clap_icon.svg" alt="Icon de clap de film">
+                    <p>3 Films terminés</p>
+                </div>
+                <div class='tag'>
+                    <img src="./assets/images/screen_icon.svg" alt="Icon d'écran d'ordinateur">
+                    <p>2 Séries en liste</p>
+                </div>
+                <div class='tag'>
+                    <img src="./assets/images/star.svg" alt="Icon d'étoile">
+                    <p>Moyenne : 4.6 / 5</p>
+                </div>
+                <div class='button'>
+                    <img src="./assets/images/plus.svg" alt="Icon de plus">
+                    <p>Ajouter une œuvre</p>
+                </div>
+            </div>
+        </div>
+        <table>
+            <tr class='head'>
+                <th>MÉDIA</th>
+                <th>TITRE & CATÉGORIE</th>
+                <th>STATUT</th>
+                <th>NOTE ATTRIBUÉE</th>
+                <th>VALEUR XP</th>
+                <th>ACTIONS</th>
+            </tr>
+            <tr>
+                <td>
+                    <img src="./assets/images/content/arcane_cover.jpg" alt="">
+                </td>
+                <td>
+                    <div class='flex'>
+                        <h2>Arcane</h2>
+                        <div class='data'>
+                            <p class='status'>FILM</p>
+                            <p class='infos'>2017 • Denis Villeneuve</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class='status to_discover'>À découvrir</div>
+                </td>
+                <td>
+                    <div class='rating'>
+                        <div class='star-container'>
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 1/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 2/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 3/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 4/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 5/5">
+                        </div>
+                        <p>5.0</p>
+                    </div>
+                </td>
+                <td>
+                    <div class='xp-container'>
+                        <p>+15 XP</p>
+                        <img src="./assets/images/light_gray_icon.svg" alt="Icon d'éclaire">
+                    </div>
+                </td>
+                <td>
+                    <div class='action-container'>
+                        <div class='button'>
+                            <img src="./assets/images/pen.svg" alt="Icon de stylo">
+                        </div>
+                        <div class='button'>
+                            <img src="./assets/images/star_empty.svg" alt="Icon d'étoile">
+                        </div>
+                        <div class='button'>
+                            <img src="./assets/images/trash_icon.svg" alt="Icon de poubelle">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="./assets/images/content/arcane_cover.jpg" alt="">
+                </td>
+                <td>
+                    <div class='flex'>
+                        <h2>Arcane</h2>
+                        <div class='data'>
+                            <p class='status'>FILM</p>
+                            <p class='infos'>2017 • Denis Villeneuve</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class='status to_discover'>À découvrir</div>
+                </td>
+                <td>
+                    <div class='rating'>
+                        <div class='star-container'>
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 1/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 2/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 3/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 4/5">
+                            <img src="./assets/images/star_filled.svg" alt="Etoile 5/5">
+                        </div>
+                        <p>5.0</p>
+                    </div>
+                </td>
+                <td>
+                    <div class='xp-container'>
+                        <p>+15 XP</p>
+                        <img src="./assets/images/light_gray_icon.svg" alt="Icon d'éclaire">
+                    </div>
+                </td>
+                <td>
+                    <div class='action-container'>
+                        <div class='button'>
+                            <img src="./assets/images/pen.svg" alt="Icon de stylo">
+                        </div>
+                        <div class='button'>
+                            <img src="./assets/images/star_empty.svg" alt="Icon d'étoile">
+                        </div>
+                        <div class='button'>
+                            <img src="./assets/images/trash_icon.svg" alt="Icon de poubelle">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class='footer'>
+            <div class='bilan'>
+                <img src="./assets/images/content_check.svg" alt="Icon de contenu">
+                <p>Bilan arithmétique : (35 × 3 films) + (15 × 2 séries) = <span>135 XP validés</span></p>
+            </div>
+            <div class='export'>
+                <p>Exportation données :</p>
+                    <div class='button'>JSON</div>
+                    <div class='button'>CSV</div>
             </div>
         </div>
     </section>

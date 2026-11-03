@@ -18,7 +18,7 @@
 
 }
 
-.info-profile{
+.info-profile {
     background: #1E1F26;
     padding: 24px 24px 24px 24px;
     border-radius: 8px;
@@ -26,7 +26,7 @@
 
 }
 
-.profile_picture2{
+.profile_picture2 {
     object-fit: cover;
     width: 104px;
     height: 104px;
@@ -35,14 +35,13 @@
 }
 
 
-
-.title-ref-div{
+.title-ref-div {
     display: flex;
     gap: 4px;
     padding-bottom: 4px;
 }
 
-.title{
+body main .profile .title {
 
     border-radius: 2px;
     background: #1E1F26;
@@ -51,7 +50,8 @@
     font-size: 10px;
     color: #D0BCFF;
 }
-.ref{
+
+.ref {
 
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
@@ -59,24 +59,23 @@
 }
 
 
-.name{
+.name {
     display: flex;
     font-family: "Space Grotesk", sans-serif;
     font-size: 32px;
-    color: #E2E2EB ;
+    color: #E2E2EB;
 
 }
 
 
-
-.id-infoDate-div{
+.id-infoDate-div {
     display: flex;
     gap: 24px;
 
 }
 
 
-.id{
+.id {
 
     font-family: "JetBrains Mono", sans-serif;
     font-size: 12px;
@@ -84,14 +83,14 @@
 
 }
 
-.info-date{
+.info-date {
     font-family: Inter, sans-serif;
     font-size: 12px;
     color: #958EA0;
 
 }
 
-.rang{
+.rang {
     display: flex;
     align-items: center;
     padding: 8px 12px;
@@ -115,13 +114,13 @@
     font-size: 10px;
 }
 
-.xp-div{
+.xp-div {
 
     display: flex;
     gap: 8px;
 }
 
-.lightning-frame{
+.lightning-frame {
     background: #282A30;
     box-shadow: 0px 0px 12px 0px #FFB95F40;
     width: 40px;
@@ -129,71 +128,73 @@
     padding: 10px 12px;
 }
 
-.xp-info{
+.xp-info {
 
     font-family: "JetBrains Mono", sans-serif;
     color: #958EA0;
     font-size: 12px;
 }
 
-.xp-points-label-div{
+.xp-points-label-div {
     display: flex;
 }
 
-.xp-points{
+.xp-points {
     font-family: "JetBrains Mono", sans-serif;
     font-size: 24px;
     color: #E2E2EB;
 }
-.xp-label{
+
+.xp-label {
     font-family: "JetBrains Mono", sans-serif;
-    font-size: 12px ;
+    font-size: 12px;
     color: #FFB95F;
     margin-top: 12px;
     margin-left: 8px;
 }
 
 
-.current-tier{
+.current-tier {
     font-family: "JetBrains Mono", sans-serif;
     color: #D0BCFF;
-    font-size: 10px ;
+    font-size: 10px;
     margin-left: 272px;
 
 }
-.current-level{
+
+.current-level {
     font-family: "JetBrains Mono", sans-serif;
     color: #D0BCFF;
-    font-size: 22px ;
+    font-size: 22px;
     margin-left: 272px;
 }
 
 
-.progression-info{
+.progression-info {
     padding-top: 16px;
 }
 
-.title-value-div{
+.title-value-div {
     display: flex;
 }
 
-.progress-title{
+.progress-title {
     font-family: "JetBrains Mono", sans-serif;
     color: #CBC3D7;
-    font-size: 10px ;
+    font-size: 10px;
     margin-top: 4px;
     margin-bottom: 4px;
 
 }
 
-.progress-value{
+.progress-value {
     font-family: "JetBrains Mono", sans-serif;
     color: #FFB95F;
-    font-size: 16px ;
+    font-size: 16px;
     margin-left: 183px;
 }
 
-.progress-bar-xp{
+.progress-bar-xp {
     margin-top: 6px;
     background: #0C0E14;
     width: 528px;
@@ -202,48 +203,48 @@
 
 }
 
-.level-current-next-div{
+.level-current-next-div {
     margin-top: 6px;
     display: flex;
 }
 
-.level-current{
+.level-current {
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
     color: #958EA0;
 
 }
 
-.level-next{
+.level-next {
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
     color: #958EA0;
     margin-left: 246px;
 }
 
-.scale{
+.scale {
     background: #0C0E14;
     border-radius: 4px;
     margin-top: 16px;
     padding: 8px 8px;
 }
 
-.information-scale{
+.information-scale {
     display: flex;
     gap: 4px;
-    color:  #E2E2EB;
+    color: #E2E2EB;
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
     margin-bottom: 4px;
 }
 
-.new-xp{
+.new-xp {
     display: flex;
     margin-right: 6px;
 
 }
 
-.new-xp-info{
+.new-xp-info {
     display: flex;
     background: #191B22;
     border-radius: 2px;
@@ -252,21 +253,21 @@
 
 }
 
-.xp-count{
+.xp-count {
     color: #FFB95F;
     font-size: 10px;
     font-family: "JetBrains Mono", sans-serif;
     margin-right: 6px;
 
 
-
-
 }
-.xp-label2{
+
+.xp-label2 {
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
     color: #CBC3D7;
 }
+
 /** -- Section Badge -- */
 main section#badges {
     display: flex;
@@ -536,4 +537,347 @@ main section#badges .badges_container .badge .footer .progress .progress_bar {
     main section#badges .badges_container {
         grid-template-columns: repeat(1, 1fr);
     }
+}
+
+
+/** Section collection */
+
+body main section#collection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: #E2E2EB;
+}
+
+body main section#collection .header {
+    background-color: #191B22;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 8px;
+    gap: 30px;
+}
+
+body main section#collection .title-container {
+}
+
+body main section#collection .title-container .title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body main section#collection .title-container .title h2 {
+    font-family: Space Grotesk, serif;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+body main section#collection .title-container .title .tag {
+    background-color: #A078FF;
+    padding: 2px 8px;
+    font-family: JetBrains Mono, serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #340080;
+    border-radius: 6px;
+}
+
+body main section#collection .title-container .description {
+    font-family: Inter, serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: #958EA0;
+}
+
+body main section#collection .tag-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+body main section#collection .tag-container .tag {
+    background-color: #1E1F26;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+
+    font-family: JetBrains Mono, serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #E2E2EB;
+    white-space: nowrap;
+}
+
+
+body main section#collection .tag-container .button {
+    background-color: #D0BCFF;
+    padding: 6px 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    font-family: JetBrains Mono, serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #3C0091;
+    cursor: pointer;
+}
+
+
+body main section#collection table {
+    background-color: #191B22;
+    /** Remove the table border */
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+body main section#collection table .head {
+    background-color: #33343B99;
+}
+
+body main section#collection table .head th {
+    font-family: JetBrains Mono, serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #958EA0;
+    padding: 8px 16px;
+    text-align: left;
+}
+
+body main section#collection table .head th:nth-child(6) {
+    /** Action element is centered to the left */
+    text-align: right;
+}
+
+
+body main section#collection table td {
+    padding: 12px 16px;
+}
+
+/** Cover */
+body main section#collection table td:nth-child(1),
+body main section#collection table th:nth-child(1) {
+    width: 88px;
+}
+
+body main section#collection table td:nth-child(1) {
+    display: flex;
+    justify-content: center;
+}
+
+body main section#collection table td:nth-child(1) img {
+    width: 56px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+
+/** Title */
+body main section#collection table td:nth-child(1),
+body main section#collection table th:nth-child(1) {
+    width: 88px;
+}
+body main section#collection table td:nth-child(2) .flex {
+    display: flex;
+    flex-direction: column;
+}
+
+body main section#collection table td:nth-child(2) .flex h2 {
+    font-family: Space Grotesk, serif;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+body main section#collection table td:nth-child(2) .flex .data {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body main section#collection table td:nth-child(2) .flex .data .status {
+    background-color: #1E1F26;
+    padding: 2px 6px;
+    border-radius: 2px;
+
+    font-family: JetBrains Mono, serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: -0.25px;
+    text-transform: uppercase;
+
+    color: #D0BCFF;
+}
+
+body main section#collection table td:nth-child(2) .flex .data .infos {
+    font-family: JetBrains Mono, serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #958EA0;
+}
+
+/** Status */
+
+body main section#collection table td:nth-child(3) .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: JetBrains Mono, serif;
+    font-weight: 600;
+    font-size: 10px;
+    width: fit-content;
+}
+
+body main section#collection table td:nth-child(3) .status::before {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+body main section#collection table td:nth-child(3) .status.to_discover {
+    background-color: #33343B;
+    color: #CBC3D7;
+}
+
+body main section#collection table td:nth-child(3) .status.to_discover::before {
+    background-color: #958EA0;
+}
+
+body main section#collection table td:nth-child(3) .status.finished {
+    background-color: #6001D166;
+    color: #C9AEFF;
+}
+
+body main section#collection table td:nth-child(3) .status.finished::before {
+    background-color: #D2BBFF;
+}
+
+/** Rating */
+body main section#collection table td:nth-child(4) .rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body main section#collection table td:nth-child(4) .rating .star-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+body main section#collection table td:nth-child(4) .rating p {
+    font-family: JetBrains Mono, serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #E2E2EB;
+}
+
+/** Xp */
+body main section#collection table td:nth-child(5),
+body main section#collection table th:nth-child(5) {
+    width: 150px;
+}
+
+body main section#collection table td:nth-child(5) .xp-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+body main section#collection table td:nth-child(5) .xp-container p {
+    font-family: JetBrains Mono, serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFB95F;
+}
+
+body main section#collection table td:nth-child(6) .action-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+
+}
+
+body main section#collection table td:nth-child(6) .action-container .button {
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+body main section#collection table td:nth-child(6) .action-container .button:hover {
+    background-color: rgb(255 255 255 / 0.2);
+}
+
+body main section#collection .footer {
+    background-color: #191B22;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+body main section#collection .footer .bilan {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body main section#collection .footer .bilan p {
+    font-family: JetBrains Mono, serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: #958EA0;
+}
+
+body main section#collection .footer .bilan p span {
+    color: #FFB95F;
+}
+
+body main section#collection .footer .export {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body main section#collection .footer .export p {
+    font-family: JetBrains Mono, serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: #958EA0;
+}
+
+body main section#collection .footer .export .button {
+    background-color: #1E1F26;
+    padding: 4px 12px;
+    border-radius: 2px;
+
+    font-family: Liberation Mono, serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: #E2E2EB;
+    cursor: pointer;
+}
+
+body main section#collection .footer .export .button:hover {
+    background-color: #3c3e4d;
 }
