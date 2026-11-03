@@ -77,7 +77,7 @@ FROM (SELECT COALESCE(SUM(
 SELECT user_media.user_id, COUNT(*) as collection_count
 FROM user_media
 # Get if the user has the badge
-WHERE EXISTS(SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 1) = 0
+WHERE NOT EXISTS(SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 1)
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 5;
 
@@ -87,10 +87,7 @@ FROM user_media
          JOIN medias ON user_media.media_id = medias.id
 WHERE category_id = 1
   AND status = 'completed'
-  AND EXISTS (SELECT user_badges.badge_id
-              FROM user_badges
-              WHERE user_badges.user_id = user_media.user_id
-                AND badge_id = 2) = 0
+  AND NOT EXISTS (SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 2)
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 3;
 
@@ -100,10 +97,7 @@ FROM user_media
          JOIN medias ON user_media.media_id = medias.id
 WHERE category_id = 3
   AND status = 'completed'
-  AND EXISTS (SELECT user_badges.badge_id
-              FROM user_badges
-              WHERE user_badges.user_id = user_media.user_id
-                AND badge_id = 2) = 0
+  AND NOT EXISTS (SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 2)
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 3;
 
@@ -122,7 +116,7 @@ INSERT INTO user_badges (user_id, badge_id)
 SELECT user_media.user_id, (1) as badge_id
 FROM user_media
 # Get if the user has the badge
-WHERE EXISTS(SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 1) = 0
+WHERE NOT EXISTS(SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 1)
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 5;
 
@@ -133,10 +127,7 @@ FROM user_media
          JOIN medias ON user_media.media_id = medias.id
 WHERE category_id = 1
   AND status = 'completed'
-  AND EXISTS (SELECT user_badges.badge_id
-              FROM user_badges
-              WHERE user_badges.user_id = user_media.user_id
-                AND badge_id = 2) = 0
+  AND NOT EXISTS (SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 2)
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 3;
 
@@ -147,10 +138,7 @@ FROM user_media
          JOIN medias ON user_media.media_id = medias.id
 WHERE category_id = 3
   AND status = 'completed'
-  AND EXISTS (SELECT user_badges.badge_id
-              FROM user_badges
-              WHERE user_badges.user_id = user_media.user_id
-                AND badge_id = 2) = 0
+  AND NOT EXISTS (SELECT user_badges.badge_id FROM user_badges WHERE user_badges.user_id = user_media.user_id AND badge_id = 2)
 GROUP BY user_media.user_id
 HAVING COUNT(*) >= 3;
 
