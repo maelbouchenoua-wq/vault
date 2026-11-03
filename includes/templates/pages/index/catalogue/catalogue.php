@@ -21,60 +21,67 @@ function getCatalogue(int $userId)
     );
 
 
-    # Render the list
+    # Render the list and aggregates counters for display
     $content = '';
+    $categories_count = [
+        'film' => 0,
+        'series' => 0,
+        'game' => 0
+    ];
+    $media_count = 0;
     while ($media = $query->fetch()) {
         $content .= renderCatalogueCard($media);
+        $categories_count[$media["categories"]]++;
+        $media_count++;
     }
 
-    if ($content === '') {
+
+    if ($content === '' || $media_count === 0) {
         $content = "<p class='empty-text'>Vous n'avez aucun média</p>";
     }
     //TODO: Filter and sort should be dynamic
-    echo '<section id="catalogue">' .
-        '<div class="div-filter">
-            <div class="filter-bar">
-                <div class="div-search-bar">
-                    <img class="icon-glass" src="./assets/images/icon_glass.svg" alt="icon de loupe">
-                    <input class="search-bar2" type="text" placeholder="Rechercher une oeuvre...">
+    echo "<section id='catalogue'>" .
+        "<div class='div-filter'>
+            <div class='filter-bar'>
+                <div class='div-search-bar'>
+                    <img class='icon-glass' src='./assets/images/icon_glass.svg' alt='icon de loupe'>
+                    <input class='search-bar2' type='text' placeholder='Rechercher une oeuvre...'>
                 </div>
-                <div class="div-nav-button">
-
-                    <div class="nav-button1">
+                <div class='div-nav-button'>
+                    <div class='nav-button1'>
                         TOUS
                     </div>
-                    <div class="nav-button2">
-                        FILMS (3)
+                    <div class='nav-button2'>
+                        FILMS ({$categories_count["film"]})
                     </div>
-                    <div class="nav-button2">
-                        SÉRIES (3)
+                    <div class='nav-button2'>
+                        SÉRIES ({$categories_count["series"]})
                     </div>
-                    <div class="nav-button2">
-                        JEUX (3)
+                    <div class='nav-button2'>
+                        JEUX ({$categories_count["game"]})
                     </div>
                 </div>
-                <div class="div-dynamic-filter">
-                    <div class="info-trie">
+                <div class='div-dynamic-filter'>
+                    <div class='info-trie'>
                         TRIER PAR
                     </div>
-                    <div class="dynamic-filter">
-                        <p class="type-trie"> Plus Récents </p>
-                        <img class="drop-down-arrow" src="./assets/images/drop_down_arrow_icon.svg" alt="icon">
-
+                    <div class='dynamic-filter'>
+                        <p class='type-trie'> Plus Récents </p>
+                        <img class='drop-down-arrow' src='./assets/images/drop_down_arrow_icon.svg' alt='icon'>
                     </div>
                 </div>
             </div>
-            <div class="div-nb-media">
-                <div class="funnel-icon">
-                    <img class="drop-down-arrow" src="./assets/images/funnel_icon.svg" alt="icon">
+            <div class='div-nb-media'>
+                <div class='funnel-icon'>
+                    <img class='drop-down-arrow' src='./assets/images/funnel_icon.svg' alt='icon'>
                 </div>
-                <div class="nb-media">
-                    9 oeuvres affichées sur 9
+                <div class='nb-media'>
+                    $media_count oeuvres affichées sur $media_count
                 </div>
             </div>
 
 
-        </div>' .
-        '<div class="content">' . $content . '</div>' .
-        '</section>';
+        </div>" .
+        "<div class='content'>" . $content . "</div>" .
+        "</section>";
 }
