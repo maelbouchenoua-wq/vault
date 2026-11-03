@@ -12,6 +12,7 @@
             <a class="<?= $current_page == 'admin' ? 'selected' : '' ?>" href="/admin.php">Administration
                 <span class="inline_admin_indicator">ADMIN</span>
             </a>
+            <a class="register-link" href="register.php">S'inscrire</a>
         </nav>
     </div>
     <div class="right_container">

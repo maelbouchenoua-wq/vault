@@ -84,6 +84,23 @@ body > header nav a.selected {
     font-weight: 600;
 }
 
+body > header nav a.register-link {
+    padding: 6px 12px;
+    border-radius: 6px;
+    background-color: #D0BCFF;
+    color: #0C0E14;
+    font-weight: 600;
+}
+
+body > header nav a.register-link:hover {
+    background-color: #C9AEFF;
+}
+
+body > header nav a.register-link:focus-visible {
+    outline: 2px solid #E2E2EB;
+    outline-offset: 3px;
+}
+
 body > header nav a .inline_level_indicator {
     background-color: #33343B;
     padding: 2px 4px;
@@ -231,7 +248,7 @@ body > header .account_menu .caret {
 }
 
 @media screen and (max-width: 530px) {
-    body > header nav a:not(.selected) {
+    body > header nav a:not(.selected):not(.register-link) {
         display: none;
     }
 }

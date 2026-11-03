@@ -50,6 +50,7 @@ function renderStarsNotation($starCount)
 }
 
 /** Generate an HTML card with the given values */
+
 function renderCatalogueCard($media)
 {
     $tag = renderCardStatusTag($media["status"]);
