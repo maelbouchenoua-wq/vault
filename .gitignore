@@ -1,3 +1,6 @@
 # Dossier special pour Webstorm / Phpstorm
 /.idea/
 /package.xml
+
+# Database connexion config
+includes/config.php

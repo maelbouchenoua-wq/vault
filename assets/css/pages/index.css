@@ -1,44 +1,46 @@
 /** Section hero banner*/
 
-.hero-banner{
+.hero-banner {
     margin-bottom: 40px;
 
 }
 
-.sprint-bdd-info{
+.sprint-bdd-info {
     display: flex;
     width: 100%;
 }
 
-.number-index-div{
+.number-index-div {
     display: flex;
     gap: 16px;
 }
 
-.sprint-number{
-    padding: 2px  8px;
+.sprint-number {
+    padding: 2px 8px;
     background: #282A30;
     border-radius: 4px;
     color: #D0BCFF;
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
 }
-.index{
-    padding: 2px  8px;
+
+.index {
+    padding: 2px 8px;
     color: #CBC3D7;
     font-family: "JetBrains Mono", sans-serif;
     font-size: 10px;
 }
 
-.bdd-xp-div{
+.bdd-xp-div {
     display: flex;
     justify-content: space-between;
     gap: 3px;
     align-items: center;
 
 }
-.bdd-icon{
-    margin-left: 443px ;
+
+.bdd-icon {
+    margin-left: 443px;
 }
 
 .bdd-info {
@@ -50,8 +52,7 @@
 }
 
 
-
-.xp-active{
+.xp-active {
     display: flex;
     gap: 1px;
     font-family: "JetBrains Mono", sans-serif;
@@ -59,13 +60,15 @@
     color: #FFB95F;
 
 }
-h1{
+
+h1 {
     margin-top: 24px;
     font-family: "Space Grotesk", sans-serif;
     font-size: 48px;
 
 }
-.h1-color{
+
+.h1-color {
     color: transparent;
     background-clip: text;
     background-image: linear-gradient(90deg, #D0BCFF 0%, #D2BBFF 50%, #FFB95F 100%);
@@ -78,7 +81,15 @@ h1{
     color: #CBC3D7;
 }
 
-.div-filter{
+
+/** Section Catalogue */
+
+body main section#catalogue {
+    width: 100%;
+
+}
+
+body main section#catalogue .div-filter {
     margin-top: 24px;
     background: #191B22;
     border-radius: 8px;
@@ -86,12 +97,12 @@ h1{
     padding: 16px 16px;
 }
 
-.filter-bar{
+body main section#catalogue .div-filter .filter-bar {
     display: flex;
     gap: 16px;
 }
 
-.div-search-bar{
+body main section#catalogue .div-filter .div-search-bar {
     display: flex;
     background: #33343B99;
     border-radius: 4px;
@@ -100,10 +111,7 @@ h1{
 
 }
 
-.icon-glass{
-
-}
-.search-bar2{
+body main section#catalogue .div-filter .search-bar2 {
     color: #958EA0;
     font-family: "JetBrains Mono", sans-serif;
     font-size: 12px;
@@ -114,23 +122,24 @@ h1{
     outline: none;
 }
 
-.div-nav-button{
+body main section#catalogue .div-filter .div-nav-button {
     display: flex;
     gap: 4px
 }
-.nav-button1{
+
+body main section#catalogue .div-filter .nav-button1 {
     display: flex;
     align-items: center;
     padding-left: 16px;
     padding-right: 16px;
     border-radius: 4px;
     background: #A078FF;
-    color:  #340080;
+    color: #340080;
     font-size: 10px;
-    font-family: "JetBrains Mono", sans-serif;
-;
+    font-family: "JetBrains Mono", sans-serif;;
 }
-.nav-button2{
+
+body main section#catalogue .div-filter .nav-button2 {
     padding-left: 16px;
     padding-right: 16px;
     display: flex;
@@ -142,12 +151,13 @@ h1{
     font-family: "JetBrains Mono", sans-serif;
 }
 
-.div-dynamic-filter{
+body main section#catalogue .div-filter .div-dynamic-filter {
     display: flex;
     align-items: center;
     margin-left: auto;
 }
-.info-trie{
+
+body main section#catalogue .div-filter .info-trie {
     color: #958EA0;
     font-size: 10px;
     font-family: "JetBrains Mono", sans-serif;
@@ -155,45 +165,61 @@ h1{
     margin-right: 8px;
 }
 
-.dynamic-filter{
+body main section#catalogue .div-filter .dynamic-filter {
     display: flex;
     align-items: center;
     background: #33343B;
     border-radius: 4px;
     padding: 10px 16px 10px 11.56px;
 }
-.type-trie {
+
+body main section#catalogue .div-filter .type-trie {
     color: #E2E2EB;
     font-size: 10px;
-    font-family: "JetBrains Mono", sans-serif;}
+    font-family: "JetBrains Mono", sans-serif;
+}
 
-.drop-down-arrow{
+body main section#catalogue .div-filter .drop-down-arrow {
     margin-left: 19px;
 }
-.div-nb-media{
+
+body main section#catalogue .div-filter .div-nb-media {
     margin-top: 16px;
     display: flex;
     align-items: center;
 }
 
-.funnel-icon{
- margin-right: 2px;
+body main section#catalogue .div-filter .funnel-icon {
+    margin-right: 2px;
 }
-.nb-media{
+
+body main section#catalogue .div-filter .nb-media {
     color: #958EA0;
     font-size: 10px;
     font-family: "JetBrains Mono", sans-serif;
 }
-/** Section Catalogue */
 
-body main section#catalogue {
-    width: 100%;
+
+body main section#catalogue .content {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    width: 100%;
+    min-height: 500px;
 }
 
-body main section#catalogue .card {
+body main section#catalogue .content .empty-text {
+    font-family: Inter, Arial;
+    font-weight: 400;
+    font-size: 16px;
+    color: #9f99a8;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+body main section#catalogue .content .card {
     min-width: 30%;
     max-width: 500px;
     border-radius: 8px;
@@ -201,7 +227,7 @@ body main section#catalogue .card {
     position: relative;
 }
 
-body main section#catalogue .card .header {
+body main section#catalogue .content .card .header {
     position: absolute;
     width: 100%;
     display: flex;
@@ -211,7 +237,7 @@ body main section#catalogue .card .header {
     z-index: 1;
 }
 
-body main section#catalogue .card .header .tag {
+body main section#catalogue .content .card .header .tag {
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 700;
     font-size: 10px;
@@ -220,24 +246,24 @@ body main section#catalogue .card .header .tag {
     border-radius: 2px;
 }
 
-body main section#catalogue .card .header .tag.movie {
+body main section#catalogue .content .card .header .tag.movie {
     color: #D0BCFF;
     background-color: #0C0E14E5;
 }
 
-body main section#catalogue .card .header .tag.serie {
+body main section#catalogue .content .card .header .tag.serie {
     color: #C9AEFF;
     background-color: #6001D1E5;
 }
 
 
-body main section#catalogue .card .header .tag.game {
+body main section#catalogue .content .card .header .tag.game {
     color: #3E2400;
     background-color: #CA8100E5;
 }
 
 
-body main section#catalogue .card .header .element_status {
+body main section#catalogue .content .card .header .element_status {
     background-color: #33343BE5;
     display: flex;
     align-items: center;
@@ -248,47 +274,48 @@ body main section#catalogue .card .header .element_status {
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 600;
     font-size: 10px;
+    text-transform: uppercase;
 
 }
 
-body main section#catalogue .card .header .element_status .dot {
+body main section#catalogue .content .card .header .element_status .dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
 }
 
-body main section#catalogue .card .header .element_status.finished {
+body main section#catalogue .content .card .header .element_status.finished {
     color: #E2E2EB;
 }
 
-body main section#catalogue .card .header .element_status.finished .dot {
+body main section#catalogue .content .card .header .element_status.finished .dot {
     background-color: #FFB95F;
 }
 
 
-body main section#catalogue .card .header .element_status.discover {
+body main section#catalogue .content .card .header .element_status.discover {
     color: #D2BBFF;
     background-color: #33343BE5;
 }
 
-body main section#catalogue .card .header .element_status.discover .dot {
+body main section#catalogue .content .card .header .element_status.discover .dot {
     background-color: #D2BBFF;
 }
 
-body main section#catalogue .card .header .element_status.ongoing {
+body main section#catalogue .content .card .header .element_status.ongoing {
     color: #FFB95F;
     background-color: #33343BE5;
 }
 
-body main section#catalogue .card .header .element_status.ongoing .dot {
+body main section#catalogue .content .card .header .element_status.ongoing .dot {
     background-color: #D0BCFF;
 }
 
-body main section#catalogue .card .overlay_container {
+body main section#catalogue .content .card .overlay_container {
     position: relative;
 }
 
-body main section#catalogue .card .overlay_container .cover {
+body main section#catalogue .content .card .overlay_container .cover {
     height: 568px;
     width: 100%;
     object-fit: cover;
@@ -302,7 +329,7 @@ body main section#catalogue .card .overlay_container .cover {
     vertical-align: middle;
 }
 
-body main section#catalogue .card .overlay_container::after {
+body main section#catalogue .content .card .overlay_container::after {
     content: "";
     display: block;
     position: absolute;
@@ -313,7 +340,7 @@ body main section#catalogue .card .overlay_container::after {
     background: linear-gradient(#191B2200, #191B22);
 }
 
-body main section#catalogue .card .footer {
+body main section#catalogue .content .card .footer {
     background-color: #191B22;
     padding: 24px;
     display: flex;
@@ -322,7 +349,7 @@ body main section#catalogue .card .footer {
     position: relative;
 }
 
-body main section#catalogue .card .footer .element_infos {
+body main section#catalogue .content .card .footer .element_infos {
     position: absolute;
     top: -36px;
     left: 16px;
@@ -338,52 +365,52 @@ body main section#catalogue .card .footer .element_infos {
 }
 
 
-body main section#catalogue .card .footer h2 {
+body main section#catalogue .content .card .footer h2 {
     font-family: "Space Grotesk", sans-serif;
     font-weight: 600;
     font-size: 18px;
     color: #E2E2EB;
 }
 
-body main section#catalogue .card .footer .description {
+body main section#catalogue .content .card .footer .description {
     font-family: "Inter", sans-serif;
     font-weight: 400;
     font-size: 12px;
     color: #CBC3D7;
 }
 
-body main section#catalogue .card .footer .information_container {
+body main section#catalogue .content .card .footer .information_container {
     display: flex;
     flex-flow: column;
     gap: 4px;
 }
 
-body main section#catalogue .card .footer .status_container {
+body main section#catalogue .content .card .footer .status_container {
     display: flex;
     flex-flow: column;
     gap: 8px;
 }
 
-body main section#catalogue .card .footer .status_container > div {
+body main section#catalogue .content .card .footer .status_container > div {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 }
 
-body main section#catalogue .card .footer .status_container .note {
+body main section#catalogue .content .card .footer .status_container .note {
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 600;
     font-size: 10px;
     color: #958EA0;
 }
 
-body main section#catalogue .card .footer .status_container .note .star_container {
+body main section#catalogue .content .card .footer .status_container .note .star_container {
     display: flex;
     align-items: center;
     gap: 2px;
 }
 
-body main section#catalogue .card .footer .status_container .status .state {
+body main section#catalogue .content .card .footer .status_container .status .state {
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 600;
     font-size: 10px;
@@ -393,7 +420,7 @@ body main section#catalogue .card .footer .status_container .status .state {
     border-radius: 4px;
 }
 
-body main section#catalogue .card .footer .status_container .status .state_action {
+body main section#catalogue .content .card .footer .status_container .status .state_action {
     background-color: #282A30;
     font-family: "JetBrains Mono", sans-serif;
     font-weight: 600;
@@ -408,16 +435,16 @@ body main section#catalogue .card .footer .status_container .status .state_actio
     transition: filter 0.2s ease;
 }
 
-body main section#catalogue .card .footer .status_container .status .state_action:hover {
+body main section#catalogue .content .card .footer .status_container .status .state_action:hover {
     filter: brightness(1.3);
 }
 
-body main section#catalogue .card .footer .status_container .status .state_action.to_add {
+body main section#catalogue .content .card .footer .status_container .status .state_action.to_add {
     background-color: #D0BCFF;
     color: #3C0091;
 }
 
-body main section#catalogue .card .footer .status_container .status .state_action .purple {
+body main section#catalogue .content .card .footer .status_container .status .state_action .purple {
     color: #D0BCFF;
 }
 
@@ -432,6 +459,7 @@ body main section#catalogue .card .footer .status_container .status .state_actio
         grid-template-columns: 1fr;
     }
 }
+
 .banner {
     padding: 56px 40px 40px 40px;
     height: 292px;
@@ -440,62 +468,66 @@ body main section#catalogue .card .footer .status_container .status .state_actio
     justify-content: space-between;
     background-color: #0C0E14;
 }
-.banner_texte{
+
+.banner_texte {
     line-height: 12px;
-     letter-spacing: 1px;
-     font-weight: 600;
-     font-size: 10px;
-     font-style: bold;
-     color: #FFB95F;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 10px;
+    font-style: bold;
+    color: #FFB95F;
 
 }
-.banner_texte1{
+
+.banner_texte1 {
     line-height: 24px;
-     font-weight: 600;
-     font-size: 20px;
-     font-style: bold;
-     font-family:space grotesk;
-     width: 464px;
-     height: 24px;
-     color: #E2E2EB;
-     letter-spacing: 0px;
-     vertical-align: middle;
+    font-weight: 600;
+    font-size: 20px;
+    font-style: bold;
+    font-family: space grotesk;
+    width: 464px;
+    height: 24px;
+    color: #E2E2EB;
+    letter-spacing: 0px;
+    vertical-align: middle;
 
 
 }
- .banner_texte2{
-    line-height: 20px;
-     font-weight: 400;
-     font-size: 14px;
-     font-style: regular;
-     font-family:space grotesk;
-     width: 464.23px;
-     height: 20px;
-     color: #CBC3D7;
-     letter-spacing: 0px;
-     vertical-align: middle;
-    }
 
-.banner_text6{
+.banner_texte2 {
+    line-height: 20px;
+    font-weight: 400;
+    font-size: 14px;
+    font-style: regular;
+    font-family: space grotesk;
+    width: 464.23px;
+    height: 20px;
+    color: #CBC3D7;
+    letter-spacing: 0px;
+    vertical-align: middle;
+}
+
+.banner_text6 {
     display: flex;
     align-items: center;
 
 }
 
-    .banner_text3{
-width: 72px;
-height: 28px;
-font-family: 'jetbrains mono';
-font-weight: 700;
-font-style: bold;
-font-size: 24px;
-line-height: 28px;
-letter-spacing: 0px;
-vertical-align: middle;
-color: #D0BCFF;
+.banner_text3 {
+    width: 72px;
+    height: 28px;
+    font-family: 'jetbrains mono';
+    font-weight: 700;
+    font-style: bold;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0px;
+    vertical-align: middle;
+    color: #D0BCFF;
 
 }
-.banner_text4{
+
+.banner_text4 {
     font-family: 'jetbrains mono';
     color: #958EA0;
     font-weight: 600;
@@ -507,8 +539,9 @@ color: #D0BCFF;
     align-items: center;
 
 }
-.banner_text5{
-    color:#FFB95F;
+
+.banner_text5 {
+    color: #FFB95F;
     width: 100.81px;
     height: 28px;
     font-family: 'jetbrains mono';

@@ -19,7 +19,7 @@
 <body>
 <?php
     $current_page = "profil";
-    include __DIR__ . '/includes/templates/header.php';
+    include __DIR__ . '/includes/templates/layout/header.php';
 ?>
 <main>
     <div class="profile">
@@ -259,6 +259,6 @@
     </section>
 
 </main>
-<?php include __DIR__ . '/includes/templates/footer.php'; ?>
+<?php include __DIR__ . '/includes/templates/layout/footer.php'; ?>
 </body>
 </html>
