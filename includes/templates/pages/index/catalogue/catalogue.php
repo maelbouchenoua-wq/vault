@@ -48,18 +48,14 @@ function getCatalogue(int $userId)
                     <input class='search-bar2' type='text' placeholder='Rechercher une oeuvre...'>
                 </div>
                 <div class='div-nav-button'>
-                    <div class='nav-button1'>
-                        TOUS
-                    </div>
-                    <div class='nav-button2'>
-                        FILMS ({$categories_count["film"]})
-                    </div>
-                    <div class='nav-button2'>
-                        SÉRIES ({$categories_count["series"]})
-                    </div>
-                    <div class='nav-button2'>
-                        JEUX ({$categories_count["game"]})
-                    </div>
+                    <input id='all' type='radio' name='sort' value='all' class='nav-button' checked>
+                        <label for='all'>TOUS</label>
+                    <input id='movies' type='radio' name='sort' value='movies' class='nav-button'>
+                        <label for='movies'>FILMS ({$categories_count["film"]})</label>
+                    <input id='series' type='radio' name='sort' value='series' class='nav-button'>
+                        <label for='series'>SÉRIES ({$categories_count["series"]})</label>
+                    <input id='games' type='radio' name='sort' value='games' class='nav-button'>
+                        <label for='games'>JEUX ({$categories_count["game"]})</label>
                 </div>
                 <div class='div-dynamic-filter'>
                     <div class='info-trie'>
