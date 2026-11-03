@@ -21,7 +21,7 @@ function formValue(string $name): string
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vault - Données d'inscription</title>
-    <link rel="stylesheet" href="../assets/css/pages/auth.css">
+    <link rel="stylesheet" href="../../assets/css/pages/auth.css">
 </head>
 <body>
     <main class="auth-container">
@@ -33,7 +33,7 @@ function formValue(string $name): string
             <p><strong>Mot de passe :</strong> <?= formValue('password') ?></p>
             <p><strong>Confirmez le mot de passe :</strong> <?= formValue('password_confirmation') ?></p>
 
-            <p><a href="../register.php">Retour au formulaire</a></p>
+            <p><a href="../../register.php">Retour au formulaire</a></p>
         </section>
     </main>
 </body>

@@ -11,7 +11,7 @@
         <section class="auth-card" aria-labelledby="register-title">
             <h1 id="register-title">Créer un compte</h1>
 
-            <form action="includes/register_action.php" method="post">
+            <form action="includes/actions/register_action.php" method="post">
                 <label for="nickname">Pseudo</label>
                 <input type="text" id="nickname" name="nickname" required>
 
