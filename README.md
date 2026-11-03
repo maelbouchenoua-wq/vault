@@ -8,7 +8,8 @@ Ceci est un projet de site web, un réseau social centré sur la Pop-culture.
 
 > MySQL - InnoDB version 8.0
 
-<img width="2420" height="1475" alt="image" src="https://github.com/user-attachments/assets/d566aa6b-09de-442f-a36e-856ad9090b2a" />
+<img width="2420" height="1475" alt="image" src="https://github.com/user-attachments/assets/0d2eccf9-3fd4-4041-b823-26297ce45ba4" />
+
 
 ## Mise en place
 
