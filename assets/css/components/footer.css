@@ -23,7 +23,7 @@
 a, p, .text-section {
     text-decoration: none;
     font-weight: 500;
-    font-family: 'JetBrains Mono';
+    font-family: 'JetBrains Mono', serif;
     font-size: 12px;
     font-style: medium;
     line-height: 16px;
@@ -39,7 +39,7 @@ a, p, .text-section {
 }
 
 .vault-section {
-    font-family: 'space grotesk';
+    font-family: 'space grotesk', serif;
     color: #E2E2EB;
     font-weight: 700;
     font-style: bold;
@@ -53,4 +53,13 @@ a, p, .text-section {
     width: 8px;
     background-color: #FFB95F;
     border-radius: 50%;
+}
+
+.text-version {
+    font-family: 'JetBrains Mono', serif;
+    font-size: 12px;
+    color: #CBC3D7;
+    background: #1d1f27;
+    border-radius: 4px;
+    padding: 2px 6px;
 }

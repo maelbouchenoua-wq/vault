@@ -10,7 +10,7 @@
             <a href="/index.php"><p class="text-section">Catalogue</p></a>
             <a href="/profile.php"><p class="text-section">Progression</p></a>
             <p class="text-section">Audit & Sprints</p>
-            <div class="text-section" style="display: flex; align-items: center; gap: 8px;">
+            <div class="text-version" style="display: flex; align-items: center; gap: 8px;">
                 <p class="color-dot"></p>
                 <span>v1.4.0-stable</span>
             </div>
