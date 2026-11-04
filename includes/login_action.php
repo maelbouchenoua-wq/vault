@@ -27,16 +27,8 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
         $query = $pdo->prepare('SELECT id, username, email, password, role FROM users WHERE email = :email LIMIT 1');
         $query->execute(['email' => $loginEmail]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
-        // Empreinte de secours si aucun compte ne correspond à l’email.
-        $passwordHash = password_hash('compte-inexistant', PASSWORD_BCRYPT);
-        if ($user !== false) {
-            $passwordHash = $user['password'];
-        }
-
-        // Les anciens comptes Argon2 peuvent garder des mots de passe plus longs.
-        $invalidBcryptInput = password_get_info($passwordHash)['algoName'] === 'bcrypt'
-            && (strlen($password) > 72 || str_contains($password, "\0"));
-        $passwordIsValid = !$invalidBcryptInput && password_verify($password, $passwordHash);
+        $dummyHash = '$argon2id$v=19$m=65536,t=4,p=1$ODhobHRzdXR5NmE2Y3dLQQ$6ouEzuneOcLkkzdJB7lSO8LY7tnSVAjtnKSbUMfdTzA';
+        $passwordIsValid = password_verify($password, $user !== false ? $user['password'] : $dummyHash);
 
         if ($user !== false && $passwordIsValid) {
             if (!session_regenerate_id(true)) {
@@ -48,7 +40,7 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
                     'id' => (int) $user['id'],
                     'username' => $user['username'],
                     'email' => $user['email'],
-                    'role' => $user['role'] === 'admin' ? 'admin' : 'user',
+                    'role' => $user['role']
                 ],
                 'csrf_token' => bin2hex(random_bytes(32)),
             ];

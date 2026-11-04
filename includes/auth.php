@@ -36,55 +36,16 @@ function currentUser(): ?array
 {
     startSession();
     $user = $_SESSION['user'] ?? null;
-    static $resolvedUserId = null;
-    static $resolvedUser = null;
 
     if (!is_array($user)
         || !isset($user['id'], $user['username'], $user['email'], $user['role'])
         || !is_int($user['id']) || $user['id'] <= 0
         || !is_string($user['username']) || !is_string($user['email'])
         || !in_array($user['role'], ['user', 'admin'], true)) {
-        unset($_SESSION['user']);
         return null;
     }
 
-    if ($resolvedUserId === $user['id']) {
-        $_SESSION['user'] = $resolvedUser;
-        return $resolvedUser;
-    }
-
-    require_once __DIR__ . '/db.php';
-
-    try {
-        $query = getPDO(true)->prepare('SELECT id, username, email, role FROM users WHERE id = :id LIMIT 1');
-        $query->execute(['id' => $user['id']]);
-        $freshUser = $query->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $exception) {
-        http_response_code(503);
-        exit('La vérification de votre compte est momentanément indisponible. Veuillez réessayer plus tard.');
-    }
-
-    $resolvedUserId = $user['id'];
-    $resolvedUser = null;
-
-    if ($freshUser === false
-        || !isset($freshUser['id'], $freshUser['username'], $freshUser['email'], $freshUser['role'])
-        || (int) $freshUser['id'] !== $user['id']
-        || !is_string($freshUser['username']) || !is_string($freshUser['email'])
-        || !in_array($freshUser['role'], ['user', 'admin'], true)) {
-        unset($_SESSION['user']);
-        return null;
-    }
-
-    $resolvedUser = [
-        'id' => (int) $freshUser['id'],
-        'username' => $freshUser['username'],
-        'email' => $freshUser['email'],
-        'role' => $freshUser['role'],
-    ];
-    $_SESSION['user'] = $resolvedUser;
-
-    return $resolvedUser;
+    return $user;
 }
 
 function requireLogin(): void
