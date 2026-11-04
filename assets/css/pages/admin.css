@@ -530,12 +530,6 @@
     font-weight: 600;
 }
 
-.record_form .status_select {
-    color: #ffb757;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
-}
-
 .upload_zone {
     position: relative;
     display: flex;

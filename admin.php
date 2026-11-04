@@ -153,20 +153,10 @@ header('Cache-Control: no-store');
                     </div>
                 </fieldset>
 
-                <div class="field_row">
                     <div class="form_field">
                         <label class="field_label" for="release_year">Année de sortie</label>
                         <input class="year_input" id="release_year" name="release_year" type="number" placeholder="2017">
                     </div>
-                    <div class="form_field">
-                        <label class="field_label" for="initial_status">Statut initial</label>
-                        <select class="status_select" id="initial_status" name="status">
-                            <option value="discover">À DÉCOUVRIR</option>
-                            <option value="in_progress">EN COURS</option>
-                            <option value="finished">TERMINÉ</option>
-                        </select>
-                    </div>
-                </div>
 
                 <div class="form_field">
                     <div class="field_heading">

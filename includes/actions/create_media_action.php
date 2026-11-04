@@ -47,17 +47,6 @@ if (is_year_valid($release_year)) {
     return;
 }
 
-# Status
-//TODO: WARN: No initial_status
-/*$status = $_POST["status"];
-if (is_string_valid($status, 1000)) {
-
-} else {
-    echo "ValidationError: Status is not properly formatted";
-    return;
-}*/
-
-
 # Cover
 $cover = $_POST["cover"];
 if (is_image_attachement_valid($cover)) {
