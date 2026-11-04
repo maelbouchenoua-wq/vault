@@ -71,6 +71,7 @@ try {
     add_new_media($data);
     redirect_successful("/admin.php", "Nous avons bien ajouté votre média.");
 } catch (Error $error) {
-    echo $error;
-    redirect_error("/admin.php");
+    if ($error->getMessage() == "La base de donnée à renvoyé une erreur.")
+        redirect_error("/admin.php", 500, $error->getMessage());
+    else redirect_error("/admin.php");
 }

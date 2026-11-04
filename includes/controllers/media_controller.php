@@ -11,6 +11,7 @@ const ATTACHEMENT_FOLDER_PATH = __DIR__ . "/../../assets/images/content";
  * Insert a new `$media` in the database.
  * @param array $media The data of the media to add. THE PROVIDED MEDIA SHOULD HAVE BEEN VALIDATED AND PARSED.
  * @throws Error If the operation failed.
+ * @throws Exception
  */
 function add_new_media(array $media): void
 {
@@ -22,13 +23,17 @@ function add_new_media(array $media): void
 
     # Add to database
     $query = $pdo->prepare("INSERT INTO medias (category_id, title, release_year, description, image_path) VALUES (:category, :title, :release_year, :description,:image_path)");
-    $query->execute([
-        'category' => $media["category"],
-        'title' => $media["title"],
-        'release_year' => $media["release_year"],
-        'description' => $media["description"],
-        'image_path' => $file_path ?? null,
-    ]);
+    try {
+        $query->execute([
+            'category' => $media["category"],
+            'title' => $media["title"],
+            'release_year' => $media["release_year"],
+            'description' => $media["description"],
+            'image_path' => $file_path ?? null,
+        ]);
+    } catch (PDOException $error) {
+        throw new Error("La base de donnée à renvoyé une erreur.");
+    }
 }
 
 
