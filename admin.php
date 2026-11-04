@@ -179,7 +179,7 @@ header('Cache-Control: no-store');
                     <div class="form_field synopsis_field">
                         <div class="field_heading">
                             <label for="record_synopsis">Synopsis / Description</label>
-                            <small>600 car. max.</small>
+                            <small>2000 car. max.</small>
                         </div>
                         <textarea id="record_synopsis" name="description" maxlength="600" placeholder="Denis Villeneuve • Enquête néo-noire réplicante à Los Angeles"></textarea>
                     </div>
