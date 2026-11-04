@@ -1,0 +1,15 @@
+.operation_status {
+    padding: 20px;
+    border-radius: 9px;
+    width: 100%;
+}
+
+.operation_status.ok {
+    border: 1px solid #3b503c;
+    background-color: #19211a;
+}
+
+.operation_status.error {
+    border: 1px solid #503b3b;
+    background-color: #211919;
+}
