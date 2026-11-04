@@ -1,3 +1,11 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+header('Cache-Control: no-store');
+$profileUser = currentUser();
+$profileName = htmlspecialchars($profileUser['username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$profileEmail = htmlspecialchars($profileUser['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -30,18 +38,18 @@
 
                 <div class="title-ref-div">
                     <p class="title"> ARCHIVISTE AGREE</p>
-                    <p class="ref"> // REF #VX-8894</p>
+                    <p class="ref"> // REF #VX-<?= (int) $profileUser['id'] ?></p>
                 </div>
                 <div class="name">
-                    Alex Vance
+                    <?= $profileName ?>
                 </div>
 
                 <div class="id-infoDate-div">
                     <div class="id">
-                        @alexvance
+                        @<?= $profileName ?>
                     </div>
                     <div class="info-date">
-                        Inscrit en Octobre 2026
+                        <?= $profileEmail ?>
                     </div>
                 </div>
 
@@ -52,7 +60,7 @@
                     </div>
                     <div class="statut">
                         <img src="assets/images/certification-icon.svg" alt="icone">
-                        <p> Compte Développeur Bac+1 </p>
+                        <p><?= $profileUser['role'] === 'admin' ? 'Compte administrateur' : 'Compte utilisateur' ?></p>
                     </div>
                 </div>
             </div>
@@ -257,7 +265,7 @@
             </div>
         </div>
     </section>
-
+    
 </main>
 <?php include __DIR__ . '/includes/templates/layout/footer.php'; ?>
 </body>

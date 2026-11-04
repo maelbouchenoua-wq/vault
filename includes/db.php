@@ -1,8 +1,8 @@
 <?php
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
-function getPDO(): PDO {
+function getPDO(bool $throwOnConnectionError = false): PDO {
     static $pdo = null;
 
     if ($pdo === null) {
@@ -15,6 +15,9 @@ function getPDO(): PDO {
         try {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
+            if ($throwOnConnectionError) {
+                throw $e;
+            }
             error_log("PDO Error: " . $e->getMessage());
             die("Erreur de connexion à la base de données.");
         }

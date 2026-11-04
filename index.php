@@ -1,9 +1,9 @@
-<!doctype html>
 <?php
-
-require 'includes/db.php';
-$pdo = getPDO();
+require_once __DIR__ . '/includes/auth.php';
+startSession();
+$user = currentUser();
 ?>
+<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -61,8 +61,8 @@ include __DIR__ . '/includes/templates/layout/header.php';
         </div>
     </div>
     <?php
-    include "includes/templates/pages/index/catalogue/catalogue.php";
-    getCatalogue(4);
+    require_once __DIR__ . '/includes/templates/pages/index/catalogue/catalogue.php';
+    getCatalogue($user === null ? null : (int) $user['id']);
     ?>
     <section>
         <div class="banner">

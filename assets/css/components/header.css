@@ -84,7 +84,7 @@ body > header nav a.selected {
     font-weight: 600;
 }
 
-body > header nav a.register-link {
+body > header a.register-link {
     padding: 6px 12px;
     border-radius: 6px;
     background-color: #D0BCFF;
@@ -92,13 +92,48 @@ body > header nav a.register-link {
     font-weight: 600;
 }
 
-body > header nav a.register-link:hover {
+body > header a.register-link:hover {
     background-color: #C9AEFF;
 }
 
-body > header nav a.register-link:focus-visible {
+body > header a.register-link:focus-visible,
+body > header .login-link:focus-visible,
+body > header .logout-button:focus-visible {
     outline: 2px solid #E2E2EB;
     outline-offset: 3px;
+}
+
+body > header .auth-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+body > header .login-link,
+body > header .logout-button {
+    padding: 6px 12px;
+    border: 1px solid #D0BCFF;
+    border-radius: 6px;
+    color: #D0BCFF;
+    background-color: transparent;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+body > header a.register-link {
+    font-size: 14px;
+}
+
+body > header .logout-form {
+    margin: 0;
+}
+
+body > header .account-name {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
 }
 
 body > header nav a .inline_level_indicator {
@@ -243,12 +278,35 @@ body > header .account_menu .caret {
     }
 
     body > header {
-        padding: 0 15px;
+        height: auto;
+        min-height: 64px;
+        flex-wrap: wrap;
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    body > header > div,
+    body > header nav {
+        gap: 12px;
+    }
+
+    body > header .account-name {
+        display: none;
     }
 }
 
 @media screen and (max-width: 530px) {
-    body > header nav a:not(.selected):not(.register-link) {
+    body > header .main_logo_container h2 {
         display: none;
+    }
+
+    body > header > div:first-child {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    body > header nav {
+        flex: 1 1 100%;
+        flex-wrap: wrap;
     }
 }

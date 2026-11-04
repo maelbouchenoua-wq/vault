@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireAdmin();
+header('Cache-Control: no-store');
+?>
 <!doctype html>
 <html lang="fr">
 <head>
