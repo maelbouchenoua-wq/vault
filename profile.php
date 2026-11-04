@@ -1,8 +1,10 @@
 <?php
+// Profil privé : accès réservé aux comptes connectés.
 require_once __DIR__ . '/includes/auth.php';
 requireLogin();
 header('Cache-Control: no-store');
 $profileUser = currentUser();
+// Prépare le pseudo et l’email pour l’affichage HTML.
 $profileName = htmlspecialchars($profileUser['username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $profileEmail = htmlspecialchars($profileUser['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
@@ -18,7 +20,6 @@ $profileEmail = htmlspecialchars($profileUser['email'], ENT_QUOTES | ENT_SUBSTIT
     <link rel="stylesheet" href="./assets/css/components/header.css">
     <link rel="stylesheet" href="./assets/css/components/footer.css">
     <link rel="stylesheet" href="./assets/css/pages/profile.css">
-    <!-- Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap"
@@ -65,6 +66,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
                 </div>
             </div>
 
+            <!-- XP, badges et tableau : données de démonstration. -->
             <div class="info-profile">
                 <div class="xp-div">
                     <div class="lightning-frame">
@@ -109,7 +111,6 @@ include __DIR__ . '/includes/templates/layout/header.php';
                         Prochain palier : 200 XP
                     </div>
                 </div>
-                <!-- creation of the experience point scale -->
                 <div class="scale">
                     <div class="information-scale">
                         <img src="assets/images/info-icon.svg" alt="icone">
@@ -144,7 +145,6 @@ include __DIR__ . '/includes/templates/layout/header.php';
 
                     </div>
                 </div>
-
 
             </div>
 
@@ -265,7 +265,6 @@ include __DIR__ . '/includes/templates/layout/header.php';
             </div>
         </div>
     </section>
-
 
     <section id='collection'>
         <div class='header'>
@@ -415,6 +414,6 @@ include __DIR__ . '/includes/templates/layout/header.php';
     </section>
 
 </main>
-<?php include __DIR__ . '/includes/templates/layout/footer.php'; ?>
+<?php  include __DIR__ . '/includes/templates/layout/footer.php'; ?>
 </body>
 </html>

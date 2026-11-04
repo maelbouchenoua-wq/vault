@@ -1,4 +1,5 @@
 <?php
+// Accueil : catalogue public ou collection personelle.
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 $user = currentUser();
@@ -15,7 +16,6 @@ $user = currentUser();
     <link rel="stylesheet" href="./assets/css/components/header.css">
     <link rel="stylesheet" href="./assets/css/components/footer.css">
     <link rel="stylesheet" href="./assets/css/pages/index.css">
-    <!-- Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap"
@@ -27,6 +27,7 @@ $current_page = "index";
 include __DIR__ . '/includes/templates/layout/header.php';
 ?>
 <main>
+    <!-- Présentation du site et indicateurs de démonstration. -->
     <div class="hero-banner">
         <div class="sprint-bdd-info">
             <div class="number-index-div">
@@ -62,6 +63,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
     </div>
     <?php
     require_once __DIR__ . '/includes/templates/pages/index/catalogue/catalogue.php';
+    // null affiche le catalogue public ; sinon, la collection du compte.
     getCatalogue($user === null ? null : (int) $user['id']);
     ?>
     <section>
@@ -80,7 +82,6 @@ include __DIR__ . '/includes/templates/layout/header.php';
                 <p>Chaque œuvre annotée enrichit votre rang et consolide la persistance locale de vos
                     trésors culturels.
                 </p>
-
 
                 <div class="banner_text6">
                     <div>
@@ -104,6 +105,6 @@ include __DIR__ . '/includes/templates/layout/header.php';
         </div>
     </section>
 </main>
-<?php include __DIR__ . '/includes/templates/layout/footer.php'; ?>
+<?php  include __DIR__ . '/includes/templates/layout/footer.php'; ?>
 </body>
 </html>

@@ -1,7 +1,10 @@
 <?php
+/** Traite l'inscription : vérifie le formulaire, hache le mot de passe et crée un compte user. */
+// __DIR__ pointe ici sur includes/actions ; ../auth.php charge les outils communs de session et de CSRF.
 require_once __DIR__ . '/../auth.php';
 startSession();
 
+// L'action reçoit un formulaire POST ; un accès direct renvoie vers la page d'inscription.
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Location: ' . authUrl('register.php'), true, 303);
     exit;
@@ -9,6 +12,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 
 header('Cache-Control: no-store');
 
+// Un utilisateur déjà connecté est envoyé vers son profil avant toute création de compte.
 if (currentUser() !== null) {
     header('Location: ' . authUrl('profile.php'), true, 303);
     exit;
@@ -21,6 +25,7 @@ function postedString(string $name): string
     return is_string($value) ? $value : '';
 }
 
+// Retirer les espaces autour du pseudo et de l'e-mail, mais conserver le mot de passe exactement saisi.
 $nickname = trim(postedString('nickname'));
 $email = trim(postedString('email'));
 $password = postedString('password');
@@ -39,6 +44,7 @@ if ($nickname === '') {
     $errors['nickname'] = 'Le pseudo doit contenir au maximum 50 caractères valides.';
 }
 
+// Contrôler le format de l'e-mail et sa longueur côté serveur, même si le navigateur les vérifie aussi.
 if ($email === '') {
     $errors['email'] = 'Veuillez saisir une adresse e-mail.';
 } elseif (strlen($email) > 80 || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
@@ -53,25 +59,30 @@ if (!mb_check_encoding($password, 'UTF-8') || mb_strlen($password, 'UTF-8') < 8)
     $errors['password'] = 'Le mot de passe contient un caractère non autorisé.';
 }
 
+// La confirmation sert uniquement à détecter une erreur de saisie ; elle n'est pas enregistrée.
 if ($passwordConfirmation === '') {
     $errors['password_confirmation'] = 'Veuillez confirmer le mot de passe.';
 } elseif ($password !== $passwordConfirmation) {
     $errors['password_confirmation'] = 'Les deux mots de passe ne correspondent pas.';
 }
 
+// N'interroger et ne modifier la base que si toutes les validations précédentes ont réussi.
 if ($errors === []) {
     require_once __DIR__ . '/../db.php';
 
     try {
+        // true permet d'intercepter ici une indisponibilité de la connexion PDO.
         $pdo = getPDO(true);
         $query = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
         $query->execute(['email' => $email]);
 
+        // fetchColumn() renvoie l'identifiant trouvé, ou false si aucun compte n'utilise cette adresse.
         if ($query->fetchColumn() !== false) {
             $errors['email'] = 'Cette adresse e-mail est déjà utilisée. Choisissez-en une autre.';
         } else {
-            // Crée une empreinte bcrypt ; PHP génère le sel automatiquement.
+            // Hache le mot de passe et impose le rôle user.
             $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+            // Le rôle est fixé à user dans le SQL : une valeur role=admin envoyée par le navigateur est ignorée.
             $insert = $pdo->prepare(
                 "INSERT INTO users (username, email, password, role)
                  VALUES (:username, :email, :password, 'user')"
@@ -99,5 +110,6 @@ if ($errors !== []) {
     exit;
 }
 
+// Après réussite, la redirection 303 mène à une page GET et évite de renvoyer le formulaire lors d'un rafraîchissement.
 header('Location: ' . authUrl('login.php?registered=1'), true, 303);
 exit;

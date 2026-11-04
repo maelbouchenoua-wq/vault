@@ -1,8 +1,10 @@
 <?php
+// En-tête commun : liens adapté à la session et à la page active.
 require_once __DIR__ . '/../../auth.php';
 startSession();
 $headerUser = currentUser();
 $current_page = $current_page ?? '';
+// Les URLs du site sont adaptées au dossier, puis échappées pour le HTML.
 $headerUrl = static fn(string $path): string => htmlspecialchars(authUrl($path), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
 <header>
@@ -14,6 +16,7 @@ $headerUrl = static fn(string $path): string => htmlspecialchars(authUrl($path),
         <nav aria-label="Navigation principale">
             <a class="<?= $current_page === 'index' ? 'selected' : '' ?>" href="<?= $headerUrl('index.php') ?>">Catalogue</a>
             <a class="<?= $current_page === 'profil' ? 'selected' : '' ?>" href="<?= $headerUrl($headerUser ? 'profile.php' : 'login.php') ?>">Mon Profil</a>
+            <!-- Le lien Administration est réservé aux sessions de rôle admin. -->
             <?php if ($headerUser && $headerUser['role'] === 'admin'): ?>
                 <a class="<?= $current_page === 'admin' ? 'selected' : '' ?>" href="<?= $headerUrl('admin.php') ?>">Administration
                     <span class="inline_admin_indicator">ADMIN</span>
@@ -33,6 +36,7 @@ $headerUrl = static fn(string $path): string => htmlspecialchars(authUrl($path),
                     <img class="profile_picture" src="<?= $headerUrl('assets/images/profil-picture.jpg') ?>" alt="Photo de profil">
                     <span class="account-name"><?= htmlspecialchars($headerUser['username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></span>
                 </a>
+                <!-- La déconnexion passe par POST et vérifie un jeton CSRF. -->
                 <form class="logout-form" action="<?= $headerUrl('includes/actions/logout_action.php') ?>" method="post">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                     <button type="submit" class="logout-button">Se déconnecter</button>
