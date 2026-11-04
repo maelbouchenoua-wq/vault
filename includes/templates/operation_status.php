@@ -17,7 +17,7 @@ function parse_error_code(int $code): string
  */
 function render_operation_status(): void
 {
-    if ($_GET["status"] === null) return;
+    if (!isset($_GET["status"])) return;
     $status_code = intval(urldecode($_GET["status"]));
     $status = $status_code <= 300 ? "ok" : "error";
     if ($status == "ok") {
