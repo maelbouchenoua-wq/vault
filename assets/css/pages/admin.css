@@ -753,6 +753,490 @@
     background-color: #383941;
 }
 
+/* Répertoire : titre et barre d'outils. */
+
+.admin_page .records_section {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin-top: 32px;
+}
+
+.admin_page .records_toolbar,
+.admin_page .records_heading,
+.admin_page .records_tools {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.admin_page .records_toolbar {
+    justify-content: space-between;
+    gap: 14px 20px;
+    padding: 0 2px 16px;
+}
+
+.admin_page .records_heading {
+    flex: 1 1 380px;
+    min-width: 0;
+    gap: 8px;
+}
+
+.admin_page .records_database {
+    flex-shrink: 0;
+    width: 18px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.admin_page .records_heading h2 {
+    min-width: 0;
+    font-size: 18px;
+    line-height: 1.3;
+}
+
+.admin_page .records_count {
+    padding: 2px 7px;
+    border-radius: 12px;
+    background-color: #292a32;
+    color: #c8c1d4;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin_page .records_tools {
+    min-width: 0;
+    max-width: 100%;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.admin_page .records_add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 36px;
+    padding: 7px 15px;
+    border: 1px solid #ddcdff;
+    border-radius: 4px;
+    background-color: #d0bcff;
+    color: #360073;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin_page .records_add > span {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.admin_page .records_add:hover {
+    background-color: #ddcdff;
+}
+
+.admin_page .records_search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 210px;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 36px;
+    padding: 7px 10px;
+    border: 1px solid #23252e;
+    border-radius: 4px;
+    background-color: #191b22;
+}
+
+.admin_page .records_search > img {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
+.admin_page .records_search input {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+.admin_page .records_search input::placeholder {
+    color: #b0aabb;
+    opacity: 1;
+}
+
+.admin_page .records_search:focus-within {
+    border-color: #d0bcff;
+}
+
+.admin_page .records_refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    min-height: 36px;
+    padding: 7px;
+    border: 1px solid #23252e;
+    border-radius: 4px;
+    background-color: #191b22;
+    color: #aaa2b9;
+}
+
+.admin_page .records_refresh svg,
+.admin_page .records_edit svg {
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+}
+
+.admin_page .records_refresh:hover {
+    border-color: #61556f;
+    color: #d0bcff;
+}
+
+/* Tableau et ligne en cours d'édition. */
+
+.admin_page .records_scroll {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border-radius: 4px 4px 0 0;
+    scrollbar-color: #51475f #111319;
+}
+
+.admin_page .records_table {
+    width: 100%;
+    min-width: 920px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background-color: #191b22;
+}
+
+.admin_page .records_col_id { width: 80px; }
+.admin_page .records_col_visual { width: 64px; }
+.admin_page .records_col_category { width: 92px; }
+.admin_page .records_col_year { width: 74px; }
+.admin_page .records_col_collections { width: 158px; }
+.admin_page .records_col_actions { width: 112px; }
+
+.admin_page .records_table thead {
+    background-color: #0d0f15;
+}
+
+.admin_page .records_table thead th {
+    padding: 11px 16px;
+    color: #9993a6;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 12px;
+    letter-spacing: 1px;
+    text-align: left;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.admin_page .records_table tbody th,
+.admin_page .records_table tbody td {
+    height: 74px;
+    padding: 7px 16px;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.admin_page .records_table thead th:nth-child(2),
+.admin_page .records_table tbody td:nth-child(2) {
+    padding-right: 6px;
+    padding-left: 6px;
+}
+
+.admin_page .records_table thead th:last-child,
+.admin_page .records_table tbody td:last-child {
+    padding-right: 14px;
+    padding-left: 8px;
+    text-align: right;
+}
+
+.admin_page .records_row:hover {
+    background-color: #20222c;
+}
+
+.admin_page .records_row_active,
+.admin_page .records_row_active:hover {
+    background-color: #291945;
+}
+
+.admin_page .records_row_active > th,
+.admin_page .records_row_active > td {
+    border-top-color: #71598e;
+    border-bottom-color: #71598e;
+}
+
+.admin_page .records_id {
+    color: #cbb4fc;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin_page .records_table tbody .records_id {
+    padding-right: 6px;
+}
+
+.admin_page .records_active_dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background-color: #d0bcff;
+    font-size: 0;
+    line-height: 0;
+    vertical-align: middle;
+}
+
+.admin_page .records_poster {
+    display: block;
+    width: 40px;
+    height: 60px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    object-fit: cover;
+}
+
+.admin_page .records_row_active .records_poster {
+    border-color: #d0bcff;
+    box-shadow: 0 0 0 1px #d0bcff44;
+}
+
+.admin_page .records_name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    min-width: 0;
+}
+
+.admin_page .records_name strong {
+    color: #dddce6;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+}
+
+.admin_page .records_row_active .records_name strong {
+    color: #d0bcff;
+}
+
+.admin_page .records_editing {
+    padding: 2px 6px;
+    border-radius: 2px;
+    background-color: #d0bcff;
+    color: #360073;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: .7px;
+    white-space: nowrap;
+}
+
+.admin_page .records_description {
+    overflow: hidden;
+    margin-top: 3px;
+    color: #9993a6;
+    font-size: 12px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin_page .records_category {
+    display: inline-block;
+    max-width: 100%;
+    padding: 2px 7px;
+    border-radius: 2px;
+    background-color: #272832;
+    color: #d0bcff;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 14px;
+}
+
+.admin_page .records_category_game {
+    color: #ffb757;
+}
+
+.admin_page .records_year {
+    color: #c8c1d4;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin_page .records_collections {
+    white-space: nowrap;
+}
+
+.admin_page .records_collections strong {
+    color: #ffb757;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin_page .records_collections > span {
+    margin-left: 5px;
+    color: #9993a6;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+}
+
+.admin_page .records_edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 30px;
+    min-height: 32px;
+    padding: 6px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #c8c1d4;
+}
+
+.admin_page .records_edit:hover {
+    border-color: #61556f;
+    background-color: #d0bcff12;
+    color: #d0bcff;
+}
+
+.admin_page .records_edit_selected {
+    padding: 6px 10px;
+    background-color: #d0bcff;
+    color: #360073;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.admin_page .records_edit_selected:hover {
+    background-color: #ddcdff;
+    color: #360073;
+}
+
+/* Pagination et adaptation du répertoire. */
+
+.admin_page .records_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    padding: 9px 16px;
+    background-color: #0d0f15;
+}
+
+.admin_page .records_summary {
+    color: #9993a6;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    line-height: 16px;
+}
+
+.admin_page .records_pagination {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.admin_page .records_pagination button {
+    min-width: 26px;
+    min-height: 26px;
+    padding: 4px 7px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background-color: #202129;
+    color: #c8c1d4;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    line-height: 16px;
+}
+
+.admin_page .records_pagination button:hover:not(:disabled) {
+    border-color: #61556f;
+    color: #d0bcff;
+}
+
+.admin_page .records_pagination button:disabled {
+    color: #736d80;
+    cursor: not-allowed;
+    opacity: .5;
+}
+
+.admin_page .records_pagination .records_page_active {
+    background-color: transparent;
+    color: #d0bcff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+@media (max-width: 1000px) {
+    .admin_page .records_heading {
+        flex-basis: 100%;
+    }
+
+    .admin_page .records_tools {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .admin_page .records_search {
+        flex: 1 1 200px;
+        width: auto;
+    }
+}
+
+@media (max-width: 720px) {
+    .admin_page .records_section {
+        margin-top: 26px;
+    }
+
+    .admin_page .records_heading h2 {
+        font-size: 17px;
+    }
+
+    .admin_page .records_add {
+        flex: 1 1 100%;
+    }
+
+    .admin_page .records_search {
+        flex-basis: 180px;
+    }
+
+    .admin_page .records_footer {
+        align-items: flex-start;
+        padding: 10px 12px;
+    }
+}
+
 /* Adaptation aux écrans plus petits */
 
 @media (max-width: 1250px) {
