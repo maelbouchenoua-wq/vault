@@ -20,7 +20,7 @@ $title = $_POST["title"];
 if (is_string_valid($title, 150)) {
     $data["title"] = $title;
 } else {
-    echo "ValidationError: Title is not properly formatted";
+    redirect_error("/admin.php", 400, "ValidationError: Title is not properly formatted");
     return;
 }
 
@@ -30,11 +30,11 @@ if (is_string_valid($category, 1000)) {
     if (is_valid_category($category)) {
         $data["category"] = $category;
     } else {
-        echo "ValidationError: Category is not valid";
+        redirect_error("/admin.php", 400, "ValidationError: Category is not valid");
         return;
     }
 } else {
-    echo "ValidationError: Category is not properly formatted";
+    redirect_error("/admin.php", 400, "ValidationError: Category is not properly formatted");
     return;
 }
 
@@ -43,7 +43,7 @@ $release_year = $_POST["release_year"];
 if (is_year_valid($release_year)) {
     $data["release_year"] = intval($release_year);
 } else {
-    echo "ValidationError: Year is not properly formatted";
+    redirect_error("/admin.php", 400, "L'année de publication doit être entre 1900 et " . date("Y") + 5 . ".");
     return;
 }
 
@@ -52,7 +52,7 @@ $cover = $_POST["cover"];
 if (is_image_attachement_valid($cover)) {
     $data["cover"] = $cover;
 } else {
-    echo 'ValidationError: Cover image is not properly formatted';
+    redirect_error("/admin.php", 400, "L'image n'est pas valide.");
     return;
 }
 
@@ -61,7 +61,7 @@ $description = $_POST["description"];
 if (is_optional_string_valid($description, 2000)) {
     $data["description"] = $description;
 } else {
-    echo "ValidationError: Description is not properly formatted";
+    redirect_error("/admin.php", 400, "La description devrait faire moins de 2000 caractères.");
     return;
 }
 
