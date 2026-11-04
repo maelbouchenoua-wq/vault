@@ -25,7 +25,6 @@ function is_optional_string_valid($value, int $max_length = 200): bool
     return $value === null || (is_string($value) && strlen($value) == 0) || is_string_valid($value, $max_length);
 }
 
-
 /**
  * Returns if the provided `$value` is a valid year int:
  * - Later than 1900.
@@ -47,6 +46,7 @@ function is_image_attachement_valid($file): bool
 }
 
 /** Returns if the `$value` is an empty file */
-function is_attachement_empty($value): bool {
+function is_attachement_empty($value): bool
+{
     return $value === null || strlen($value["full_path"]) == 0;
 }

@@ -70,7 +70,7 @@ if (is_optional_string_valid($description, 2000)) {
 try {
     add_new_media($data);
     redirect_successful("/admin.php", "Nous avons bien ajouté votre média.");
-} catch (Error $error) {
+} catch (Exception $error) {
     if ($error->getMessage() == "La base de donnée à renvoyé une erreur.")
         redirect_error("/admin.php", 500, $error->getMessage());
     else redirect_error("/admin.php");

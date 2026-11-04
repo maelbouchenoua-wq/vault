@@ -31,7 +31,7 @@ function add_new_media(array $media): void
             'description' => $media["description"],
             'image_path' => $file_path ?? null,
         ]);
-    } catch (PDOException $error) {
+    } catch (PDOException) {
         throw new Error("La base de donnée à renvoyé une erreur.");
     }
 }
