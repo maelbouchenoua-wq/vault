@@ -1,7 +1,9 @@
 <?php
+// Formulaire d'inscription et réaffichage des erreurs du serveur.
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 
+// Un membre déjà connecté est rediriger vers son profil.
 if (currentUser() !== null) {
     header('Location: ' . authUrl('profile.php'), true, 303);
     exit;
@@ -23,6 +25,7 @@ $values = $values ?? ['nickname' => '', 'email' => ''];
         <section class="auth-card" aria-labelledby="register-title">
             <h1 id="register-title">Créer un compte</h1>
 
+            <!-- Messages et saisies conservées sont échappés dans le HTML. -->
             <?php if ($errors !== []): ?>
                 <div role="alert" id="register-errors">
                     <p>Veuillez corriger les erreurs suivantes :</p>
@@ -34,6 +37,7 @@ $values = $values ?? ['nickname' => '', 'email' => ''];
                 </div>
             <?php endif; ?>
 
+            <!-- POST et jeton CSRF ; les valeurs sont vérifiées côté serveur. -->
             <form action="<?= authUrl('includes/actions/register_action.php') ?>" method="post">
                 <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>">
                 <label for="nickname">Pseudo</label>

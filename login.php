@@ -1,9 +1,11 @@
 <?php
+// Formulaire de connexion, réutilisé en cas d'erreur du seveur.
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 $loginError = $loginError ?? '';
 $loginEmail = $loginEmail ?? '';
 
+// Une session déjà connectée rejoint le profil avant le HTML.
 if ($loginError === '' && currentUser() !== null) {
     header('Location: ' . authUrl('profile.php'), true, 302);
     exit;
@@ -22,6 +24,7 @@ if ($loginError === '' && currentUser() !== null) {
         <section class="auth-card" aria-labelledby="login-title">
             <h1 id="login-title">Connexion</h1>
 
+            <!-- Messages et e-mail sont échappés ; le mot de passe reste vide. -->
             <?php if ($loginError !== ''): ?>
                 <p role="alert"><?= htmlspecialchars($loginError, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></p>
             <?php elseif (($_GET['registered'] ?? null) === '1'): ?>
@@ -30,6 +33,7 @@ if ($loginError === '' && currentUser() !== null) {
                 <p role="status">Vous êtes déconnecté.</p>
             <?php endif; ?>
 
+            <!-- POST envoie les identifiants avec un jeton CSRF lié à la session. -->
             <form action="<?= authUrl('includes/actions/login_action.php') ?>" method="post">
                 <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>">
                 <label for="email">E-mail</label>

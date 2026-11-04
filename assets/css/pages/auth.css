@@ -1,3 +1,4 @@
+/* Pages de connexion et d'inscription : styles communs. */
 * {
     box-sizing: border-box;
 }
@@ -9,6 +10,7 @@ body {
     color: #222;
 }
 
+/* Carte centrée, limitée en largeur et adaptée aux petits écrans. */
 .auth-container {
     min-height: 100vh;
     display: grid;
@@ -24,6 +26,7 @@ body {
     border-radius: 6px;
 }
 
+/* Titres et libellés des champs du formulaire. */
 h1,
 h2 {
     margin-top: 0;
@@ -42,6 +45,7 @@ label {
     margin: 12px 0 4px;
 }
 
+/* Champs pleine largeur et bouton d'action principal. */
 input,
 button {
     width: 100%;
@@ -67,6 +71,7 @@ button:hover {
     background: #b79df5;
 }
 
+/* Liens de navigation, messages et séparateur. */
 a {
     color: #222;
 }

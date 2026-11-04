@@ -1,3 +1,4 @@
+<!-- Pied de page commun : identité du projet, rubriques et version affichée. -->
 <footer class="footer">
     <div class="footer-div">
         <div class="footer-projet">
