@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require_once 'db.php';
 /**
  * This file contains all function related to media categories.
  */

@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../auth.php';
+require_once __DIR__ . '/../router-helper.php';
 require_once __DIR__ . '/../validator.php';
+require_once __DIR__ . '/../controllers/media_controller.php';
 require_once __DIR__ . '/../categories_manager.php';
 
 /**
@@ -74,5 +76,11 @@ if (is_optional_string_valid($description, 2000)) {
     return;
 }
 
-
-var_dump($data);
+# -- Add the media
+try {
+    add_new_media($data);
+    redirect_successful("/admin.php", "Nous avons bien ajouté votre média.");
+} catch (Error $error) {
+    echo $error;
+    redirect_error("/admin.php");
+}

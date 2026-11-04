@@ -20,7 +20,7 @@ function is_string_valid($value, int $max_length = 200): bool
  */
 function is_optional_string_valid($value, int $max_length = 200): bool
 {
-    return $value === null || is_string_valid($value, $max_length);
+    return $value === null || (is_string($value) && strlen($value) == 0) || is_string_valid($value, $max_length);
 }
 
 
