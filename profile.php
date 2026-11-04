@@ -1,10 +1,35 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
+require 'includes/db.php';
 requireLogin();
 header('Cache-Control: no-store');
 $profileUser = currentUser();
 $profileName = htmlspecialchars($profileUser['username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $profileEmail = htmlspecialchars($profileUser['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+$pdo = getPDO();
+
+$query = $pdo->prepare(
+        "SELECT COALESCE(SUM(
+                CASE status
+                    WHEN 'completed' THEN 30
+                    WHEN 'in_progress' THEN 10
+                    ELSE 0
+                    END
+                    +
+                CASE
+                    WHEN rating IS NOT NULL THEN 5
+                    ELSE 0
+                    END
+                ), 0) AS total_xp
+                FROM user_media
+                WHERE user_id = :user_id");
+$query->execute(['user_id' => 6]);
+$result = $query->fetch();
+
+
+
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -75,7 +100,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
                             EXPERIENCE TOTALE
                         </div>
                         <div class=xp-points-label-div>
-                            <p class="xp-points"> 135 </p>
+                            <p class="xp-points"> <?= $result['total_xp'] ?> </p>
                             <p class="xp-label"> XP POINTS </p>
                         </div>
                     </div>
