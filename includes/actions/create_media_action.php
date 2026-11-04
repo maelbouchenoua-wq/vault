@@ -48,8 +48,9 @@ if (is_year_valid($release_year)) {
 }
 
 # Cover
-$cover = $_POST["cover"];
-if (is_image_attachement_valid($cover)) {
+$cover = $_FILES["cover"];
+if (is_attachement_empty($cover)) $data["cover"] = null;
+else if (is_image_attachement_valid($cover)) {
     $data["cover"] = $cover;
 } else {
     redirect_error("/admin.php", 400, "L'image n'est pas valide.");
@@ -59,7 +60,7 @@ if (is_image_attachement_valid($cover)) {
 # Description
 $description = $_POST["description"];
 if (is_optional_string_valid($description, 2000)) {
-    $data["description"] = $description;
+    $data["description"] = strlen($description) == 0 ? null : $description;
 } else {
     redirect_error("/admin.php", 400, "La description devrait faire moins de 2000 caractères.");
     return;

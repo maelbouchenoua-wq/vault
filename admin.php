@@ -115,7 +115,7 @@ header('Cache-Control: no-store');
                 ?>
 
                 <!-- Formulaire de démonstration, sans sauvegarde reliée. -->
-                <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title">
+                <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title" enctype="multipart/form-data">
                     <div class="form_tabs">
                         <input id="create" name="operation_type" type="radio" checked>
                         <label for="create" class="tab_active">⊕ Créer une œuvre</label>
@@ -162,7 +162,6 @@ header('Cache-Control: no-store');
                         <label class="field_label" for="release_year">Année de sortie</label>
                         <input class="year_input" id="release_year" name="release_year" type="number" placeholder="2017">
                     </div>
-
                     <div class="form_field">
                         <div class="field_heading">
                             <label for="poster_file">Visuel de l’affiche (format 2:3)</label>
