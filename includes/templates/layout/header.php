@@ -33,7 +33,7 @@ $headerUrl = static fn(string $path): string => htmlspecialchars(authUrl($path),
                     <img class="profile_picture" src="<?= $headerUrl('assets/images/profil-picture.jpg') ?>" alt="Photo de profil">
                     <span class="account-name"><?= htmlspecialchars($headerUser['username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></span>
                 </a>
-                <form class="logout-form" action="<?= $headerUrl('includes/logout_action.php') ?>" method="post">
+                <form class="logout-form" action="<?= $headerUrl('includes/actions/logout_action.php') ?>" method="post">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                     <button type="submit" class="logout-button">Se déconnecter</button>
                 </form>

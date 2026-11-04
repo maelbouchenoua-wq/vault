@@ -56,10 +56,11 @@ function renderStarsNotation($starCount): string
 {
     $starCount = is_numeric($starCount) ? max(0, min(5, (int) $starCount)) : 0;
     $content = '';
-    for ($i = 1; $i <= 5; $i++) {
-        $image = $i <= $starCount ? 'star.svg' : 'star_empty.svg';
-        $url = catalogueHtml(authUrl('assets/images/' . $image));
-        $content .= "<img src='$url' alt='Étoile de notation $i/5'>";
+    for ($i = 1; $i <= $starCount; $i++) {
+        $content .= "<img src='/assets/images/star_filled.svg' alt='Étoile de notation $i/5'>";
+    }
+    for (; $i <= 5; $i++) {
+        $content .= "<img src='/assets/images/star_empty.svg' alt='Étoile de notation $i/5'>";
     }
 
     return $content;

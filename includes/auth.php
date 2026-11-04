@@ -3,7 +3,7 @@
 function authUrl(string $path): string
 {
     $directory = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/index.php'));
-    $directory = preg_replace('~/includes$~', '', $directory);
+    $directory = preg_replace('~/includes(?:/actions)?$~', '', $directory);
     $base = $directory === '/' || $directory === '.' ? '' : rtrim($directory, '/');
 
     return $base . '/' . ltrim($path, '/');

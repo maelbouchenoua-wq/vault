@@ -34,7 +34,7 @@ $values = $values ?? ['nickname' => '', 'email' => ''];
                 </div>
             <?php endif; ?>
 
-            <form action="<?= authUrl('includes/register_action.php') ?>" method="post">
+            <form action="<?= authUrl('includes/actions/register_action.php') ?>" method="post">
                 <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>">
                 <label for="nickname">Pseudo</label>
                 <input type="text" id="nickname" name="nickname" maxlength="50" autocomplete="username"

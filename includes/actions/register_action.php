@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/../auth.php';
 startSession();
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
@@ -60,7 +60,7 @@ if ($passwordConfirmation === '') {
 }
 
 if ($errors === []) {
-    require_once __DIR__ . '/db.php';
+    require_once __DIR__ . '/../db.php';
 
     try {
         $pdo = getPDO(true);
@@ -95,7 +95,7 @@ if ($errors === []) {
 if ($errors !== []) {
     http_response_code($errorStatus);
     $values = ['nickname' => $nickname, 'email' => $email];
-    require __DIR__ . '/../register.php';
+    require __DIR__ . '/../../register.php';
     exit;
 }
 

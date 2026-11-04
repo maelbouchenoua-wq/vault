@@ -30,7 +30,7 @@ if ($loginError === '' && currentUser() !== null) {
                 <p role="status">Vous êtes déconnecté.</p>
             <?php endif; ?>
 
-            <form action="<?= authUrl('includes/login_action.php') ?>" method="post">
+            <form action="<?= authUrl('includes/actions/login_action.php') ?>" method="post">
                 <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" maxlength="80" autocomplete="email"

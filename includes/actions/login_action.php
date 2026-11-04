@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/../auth.php';
 startSession();
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
@@ -20,7 +20,7 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
     || mb_strlen($password, 'UTF-8') > 128) {
     http_response_code(401);
 } else {
-    require_once __DIR__ . '/db.php';
+    require_once __DIR__ . '/../db.php';
 
     try {
         $pdo = getPDO(true);
@@ -56,4 +56,4 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
     }
 }
 
-require __DIR__ . '/../login.php';
+require __DIR__ . '/../../login.php';
