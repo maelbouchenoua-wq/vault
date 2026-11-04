@@ -10,26 +10,14 @@ function getCatalogue(?int $userId = null)
 {
     # Fetch data
     $pdo = getPDO();
-    $query = $pdo->prepare(
-        "SELECT medias.id,
-                user_media.user_id AS utilisateur,
-                COALESCE(user_media.status, 'planned') AS status,
-                user_media.rating,
-                medias.title,
-                medias.image_path,
-                medias.release_year,
-                medias.description,
-                categories.name AS categories
-         FROM medias
-         INNER JOIN categories ON categories.id = medias.category_id
-         LEFT JOIN user_media ON user_media.media_id = medias.id
-                             AND user_media.user_id = :userId
-         WHERE (:isVisitor = 1 OR user_media.user_id IS NOT NULL)
-         ORDER BY medias.id DESC"
+    $query = $pdo->query(
+        "SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
+                FROM user_media
+                         INNER JOIN medias ON medias.id = user_media.media_id
+                         INNER JOIN users ON users.id = user_media.user_id
+                         INNER JOIN categories ON categories.id = medias.category_id
+                WHERE user_id = $userId;"
     );
-    $query->bindValue(':userId', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
-    $query->bindValue(':isVisitor', $userId === null ? 1 : 0, PDO::PARAM_INT);
-    $query->execute();
 
     # Render the list and aggregates counters for display
     $content = '';
