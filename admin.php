@@ -30,38 +30,38 @@ header('Cache-Control: no-store');
                 </a>
             </h2>
 
-            <p>SUPERVISION &amp; CATALOGUE</p>
+        <p>SUPERVISION &amp; CATALOGUE</p>
 
-            <ul>
-                <li>
-                    <a class="nav_active" href="admin.php" aria-current="page">
-                        <img src="./assets/images/Icon admin 1.png" alt="">
-                        Console Générale
-                    </a>
-                </li>
-                <li>
-                    <a href="#record_form">
-                        <img src="./assets/images/Icon admin 2.png" alt="">
-                        Gestion Œuvres
-                    </a>
-                </li>
-                <li>
-                    <a href="profile.php">
-                        <img src="./assets/images/Icon admin 3.png" alt="">
-                        Comptes &amp; XP
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <ul>
+            <li>
+                <a class="nav_active" href="admin.php" aria-current="page">
+                    <img src="./assets/images/Icon admin 1.png" alt="">
+                    Console Générale
+                </a>
+            </li>
+            <li>
+                <a href="#record_form">
+                    <img src="./assets/images/Icon admin 2.png" alt="">
+                    Gestion Œuvres
+                </a>
+            </li>
+            <li>
+                <a href="profile.php">
+                    <img src="./assets/images/Icon admin 3.png" alt="">
+                    Comptes &amp; XP
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-        <div class="system_card">
-            <p class="system_title">SYSTÈME ACTIF <span class="status_dot" aria-hidden="true"></span></p>
-            <p class="system_text">Serveur de données connecté</p>
-            <div class="system_progress" aria-hidden="true"></div>
-        </div>
-    </aside>
+    <div class="system_card">
+        <p class="system_title">SYSTÈME ACTIF <span class="status_dot" aria-hidden="true"></span></p>
+        <p class="system_text">Serveur de données connecté</p>
+        <div class="system_progress" aria-hidden="true"></div>
+    </div>
+</aside>
 
-    <main class="top_bar">
+<main class="top_bar">
 
         <div class="console">
             <div class="console_title">
@@ -70,172 +70,182 @@ header('Cache-Control: no-store');
                 <h1>Console Système</h1>
             </div>
 
-            <div class="console_account">
-                <div class="console_experience">
-                    <img class="level_indicator" src="./assets/images/level-indicator.svg" alt="">
-                    <span class="console_level">Niv. 2</span>
-                    <span class="console_dot">•</span>
-                    <span>135 XP</span>
-                </div>
-                <a class="console_profile" href="profile.php" aria-label="Mon profil">
-                    <img class="console_avatar" src="./assets/images/profil-picture.jpg" alt="">
-                    <img class="console_arrow" src="./assets/images/arrow-down.svg" alt="">
-                </a>
+        <div class="console_account">
+            <div class="console_experience">
+                <img class="level_indicator" src="./assets/images/level-indicator.svg" alt="">
+                <span class="console_level">Niv. 2</span>
+                <span class="console_dot">•</span>
+                <span>135 XP</span>
             </div>
+            <a class="console_profile" href="profile.php" aria-label="Mon profil">
+                <img class="console_avatar" src="./assets/images/profil-picture.jpg" alt="">
+                <img class="console_arrow" src="./assets/images/arrow-down.svg" alt="">
+            </a>
         </div>
+    </div>
 
-        <div class="dashboard">
+    <div class="dashboard">
 
-            <section class="admin_banner" aria-labelledby="dashboard_title">
-                <div>
-                    <h2 id="dashboard_title"><span class="title_dot">•</span> Console d’Administration du Catalogue</h2>
-                    <p class="banner_subtitle">
-                        <img class="small_icon" src="./assets/images/coche_valider.png" alt="">
-                        Gestion centralisée du catalogue et contrôle des fiches médias
-                    </p>
-                </div>
-                <div class="banner_actions">
+        <section class="admin_banner" aria-labelledby="dashboard_title">
+            <div>
+                <h2 id="dashboard_title"><span class="title_dot">•</span> Console d’Administration du Catalogue</h2>
+                <p class="banner_subtitle">
+                    <img class="small_icon" src="./assets/images/coche_valider.png" alt="">
+                    Gestion centralisée du catalogue et contrôle des fiches médias
+                </p>
+            </div>
+            <div class="banner_actions">
                     <span class="admin_badge">
                         <img class="small_icon" src="./assets/images/coche_valider 2.png" alt="">
                         MODE ADMINISTRATEUR (RÔLE : ADMIN)
                     </span>
-                    <button class="new_button" type="button">
-                        <img class="small_icon" src="./assets/images/plus_entouré.png" alt="">
-                        + Nouvelle fiche
+                <button class="new_button" type="button">
+                    <img class="small_icon" src="./assets/images/plus_entouré.png" alt="">
+                    + Nouvelle fiche
+                </button>
+            </div>
+        </section>
+
+        <div class="dashboard_content">
+
+            <!-- Formulaire de démonstration, sans sauvegarde reliée. -->
+            <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title">
+                <div class="form_tabs">
+                    <!--TODO: Réadapter le style des labels-->
+                    <input id="create" name="operation_type" type="radio" checked>
+                    <label for="create" class="tab_active">⊕ Créer une œuvre</label>
+                    <input id="edit" name="operation_type" type="radio">
+                    <label for="edit">✎ Modifier #101</label>
+                </div>
+
+                <div class="form_heading">
+                    <h3 id="form_title">
+                        <img class="document_icon" src="./assets/images/fichier.png" alt="">
+                        Fiche de Référencement
+                    </h3>
+                    <span class="edition_badge">ÉDITION #101</span>
+                </div>
+
+                <div class="form_field">
+                    <div class="field_heading">
+                        <label for="record_name">Intitulé de l’œuvre</label>
+                        <small>1 à 150 car.</small>
+                    </div>
+                    <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049" maxlength="150" required>
+                </div>
+                <?php
+                require_once "includes/categories_manager.php";
+                $categories = get_categories_list();
+                ?>
+                <fieldset class="form_field media_field" name="category">
+                    <legend>Type de média</legend>
+                    <div class="media_choices">
+                        <?php
+                        foreach ($categories as $category) {
+                            $display_name = get_display_category($category["name"]);
+                            $is_check_tag = $category["id"] == 1 ? "checked" : "";
+                            echo "
+                        <input id='media_{$category["name"]}' name='category' type='radio' value='{$category["id"]}' $is_check_tag>
+                        <label for='media_{$category["name"]}'>$display_name</label>";
+                        }
+
+                        ?>
+                    </div>
+                </fieldset>
+
+                <div class="field_row">
+                    <div class="form_field">
+                        <label class="field_label" for="release_year">Année de sortie</label>
+                        <input class="year_input" id="release_year" name="release_year" type="number" placeholder="2017">
+                    </div>
+                    <div class="form_field">
+                        <label class="field_label" for="initial_status">Statut initial</label>
+                        <select class="status_select" id="initial_status" name="status">
+                            <option value="discover">À DÉCOUVRIR</option>
+                            <option value="in_progress">EN COURS</option>
+                            <option value="finished">TERMINÉ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form_field">
+                    <div class="field_heading">
+                        <label for="poster_file">Visuel de l’affiche (format 2:3)</label>
+                        <small>PNG, JPG, WebP</small>
+                    </div>
+                    <div class="upload_zone">
+                        <img class="upload_icon" src="./assets/images/fichier_import.png" alt="">
+                        <p><span class="upload_link">Choisir un fichier</span> ou glisser-déposer</p>
+                        <p class="upload_hint" id="poster_hint">Ratio 2:3 recommandé • Max 5 Mo</p>
+                        <input id="poster_file" name="cover" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="poster_hint">
+                    </div>
+                </div>
+
+                <div class="form_field synopsis_field">
+                    <div class="field_heading">
+                        <label for="record_synopsis">Synopsis / Description</label>
+                        <small>600 car. max.</small>
+                    </div>
+                    <textarea id="record_synopsis" name="description" maxlength="600" placeholder="Denis Villeneuve • Enquête néo-noire réplicante à Los Angeles"></textarea>
+                </div>
+
+                <div class="form_actions">
+                    <button class="cancel_button" type="reset">
+                        <img class="small_icon" src="./assets/images/fleche_retour.png" alt="">
+                        <span>Annuler</span>
+                    </button>
+                    <button class="update_button" type="submit">
+                        <img class="small_icon" src="./assets/images/actualiser.png" alt="">
+                        <span>Ajouter</span>
                     </button>
                 </div>
-            </section>
+            </form>
 
-            <div class="dashboard_content">
-
-                <!-- Formulaire de démonstration, sans sauvegarde reliée. -->
-                <form class="record_form" id="record_form" aria-labelledby="form_title">
-                    <div class="form_tabs">
-                        <button type="button">⊕ Créer une œuvre</button>
-                        <button class="tab_active" type="button">✎ Modifier #101</button>
-                    </div>
-
-                    <div class="form_heading">
-                        <h3 id="form_title">
-                            <img class="document_icon" src="./assets/images/fichier.png" alt="">
-                            Fiche de Référencement
-                        </h3>
-                        <span class="edition_badge">ÉDITION #101</span>
-                    </div>
-
-                    <div class="form_field">
-                        <div class="field_heading">
-                            <label for="record_name">Intitulé de l’œuvre</label>
-                            <small>1 à 150 car.</small>
+            <!-- Statistiques de démonstration -->
+            <section class="catalog_stats" aria-label="Statistiques du catalogue">
+                <div class="stats_cards">
+                    <article class="stat_card">
+                        <div class="stat_heading">
+                            <h3>VOLUME CATALOGUE</h3>
+                            <img class="small_icon" src="./assets/images/media.png" alt="">
                         </div>
-                        <input id="record_name" name="record_name" type="text" value="Blade Runner 2049" maxlength="150" required>
-                    </div>
-
-                    <fieldset class="form_field media_field">
-                        <legend>Type de média</legend>
-                        <div class="media_choices">
-                            <input id="media_film" name="media_type" type="radio" value="film" checked>
-                            <label for="media_film">Film</label>
-                            <input id="media_series" name="media_type" type="radio" value="series">
-                            <label for="media_series">Série</label>
-                            <input id="media_game" name="media_type" type="radio" value="game">
-                            <label for="media_game">Jeu vidéo</label>
-                        </div>
-                    </fieldset>
-
-                    <div class="field_row">
-                        <div class="form_field">
-                            <label class="field_label" for="release_year">Année de sortie</label>
-                            <input class="year_input" id="release_year" name="release_year" type="number" value="2017">
-                        </div>
-                        <div class="form_field">
-                            <label class="field_label" for="initial_status">Statut initial</label>
-                            <select class="status_select" id="initial_status" name="initial_status">
-                                <option value="discover">À DÉCOUVRIR</option>
-                                <option value="in_progress">EN COURS</option>
-                                <option value="finished">TERMINÉ</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form_field">
-                        <div class="field_heading">
-                            <label for="poster_file">Visuel de l’affiche (format 2:3)</label>
-                            <small>PNG, JPG, WebP</small>
-                        </div>
-                        <div class="upload_zone">
-                            <img class="upload_icon" src="./assets/images/fichier_import.png" alt="">
-                            <p><span class="upload_link">Choisir un fichier</span> ou glisser-déposer</p>
-                            <p class="upload_hint" id="poster_hint">Ratio 2:3 recommandé • Max 5 Mo</p>
-                            <input id="poster_file" name="poster_file" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="poster_hint">
-                        </div>
-                    </div>
-
-                    <div class="form_field synopsis_field">
-                        <div class="field_heading">
-                            <label for="record_synopsis">Synopsis / Description</label>
-                            <small>600 car. max.</small>
-                        </div>
-                        <textarea id="record_synopsis" name="record_synopsis" maxlength="600">Denis Villeneuve • Enquête néo-noire réplicante à Los Angeles</textarea>
-                    </div>
-
-                    <div class="form_actions">
-                        <button class="cancel_button" type="reset">
-                            <img class="small_icon" src="./assets/images/fleche_retour.png" alt="">
-                            <span>Annuler<br>l’édition</span>
-                        </button>
-                        <button class="update_button" type="button">
-                            <img class="small_icon" src="./assets/images/actualiser.png" alt="">
-                            <span>Mettre à jour la<br>fiche #101</span>
-                        </button>
-                    </div>
-                </form>
-
-                <!-- Statistiques de démonstration. -->
-                <section class="catalog_stats" aria-label="Statistiques du catalogue">
-                    <div class="stats_cards">
-                        <article class="stat_card">
-                            <div class="stat_heading">
-                                <h3>VOLUME CATALOGUE</h3>
-                                <img class="small_icon" src="./assets/images/media.png" alt="">
-                            </div>
-                            <p class="stat_number"><strong>12</strong> <span>œuvres</span></p>
-                            <p class="stat_detail"><span class="purple_text">+3</span> ce cycle</p>
-                        </article>
-                        <article class="stat_card">
-                            <div class="stat_heading">
-                                <h3>CINÉMA &amp; SÉRIES</h3>
-                                <img class="small_icon" src="./assets/images/masque.png" alt="">
-                            </div>
-                            <p class="stat_number"><strong class="purple_text">8</strong> <span>entrées</span></p>
-                            <p class="stat_detail">66.7% du corpus</p>
-                        </article>
-                        <article class="stat_card">
-                            <div class="stat_heading">
-                                <h3>JEUX VIDÉO</h3>
-                                <img class="small_icon" src="./assets/images/manette.png" alt="">
-                            </div>
-                            <p class="stat_number"><strong class="orange_text">4</strong> <span>titres</span></p>
-                            <p class="stat_detail">33.3% du corpus</p>
-                        </article>
-                    </div>
-
-                    <article class="distribution_card">
-                        <div class="distribution_heading">
-                            <h3>Répartition Thématique du Catalogue</h3>
-                            <span>Total 100% normalisé</span>
-                        </div>
-                        <img class="distribution_bar" src="./assets/images/bar_%25.png" alt="">
-                        <ul class="distribution_legend">
-                            <li><span class="legend_dot scifi_dot" aria-hidden="true"></span>Sci-Fi (42%)</li>
-                            <li><span class="legend_dot cyberpunk_dot" aria-hidden="true"></span>Cyberpunk (25%)</li>
-                            <li><span class="legend_dot fantasy_dot" aria-hidden="true"></span>Fantasy / Anim (20%)</li>
-                            <li><span class="legend_dot other_dot" aria-hidden="true"></span>Autres (13%)</li>
-                        </ul>
+                        <p class="stat_number"><strong>12</strong> <span>œuvres</span></p>
+                        <p class="stat_detail"><span class="purple_text">+3</span> ce cycle</p>
                     </article>
-                </section>
-            </div>
+                    <article class="stat_card">
+                        <div class="stat_heading">
+                            <h3>CINÉMA &amp; SÉRIES</h3>
+                            <img class="small_icon" src="./assets/images/masque.png" alt="">
+                        </div>
+                        <p class="stat_number"><strong class="purple_text">8</strong> <span>entrées</span></p>
+                        <p class="stat_detail">66.7% du corpus</p>
+                    </article>
+                    <article class="stat_card">
+                        <div class="stat_heading">
+                            <h3>JEUX VIDÉO</h3>
+                            <img class="small_icon" src="./assets/images/manette.png" alt="">
+                        </div>
+                        <p class="stat_number"><strong class="orange_text">4</strong> <span>titres</span></p>
+                        <p class="stat_detail">33.3% du corpus</p>
+                    </article>
+                </div>
+
+                <article class="distribution_card">
+                    <div class="distribution_heading">
+                        <h3>Répartition Thématique du Catalogue</h3>
+                        <span>Total 100% normalisé</span>
+                    </div>
+                    <img class="distribution_bar" src="./assets/images/bar_%25.png" alt="">
+                    <ul class="distribution_legend">
+                        <li><span class="legend_dot scifi_dot" aria-hidden="true"></span>Sci-Fi (42%)</li>
+                        <li><span class="legend_dot cyberpunk_dot" aria-hidden="true"></span>Cyberpunk (25%)</li>
+                        <li><span class="legend_dot fantasy_dot" aria-hidden="true"></span>Fantasy / Anim (20%)</li>
+                        <li><span class="legend_dot other_dot" aria-hidden="true"></span>Autres (13%)</li>
+                    </ul>
+                </article>
+            </section>
         </div>
-    </main>
+    </div>
+</main>
 </body>
 </html>
