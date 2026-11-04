@@ -1,12 +1,12 @@
 <?php
 
-/** Escape a catalogue value for use in HTML text or attributes. */
+// Échappe une valeur pour son affichage dans le HTML.
 function catalogueHtml($value): string
 {
     return htmlspecialchars(is_scalar($value) ? (string) $value : '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-/** Match catalogue categories to the existing filter counters and tag styles. */
+// Uniformise les catégories reconnues pour les compteurs et styles.
 function catalogueCategoryKey($category): ?string
 {
     $category = is_string($category) ? strtolower(trim($category)) : '';
@@ -19,13 +19,13 @@ function catalogueCategoryKey($category): ?string
     };
 }
 
-/** Keep missing or unexpected statuses safe to render. */
+// Conserve un statut reconnu, sinon utilise le statut planned.
 function catalogueStatus($status): string
 {
     return in_array($status, ['planned', 'in_progress', 'completed'], true) ? $status : 'planned';
 }
 
-/** Return the display value of a status. */
+// Traduit le statut normalisé en libellé francais.
 function getStatusText($status): string
 {
     return match (catalogueStatus($status)) {
@@ -35,7 +35,7 @@ function getStatusText($status): string
     };
 }
 
-/** Render the status tag of a card. */
+// Construit le badge HTML et sa classe CSS.
 function renderCardStatusTag($tag = 'planned'): string
 {
     $class = match (catalogueStatus($tag)) {
@@ -51,11 +51,12 @@ function renderCardStatusTag($tag = 'planned'): string
             </div>";
 }
 
-/** Render exactly five stars, even when the stored rating is missing or invalid. */
+// Complète la note avec cinq étoiles pleines ou vides.
 function renderStarsNotation($starCount): string
 {
     $starCount = is_numeric($starCount) ? max(0, min(5, (int) $starCount)) : 0;
     $content = '';
+
     for ($i = 1; $i <= $starCount; $i++) {
         $content .= "<img src='/assets/images/star_filled.svg' alt='Étoile de notation $i/5'>";
     }
@@ -66,23 +67,28 @@ function renderStarsNotation($starCount): string
     return $content;
 }
 
-/** Generate an HTML card using the catalogue and the current user's own data. */
+// Assemble une fiche avec les données déjà sélectionnées.
 function renderCatalogueCard(array $media): string
 {
     $tag = renderCardStatusTag($media['status'] ?? 'planned');
     $stars = renderStarsNotation($media['rating'] ?? null);
     $status = catalogueHtml(getStatusText($media['status'] ?? 'planned'));
     $category = catalogueHtml($media['categories'] ?? '');
+
     $categoryClass = match (catalogueCategoryKey($media['categories'] ?? null)) {
         'series' => 'serie',
         'game' => 'game',
         default => 'movie'
     };
+
     $title = catalogueHtml($media['title'] ?? '');
     $description = catalogueHtml($media['description'] ?? '');
     $year = catalogueHtml($media['release_year'] ?? '');
+
     $imagePath = is_string($media['image_path'] ?? null) ? trim($media['image_path']) : '';
     $imageFile = basename(str_replace('\\', '/', $imagePath));
+
+    // Choisit l'image générique lorsque le nom est inexploitable.
     $imageUrl = $imageFile === '' || $imageFile === '.' || $imageFile === '..'
         ? authUrl('assets/images/media.png')
         : authUrl('assets/images/content/' . rawurlencode($imageFile));
@@ -110,7 +116,7 @@ function renderCatalogueCard(array $media): string
                     <div class='status'>
                         <p class='state'>Statut: $status</p>
                         <div class='state_action'>
-                            <!-- Personal actions will be implemented separately. -->
+                            <!-- Les actions personnelles seront ajoutées séparément. -->
                         </div>
                     </div>
                 </div>

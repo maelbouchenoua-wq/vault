@@ -1,5 +1,4 @@
-/** Global header layout */
-
+/* En-tête partagé : placement du logo, des liens et du compte. */
 body > header {
     display: flex;
     align-items: center;
@@ -27,8 +26,7 @@ body > header a {
     color: inherit;
 }
 
-/** Logo container */
-
+/* Logo et navigation ; la page courante distingue son lien. */
 body > header .main_logo_container {
     display: flex;
     align-items: center;
@@ -62,8 +60,6 @@ body > header .main_logo_container h2 {
     color: #E2E2EB;
 }
 
-/** Navigation menu */
-
 body > header nav {
     display: flex;
     align-items: baseline;
@@ -84,6 +80,7 @@ body > header nav a.selected {
     font-weight: 600;
 }
 
+/* Actions de connexion, inscription et déconnexion, avec focus clavier. */
 body > header a.register-link {
     padding: 6px 12px;
     border-radius: 6px;
@@ -158,8 +155,7 @@ body > header nav a .inline_admin_indicator {
     font-family: "JetBrains Mono", sans-serif;
 }
 
-/** Search bar */
-
+/* Recherche et indicateurs ; jauge : https://nikitahl.com/circle-progress-bar-css. */
 body > header .search_bar {
     display: flex;
     align-items: center;
@@ -200,8 +196,6 @@ body > header .search_bar input::placeholder {
     font-family: "JetBrains Mono", sans-serif;
 }
 
-/** Level container */
-
 body > header .level_container {
     display: flex;
     align-items: center;
@@ -218,10 +212,8 @@ body > header .level_container .level_indicator {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    /** Radial progress copied from https://nikitahl.com/circle-progress-bar-css */
     background: radial-gradient(closest-side, #191B22 79%, transparent 80% 100%),
     conic-gradient(#33343B calc(100% - 25%), #FFB95F 0);
-    /* ---------------------------------| Place here the percentage of completion*/
 }
 
 body > header .level_container .level {
@@ -240,8 +232,7 @@ body > header .level_container .xp {
     color: #CBC3D7;
 }
 
-/** Account menu */
-
+/* Présentation de l'avatar et des éléments du compte. */
 body > header .account_menu {
     display: flex;
     align-items: center;
@@ -259,6 +250,7 @@ body > header .account_menu .caret {
     width: 7px;
 }
 
+/* Adaptation des éléments et des lignes selon la largeur de l'écran. */
 @media screen and (max-width: 1170px) {
     body > header .level_container {
         display: none;

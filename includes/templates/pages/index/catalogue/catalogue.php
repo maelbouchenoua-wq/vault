@@ -1,15 +1,15 @@
 <?php
+// Prépare les données et l'affichage du catalogue.
+
 require_once dirname(__DIR__, 4) . '/db.php';
 require_once __DIR__ . '/card.php';
 
-/**
- * Generate the catalogue section on the index page.
- * Will fetch all the data from the database.
- */
+// Affiche le catalogue public (null) ou la collection personnelle.
 function getCatalogue(?int $userId = null)
 {
-    # Fetch data
     $pdo = getPDO();
+
+    // Joint les données du compte avec des paramètres PDO typés.
     $query = $pdo->prepare(
         "SELECT medias.id,
                 user_media.user_id AS utilisateur,
@@ -27,11 +27,11 @@ function getCatalogue(?int $userId = null)
          WHERE (:isVisitor = 1 OR user_media.user_id IS NOT NULL)
          ORDER BY medias.id DESC"
     );
+
     $query->bindValue(':userId', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
     $query->bindValue(':isVisitor', $userId === null ? 1 : 0, PDO::PARAM_INT);
     $query->execute();
 
-    # Render the list and aggregates counters for display
     $content = '';
     $categories_count = [
         'film' => 0,
@@ -39,8 +39,11 @@ function getCatalogue(?int $userId = null)
         'game' => 0
     ];
     $media_count = 0;
+
+    // Construit les fiche et leurs compteurs de catégories.
     while ($media = $query->fetch()) {
         $content .= renderCatalogueCard($media);
+
         $category = catalogueCategoryKey($media['categories']);
         if ($category !== null) {
             $categories_count[$category]++;
@@ -49,12 +52,13 @@ function getCatalogue(?int $userId = null)
     }
 
 
+    // Prévoit un message adapté lorsque la sélection est vide.
     if ($content === '' || $media_count === 0) {
         $content = $userId === null
             ? "<p class='empty-text'>Aucun média dans le catalogue.</p>"
             : "<p class='empty-text'>Votre collection est vide.</p>";
     }
-    //TODO: Filter and sort should be dynamic
+
     echo "<section id='catalogue'>" .
         "<div class='div-filter'>
             <div class='filter-bar'>

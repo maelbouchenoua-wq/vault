@@ -1,7 +1,9 @@
 <?php
 
+// Charge les paramètres depuis le dossier de ce fichier.
 require_once __DIR__ . '/config.php';
 
+// Réutilise une connection PDO pendant la requête courante.
 function getPDO(bool $throwOnConnectionError = false): PDO {
     static $pdo = null;
 
@@ -14,6 +16,7 @@ function getPDO(bool $throwOnConnectionError = false): PDO {
         ];
         try {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+        // Transmet l’erreur ou affiche un message générique au visiteur.
         } catch (PDOException $e) {
             if ($throwOnConnectionError) {
                 throw $e;
