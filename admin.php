@@ -1,4 +1,5 @@
 <?php
+// Administration : accès réservé au rôle admin.
 require_once __DIR__ . '/includes/auth.php';
 requireAdmin();
 header('Cache-Control: no-store');
@@ -13,14 +14,12 @@ header('Cache-Control: no-store');
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/pages/admin.css">
-    <!-- Polices -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="admin_page">
 
-    <!-- Menu de gauche -->
     <aside class="admin_sidemenu">
         <nav class="navigation" aria-label="Administration">
             <h2>
@@ -64,7 +63,6 @@ header('Cache-Control: no-store');
 
     <main class="top_bar">
 
-        <!-- Barre du haut -->
         <div class="console">
             <div class="console_title">
                 <span class="console_mode">MODE ADMINISTRATEUR</span>
@@ -88,7 +86,6 @@ header('Cache-Control: no-store');
 
         <div class="dashboard">
 
-            <!-- Présentation de la page -->
             <section class="admin_banner" aria-labelledby="dashboard_title">
                 <div>
                     <h2 id="dashboard_title"><span class="title_dot">•</span> Console d’Administration du Catalogue</h2>
@@ -111,7 +108,7 @@ header('Cache-Control: no-store');
 
             <div class="dashboard_content">
 
-                <!-- Formulaire de référencement -->
+                <!-- Formulaire de démonstration, sans sauvegarde reliée. -->
                 <form class="record_form" id="record_form" aria-labelledby="form_title">
                     <div class="form_tabs">
                         <button type="button">⊕ Créer une œuvre</button>
@@ -194,7 +191,7 @@ header('Cache-Control: no-store');
                     </div>
                 </form>
 
-                <!-- Statistiques du catalogue -->
+                <!-- Statistiques de démonstration. -->
                 <section class="catalog_stats" aria-label="Statistiques du catalogue">
                     <div class="stats_cards">
                         <article class="stat_card">
