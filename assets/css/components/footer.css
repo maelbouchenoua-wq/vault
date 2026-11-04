@@ -20,7 +20,8 @@
     height: 20px;
 }
 
-.text-section {
+a, p, .text-section {
+    text-decoration: none;
     font-weight: 500;
     font-family: 'JetBrains Mono';
     font-size: 12px;
