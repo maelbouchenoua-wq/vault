@@ -111,7 +111,6 @@ header('Cache-Control: no-store');
             <!-- Formulaire de démonstration, sans sauvegarde reliée. -->
             <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title">
                 <div class="form_tabs">
-                    <!--TODO: Réadapter le style des labels-->
                     <input id="create" name="operation_type" type="radio" checked>
                     <label for="create" class="tab_active">⊕ Créer une œuvre</label>
                     <input id="edit" name="operation_type" type="radio">

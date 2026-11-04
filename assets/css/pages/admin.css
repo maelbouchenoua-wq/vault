@@ -378,7 +378,14 @@
     background-color: #0d0f15;
 }
 
-.form_tabs button {
+.form_tabs input {
+    display: none;
+}
+
+.form_tabs input + label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex: 1;
     border: none;
     border-radius: 6px;
@@ -388,7 +395,7 @@
     font-size: 13px;
 }
 
-.form_tabs .tab_active {
+.form_tabs input:checked + label {
     background-color: #a176ff;
     color: #310064;
     font-weight: 600;
