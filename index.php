@@ -63,8 +63,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
     </div>
     <?php
     require_once __DIR__ . '/includes/templates/pages/index/catalogue/catalogue.php';
-    // null affiche le catalogue public ; sinon, la collection du compte.
-    getCatalogue($user === null ? null : (int) $user['id']);
+    getCatalogue();
     ?>
     <section>
         <div class="banner">
