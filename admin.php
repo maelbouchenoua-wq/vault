@@ -13,6 +13,7 @@ header('Cache-Control: no-store');
     <title>Vault - Admin</title>
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/components/header.css">
     <link rel="stylesheet" href="./assets/css/components/operation_status.css">
     <link rel="stylesheet" href="./assets/css/pages/admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,11 +73,11 @@ header('Cache-Control: no-store');
         </div>
 
         <div class="console_account">
-            <div class="console_experience">
-                <img class="level_indicator" src="./assets/images/level-indicator.svg" alt="">
-                <span class="console_level">Niv. 2</span>
-                <span class="console_dot">•</span>
-                <span>135 XP</span>
+            <div class="level_container">
+                <div class="level_indicator"></div>
+                <p class="level">Niv. 2</p>
+                <p class="dot_separator">•</p>
+                <p class="xp">135 XP</p>
             </div>
             <a class="console_profile" href="profile.php" aria-label="Mon profil">
                 <img class="console_avatar" src="./assets/images/profil-picture.jpg" alt="">
