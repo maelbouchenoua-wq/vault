@@ -17,3 +17,4 @@
 
     </div>
 </footer>
+<?php require_once __DIR__ . '/fire-game.php'; ?>

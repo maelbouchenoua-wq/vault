@@ -64,5 +64,6 @@ $values = $values ?? ['nickname' => '', 'email' => ''];
             <p><a href="<?= authUrl('index.php') ?>">Consulter le catalogue</a></p>
         </section>
     </main>
+<?php require_once __DIR__ . '/includes/templates/layout/fire-game.php'; ?>
 </body>
 </html>

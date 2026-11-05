@@ -9,15 +9,26 @@ function getCatalogue(?int $userId = null)
 {
     $pdo = getPDO();
 
-    // Joint les données du compte avec des paramètres PDO typés.
-    $query = $pdo->query(
-        "SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
+    // Charge le catalogue public ou les données du compte.
+    if ($userId === null) {
+        // Le visiteur consulte les médias sans données personnelles.
+        $query = $pdo->query(
+            "SELECT NULL AS utilisateur, 'planned' AS status, NULL AS rating,
+                    medias.title, medias.image_path, medias.release_year, medias.description,
+                    categories.name AS categories
+             FROM medias
+             INNER JOIN categories ON categories.id = medias.category_id;"
+        );
+    } else {
+        $query = $pdo->query(
+            "SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
                 FROM user_media
                          INNER JOIN medias ON medias.id = user_media.media_id
                          INNER JOIN users ON users.id = user_media.user_id
                          INNER JOIN categories ON categories.id = medias.category_id
                 WHERE user_id = $userId;"
-    );
+        );
+    }
 
     $content = '';
     $categories_count = [
