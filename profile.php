@@ -1,7 +1,8 @@
 <?php
 // Profil privé : accès réservé aux comptes connectés.
 require_once __DIR__ . '/includes/auth.php';
-require 'includes/db.php';
+require_once 'includes/db.php';
+require_once __DIR__ . '/includes/controllers/profil_controller.php';
 requireLogin();
 header('Cache-Control: no-store');
 $profileUser = currentUser();
@@ -13,27 +14,8 @@ $pdo = getPDO();
 /*
 mettre des explication
  */
-$query = $pdo->prepare(
-        "SELECT total_xp,
-                        FLOOR(total_xp / 100) + 1 AS level,
-                        MOD(total_xp, 100)        AS progress
-                        FROM (SELECT COALESCE(SUM(
-                              CASE status
-                                  WHEN 'completed' THEN 30
-                                  WHEN 'in_progress' THEN 10
-                                  # Issue with 'planned' status in XP indications: Should be 0, but 10 to pass the test.
-                                  ELSE 10
-                                  END
-                                  +
-                              CASE
-                                  WHEN rating IS NOT NULL THEN 5
-                                  ELSE 0
-                                  END
-                      ), 0) AS total_xp
-                        FROM user_media
-                         WHERE user_id = :user_id) AS xp_calculation;");
-$query->execute(['user_id' => $profileUser['id']]);
-$result = $query->fetch();
+
+$result = get_current_user_exp();
 # permet de récuperer les xp de niveau actuel
 $currentLevelExp = $result['total_xp'] %100;
 # permet de récuperer les xp manquant pour le prochain niveau
