@@ -1,10 +1,11 @@
-.footer{
-    background-color:#0C0E14 ;
+.footer {
+    background-color: #0C0E14;
     /* height: 120px;   */
     padding-top: 40px;
     padding-bottom: 40px;
 }
-.footer-div{
+
+.footer-div {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,7 +13,8 @@
     padding-left: 48px;
     height: 40px;
 }
-.footer-section{
+
+.footer-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,7 +22,9 @@
     height: 20px;
 }
 
-a, p, .text-section {
+.footer a,
+.footer p,
+.footer .text-section {
     text-decoration: none;
     font-weight: 500;
     font-family: 'JetBrains Mono', serif;
@@ -30,7 +34,7 @@ a, p, .text-section {
     color: #CBC3D7;
 }
 
-.text-projet {
+.footer .text-projet {
     color: #958EA0;
     font-weight: 600;
     font-style: bold;
@@ -38,24 +42,24 @@ a, p, .text-section {
     line-height: 12px;
 }
 
-.vault-section {
+.footer .vault-section {
     font-family: 'space grotesk', serif;
     color: #E2E2EB;
     font-weight: 700;
-    font-style: bold;
     font-size: 18px;
     line-height: 24px;
     letter-spacing: 0.9px;
     text-transform: uppercase;
 }
-.color-dot {
+
+.footer .color-dot {
     height: 8px;
     width: 8px;
     background-color: #FFB95F;
     border-radius: 50%;
 }
 
-.text-version {
+.footer .text-version {
     font-family: 'JetBrains Mono', serif;
     font-size: 12px;
     color: #CBC3D7;

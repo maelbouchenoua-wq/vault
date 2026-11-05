@@ -33,8 +33,8 @@ CREATE TABLE medias
     FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT,
     title        VARCHAR(90),
     release_year INT UNSIGNED NOT NULL,
-    description  VARCHAR(512) NOT NULL,
-    image_path   VARCHAR(521) NOT NULL
+    description  VARCHAR(512) NULL,
+    image_path   VARCHAR(521) NULL
 );
 
 
