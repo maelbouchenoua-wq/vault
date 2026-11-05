@@ -74,7 +74,7 @@ header('Cache-Control: no-store');
 
         <div class="console_account">
             <div class="level_container">
-                <div class="level_indicator" <div class="level_indicator" style="--percentage: <?= $percentage?>%;"></div>></div>
+                <div class="level_indicator" style="--percentage: <?= $percentage?>%;"></div>
                 <p class="level">Niv. 2</p>
                 <p class="dot_separator">•</p>
                 <p class="xp">135 XP</p>
