@@ -3,7 +3,7 @@
 <!--TODO: Ajouter la classe 'records_row_active' pour les lignes entrain d'être édité.-->
 <tr class="records_row">
     <th scope="row" class="records_id"><?= $media["id"] ?></th>
-    <td><img class="records_poster" src="./assets/images/content/<?= $media["image_path"] ?>" alt="Affiche de <?= $media["title"] ?>"></td>
+    <td><img class="records_poster" src="./assets/images/content/<?= $media["image_path"] ?? 'placeholder.svg' ?>" alt="Affiche de <?= $media["title"] ?>"></td>
     <td>
         <div class="records_name"><strong><?= $media["title"] ?></strong></div>
         <p class="records_description"><?= $media["description"] ?></p>
