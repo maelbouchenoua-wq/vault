@@ -316,5 +316,6 @@ header('Cache-Control: no-store');
         </section>
     </div>
 </main>
+<?php require_once __DIR__ . '/includes/templates/layout/fire-game.php'; ?>
 </body>
 </html>

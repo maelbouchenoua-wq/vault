@@ -24,4 +24,3 @@ try {
         redirect_error("/admin.php", 500, $error->getMessage());
     else redirect_error("/admin.php");
 }
-
