@@ -84,6 +84,10 @@ header('Cache-Control: no-store');
             </a>
         </div>
     </div>
+    <?php
+    include "includes/templates/operation_status.php";
+    render_operation_status();
+    ?>
 
     <div class="dashboard">
 
@@ -108,93 +112,86 @@ header('Cache-Control: no-store');
         </section>
 
         <div class="dashboard_content">
-            <div class="container">
+            <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title" enctype="multipart/form-data">
+                <div class="form_tabs">
+                    <input id="create" name="operation_type" type="radio" checked>
+                    <label for="create" class="tab_active">⊕ Créer une œuvre</label>
+                    <input id="edit" name="operation_type" type="radio">
+                    <label for="edit">✎ Modifier #101</label>
+                </div>
+
+                <div class="form_heading">
+                    <h3 id="form_title">
+                        <img class="document_icon" src="./assets/images/fichier.png" alt="">
+                        Fiche de Référencement
+                    </h3>
+                    <span class="edition_badge">ÉDITION #101</span>
+                </div>
+
+                <div class="form_field">
+                    <div class="field_heading">
+                        <label for="record_name">Intitulé de l’œuvre</label>
+                        <small>1 à 150 car.</small>
+                    </div>
+                    <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049" maxlength="150" required>
+                </div>
                 <?php
-                include "includes/templates/operation_status.php";
-                render_operation_status();
+                require_once "includes/categories_manager.php";
+                $categories = get_categories_list();
                 ?>
-
-                <!-- Formulaire de démonstration, sans sauvegarde reliée. -->
-                <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title" enctype="multipart/form-data">
-                    <div class="form_tabs">
-                        <input id="create" name="operation_type" type="radio" checked>
-                        <label for="create" class="tab_active">⊕ Créer une œuvre</label>
-                        <input id="edit" name="operation_type" type="radio">
-                        <label for="edit">✎ Modifier #101</label>
-                    </div>
-
-                    <div class="form_heading">
-                        <h3 id="form_title">
-                            <img class="document_icon" src="./assets/images/fichier.png" alt="">
-                            Fiche de Référencement
-                        </h3>
-                        <span class="edition_badge">ÉDITION #101</span>
-                    </div>
-
-                    <div class="form_field">
-                        <div class="field_heading">
-                            <label for="record_name">Intitulé de l’œuvre</label>
-                            <small>1 à 150 car.</small>
-                        </div>
-                        <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049" maxlength="150" required>
-                    </div>
-                    <?php
-                    require_once "includes/categories_manager.php";
-                    $categories = get_categories_list();
-                    ?>
-                    <fieldset class="form_field media_field" name="category">
-                        <legend>Type de média</legend>
-                        <div class="media_choices">
-                            <?php
-                            foreach ($categories as $category) {
-                                $display_name = get_display_category($category["name"]);
-                                $is_check_tag = $category["id"] == 1 ? "checked" : "";
-                                echo "
+                <fieldset class="form_field media_field" name="category">
+                    <legend>Type de média</legend>
+                    <div class="media_choices">
+                        <?php
+                        foreach ($categories as $category) {
+                            $display_name = get_display_category($category["name"]);
+                            $is_check_tag = $category["id"] == 1 ? "checked" : "";
+                            echo "
                         <input id='media_{$category["name"]}' name='category' type='radio' value='{$category["id"]}' $is_check_tag>
                         <label for='media_{$category["name"]}'>$display_name</label>";
-                            }
+                        }
 
-                            ?>
-                        </div>
-                    </fieldset>
+                        ?>
+                    </div>
+                </fieldset>
 
-                    <div class="form_field">
-                        <label class="field_label" for="release_year">Année de sortie</label>
-                        <input class="year_input" id="release_year" name="release_year" type="number" placeholder="2017">
+                <div class="form_field">
+                    <label class="field_label" for="release_year">Année de sortie</label>
+                    <input class="year_input" id="release_year" name="release_year" type="number" placeholder="2017">
+                </div>
+                <div class="form_field">
+                    <div class="field_heading">
+                        <label for="poster_file">Visuel de l’affiche (format 2:3)</label>
+                        <small>PNG, JPG, WebP</small>
                     </div>
-                    <div class="form_field">
-                        <div class="field_heading">
-                            <label for="poster_file">Visuel de l’affiche (format 2:3)</label>
-                            <small>PNG, JPG, WebP</small>
-                        </div>
-                        <div class="upload_zone">
-                            <img class="upload_icon" src="./assets/images/fichier_import.png" alt="">
-                            <p><span class="upload_link">Choisir un fichier</span> ou glisser-déposer</p>
-                            <p class="upload_hint" id="poster_hint">Ratio 2:3 recommandé • Max 5 Mo</p>
-                            <input id="poster_file" name="cover" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="poster_hint">
-                        </div>
+                    <div class="upload_zone">
+                        <img class="upload_icon" src="./assets/images/fichier_import.png" alt="">
+                        <p><span class="upload_link">Choisir un fichier</span> ou glisser-déposer</p>
+                        <p class="upload_hint" id="poster_hint">Ratio 2:3 recommandé • Max 5 Mo</p>
+                        <input id="poster_file" name="cover" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="poster_hint">
                     </div>
+                </div>
 
-                    <div class="form_field synopsis_field">
-                        <div class="field_heading">
-                            <label for="record_synopsis">Synopsis / Description</label>
-                            <small>2000 car. max.</small>
-                        </div>
-                        <textarea id="record_synopsis" name="description" maxlength="600" placeholder="Denis Villeneuve • Enquête néo-noire réplicante à Los Angeles"></textarea>
+                <div class="form_field synopsis_field">
+                    <div class="field_heading">
+                        <label for="record_synopsis">Synopsis / Description</label>
+                        <small>2000 car. max.</small>
                     </div>
+                    <textarea id="record_synopsis" name="description" maxlength="600" placeholder="Denis Villeneuve • Enquête néo-noire réplicante à Los Angeles"></textarea>
+                </div>
 
-                    <div class="form_actions">
-                        <button class="cancel_button" type="reset">
-                            <img class="small_icon" src="./assets/images/fleche_retour.png" alt="">
-                            <span>Annuler</span>
-                        </button>
-                        <button class="update_button" type="submit">
-                            <img class="small_icon" src="./assets/images/actualiser.png" alt="">
-                            <span>Ajouter</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="form_actions">
+                    <button class="cancel_button" type="reset">
+                        <img class="small_icon" src="./assets/images/fleche_retour.png" alt="">
+                        <span>Annuler</span>
+                    </button>
+                    <button class="update_button" type="submit">
+                        <img class="small_icon" src="./assets/images/actualiser.png" alt="">
+                        <span>Ajouter</span>
+                    </button>
+                </div>
+            </form>
+
             <!-- Statistiques de démonstration -->
             <section class="catalog_stats" aria-label="Statistiques du catalogue">
                 <div class="stats_cards">

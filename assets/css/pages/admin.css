@@ -358,13 +358,6 @@
 
 /* Formulaire */
 
-.container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
-}
-
 .record_form {
     min-width: 0;
     margin: 0;
@@ -932,12 +925,29 @@
     background-color: #191b22;
 }
 
-.admin_page .records_col_id { width: 80px; }
-.admin_page .records_col_visual { width: 64px; }
-.admin_page .records_col_category { width: 92px; }
-.admin_page .records_col_year { width: 74px; }
-.admin_page .records_col_collections { width: 158px; }
-.admin_page .records_col_actions { width: 112px; }
+.admin_page .records_col_id {
+    width: 80px;
+}
+
+.admin_page .records_col_visual {
+    width: 64px;
+}
+
+.admin_page .records_col_category {
+    width: 92px;
+}
+
+.admin_page .records_col_year {
+    width: 74px;
+}
+
+.admin_page .records_col_collections {
+    width: 158px;
+}
+
+.admin_page .records_col_actions {
+    width: 112px;
+}
 
 .admin_page .records_table thead {
     background-color: #0d0f15;
