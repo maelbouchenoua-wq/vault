@@ -32,7 +32,10 @@ $query = $pdo->prepare(
                          WHERE user_id = :user_id) AS xp_calculation;");
 $query->execute(['user_id' => $profileUser['id']]);
 $result = $query->fetch();
-
+# permet de récuperer les xp de niveau actuel
+$currentLevelExp = $result['total_xp'] %100;
+# permet de récuperer les xp manquant pour le prochain niveau
+$currentLevelExpNextPalier = 100-$result['total_xp'] %100;
 
 
 
@@ -125,20 +128,23 @@ include __DIR__ . '/includes/templates/layout/header.php';
                             <p>Progression vers le niveau <?= $result['level'] +=1 ?></p>
                         </div>
                         <div class="progress-value">
-                            <p><?= $result['total_xp'] %100 ?>
-                             / 100 XP (<?= $result['total_xp'] %100 ?>%)</p>
+                            <p><?= $currentLevelExp ?>
+                             / 100 XP (<?= $currentLevelExp ?>%)</p>
                         </div>
 
                     </div>
                 </div>
                 <div class="progress-bar-xp">
+                    <div class="progress-bar-fill"
+                         style="width: <?= $currentLevelExp ?>%;">
+                    </div>
                 </div>
                 <div class="level-current-next-div">
                     <div class="level-current">
-                        <p>Niv. <?= $result['level']?> (<?= $result['total_xp'] %100 ?> XP cumulés)</p>
+                        <p>Niv. <?= $result['level']?> (<?= $currentLevelExp ?> XP cumulés)</p>
                     </div>
                     <div class="level-next">
-                        Prochain palier : (<?= 100-$result['total_xp'] %100  ?>XP)
+                        Prochain palier : (<?= $currentLevelExpNextPalier ?>XP)
                     </div>
                 </div>
                 <!-- creation of the experience point scale -->
