@@ -100,10 +100,10 @@ header('Cache-Control: no-store');
                         <img class="small_icon" src="./assets/images/coche_valider 2.png" alt="">
                         MODE ADMINISTRATEUR (RÔLE : ADMIN)
                     </span>
-                <button class="new_button" type="button">
+                <a href="#record_form" class="new_button" type="button">
                     <img class="small_icon" src="./assets/images/plus_entouré.png" alt="">
                     + Nouvelle fiche
-                </button>
+                </a>
             </div>
         </section>
 
@@ -224,167 +224,90 @@ header('Cache-Control: no-store');
                     </article>
                 </div>
 
-                    <article class="distribution_card">
-                        <div class="distribution_heading">
-                            <h3>Répartition Thématique du Catalogue</h3>
-                            <span>Total 100% normalisé</span>
-                        </div>
-                        <img class="distribution_bar" src="./assets/images/bar_%25.png" alt="">
-                        <ul class="distribution_legend">
-                            <li><span class="legend_dot scifi_dot" aria-hidden="true"></span>Sci-Fi (42%)</li>
-                            <li><span class="legend_dot cyberpunk_dot" aria-hidden="true"></span>Cyberpunk (25%)</li>
-                            <li><span class="legend_dot fantasy_dot" aria-hidden="true"></span>Fantasy / Anim (20%)</li>
-                            <li><span class="legend_dot other_dot" aria-hidden="true"></span>Autres (13%)</li>
-                        </ul>
-                    </article>
-                </section>
-            </div>
-
-            <!-- Répertoire des fiches de démonstration. -->
-            <section class="records_section" aria-labelledby="records_title">
-                <div class="records_toolbar">
-                    <div class="records_heading">
-                        <img class="records_database" src="./assets/images/bdd-icon.svg" alt="">
-                        <h2 id="records_title">Répertoire Centralisé &amp; Contrôle des Entrées</h2>
-                        <span class="records_count">12 Fiches</span>
+                <article class="distribution_card">
+                    <div class="distribution_heading">
+                        <h3>Répartition Thématique du Catalogue</h3>
+                        <span>Total 100% normalisé</span>
                     </div>
-                    <div class="records_tools">
-                        <a class="records_add" href="#record_form">
-                            <span aria-hidden="true">＋</span>
-                            Ajouter une fiche
-                        </a>
-                        <label class="records_search">
-                            <img src="./assets/images/magnifying-glass.svg" alt="">
-                            <input type="search" placeholder="Filtrer par titre ou tag..." aria-label="Filtrer les fiches par titre ou catégorie">
-                        </label>
-                        <button class="records_refresh" type="button" aria-label="Actualiser le répertoire">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                                <path d="M20 4v6h-6M4 20v-6h6"></path>
-                                <path d="M5.6 8a7 7 0 0 1 11.5-3L20 10M4 14l2.9 5A7 7 0 0 0 18.4 16"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="records_scroll" tabindex="0" role="region" aria-label="Répertoire des œuvres, défilement horizontal disponible">
-                    <table class="records_table" aria-labelledby="records_title">
-                        <colgroup>
-                            <col class="records_col_id">
-                            <col class="records_col_visual">
-                            <col class="records_col_title">
-                            <col class="records_col_category">
-                            <col class="records_col_year">
-                            <col class="records_col_collections">
-                            <col class="records_col_actions">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Visuel</th>
-                                <th scope="col">Titre &amp; notice</th>
-                                <th scope="col">Catégorie</th>
-                                <th scope="col">Sortie</th>
-                                <th scope="col">Collections<br>liées</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="records_row records_row_active">
-                                <th scope="row" class="records_id"><span class="records_active_dot" aria-hidden="true">•</span> #101</th>
-                                <td><img class="records_poster" src="./assets/images/content/blade_runner_cover.jpg" alt="Affiche de Blade Runner 2049"></td>
-                                <td>
-                                    <div class="records_name"><strong>Blade Runner 2049</strong><span class="records_editing">En cours d’édition</span></div>
-                                    <p class="records_description">Denis Villeneuve • Enquête néo-noire réplicante à Los Angeles</p>
-                                </td>
-                                <td><span class="records_category">Film</span></td>
-                                <td class="records_year">2017</td>
-                                <td class="records_collections"><strong>42</strong><span>utilisateurs</span></td>
-                                <td class="records_action">
-                                    <a class="records_edit records_edit_selected" href="#record_form" aria-label="Modifier Blade Runner 2049">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5M4 15 16 3l5 5L9 20l-6 1z"></path></svg>
-                                        <span>Édition</span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="records_row">
-                                <th scope="row" class="records_id">#102</th>
-                                <td><img class="records_poster" src="./assets/images/content/cyberpunk_phantom_liberty_cover.jpg" alt="Affiche de Cyberpunk 2077 : Phantom Liberty"></td>
-                                <td>
-                                    <div class="records_name"><strong>Cyberpunk 2077: Phantom Liberty</strong></div>
-                                    <p class="records_description">CD Projekt Red • Thriller d’espionnage technologique à Dogtown</p>
-                                </td>
-                                <td><span class="records_category records_category_game">Jeu<br>vidéo</span></td>
-                                <td class="records_year">2023</td>
-                                <td class="records_collections"><strong>38</strong><span>utilisateurs</span></td>
-                                <td class="records_action">
-                                    <a class="records_edit" href="#record_form" aria-label="Modifier Cyberpunk 2077 : Phantom Liberty">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5M4 15 16 3l5 5L9 20l-6 1z"></path></svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="records_row">
-                                <th scope="row" class="records_id">#103</th>
-                                <td><img class="records_poster" src="./assets/images/content/arcane_cover.jpg" alt="Affiche de Arcane : League of Legends"></td>
-                                <td>
-                                    <div class="records_name"><strong>Arcane: League of Legends</strong></div>
-                                    <p class="records_description">Fortiche Production • Tensions géopolitiques entre Piltover et Zaun</p>
-                                </td>
-                                <td><span class="records_category">Série</span></td>
-                                <td class="records_year">2021</td>
-                                <td class="records_collections"><strong>51</strong><span>utilisateurs</span></td>
-                                <td class="records_action">
-                                    <a class="records_edit" href="#record_form" aria-label="Modifier Arcane : League of Legends">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5M4 15 16 3l5 5L9 20l-6 1z"></path></svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="records_row">
-                                <th scope="row" class="records_id">#104</th>
-                                <td><img class="records_poster" src="./assets/images/content/dune_2_cover.jpg" alt="Affiche de Dune : Part Two"></td>
-                                <td>
-                                    <div class="records_name"><strong>Dune: Part Two</strong></div>
-                                    <p class="records_description">Denis Villeneuve • L’ascension messianique de Paul Atréides sur Arrakis</p>
-                                </td>
-                                <td><span class="records_category">Film</span></td>
-                                <td class="records_year">2024</td>
-                                <td class="records_collections"><strong>33</strong><span>utilisateurs</span></td>
-                                <td class="records_action">
-                                    <a class="records_edit" href="#record_form" aria-label="Modifier Dune : Part Two">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5M4 15 16 3l5 5L9 20l-6 1z"></path></svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="records_row">
-                                <th scope="row" class="records_id">#105</th>
-                                <td><img class="records_poster" src="./assets/images/content/elden_ring_erdtree_cover.jpg" alt="Affiche de Elden Ring : Shadow of the Erdtree"></td>
-                                <td>
-                                    <div class="records_name"><strong>Elden Ring: Shadow of the Erdtree</strong></div>
-                                    <p class="records_description">FromSoftware • Épopée crépusculaire dans le Royaume des Ombres</p>
-                                </td>
-                                <td><span class="records_category records_category_game">Jeu<br>vidéo</span></td>
-                                <td class="records_year">2024</td>
-                                <td class="records_collections"><strong>29</strong><span>utilisateurs</span></td>
-                                <td class="records_action">
-                                    <a class="records_edit" href="#record_form" aria-label="Modifier Elden Ring : Shadow of the Erdtree">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5M4 15 16 3l5 5L9 20l-6 1z"></path></svg>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="records_footer">
-                    <p class="records_summary">Affichage : 5 / 12 fiches primaires</p>
-                    <nav class="records_pagination" aria-label="Pagination du répertoire">
-                        <button type="button" aria-label="Page précédente" disabled>Prev</button>
-                        <button class="records_page_active" type="button" aria-label="Page 1" aria-current="page">1</button>
-                        <button type="button" aria-label="Page 2">2</button>
-                        <button type="button" aria-label="Page 3">3</button>
-                        <button type="button" aria-label="Page suivante">Next</button>
-                    </nav>
-                </div>
+                    <img class="distribution_bar" src="./assets/images/bar_%25.png" alt="">
+                    <ul class="distribution_legend">
+                        <li><span class="legend_dot scifi_dot" aria-hidden="true"></span>Sci-Fi (42%)</li>
+                        <li><span class="legend_dot cyberpunk_dot" aria-hidden="true"></span>Cyberpunk (25%)</li>
+                        <li><span class="legend_dot fantasy_dot" aria-hidden="true"></span>Fantasy / Anim (20%)</li>
+                        <li><span class="legend_dot other_dot" aria-hidden="true"></span>Autres (13%)</li>
+                    </ul>
+                </article>
             </section>
         </div>
-    </main>
+
+        <!-- Répertoire des fiches de démonstration. -->
+        <section class="records_section" aria-labelledby="records_title">
+            <div class="records_toolbar">
+                <div class="records_heading">
+                    <img class="records_database" src="./assets/images/bdd-icon.svg" alt="">
+                    <h2 id="records_title">Répertoire Centralisé &amp; Contrôle des Entrées</h2>
+                    <span class="records_count">12 Fiches</span>
+                </div>
+                <div class="records_tools">
+                    <a class="records_add" href="#record_form">
+                        <span aria-hidden="true">＋</span>
+                        Ajouter une fiche
+                    </a>
+                    <label class="records_search">
+                        <img src="./assets/images/magnifying-glass.svg" alt="">
+                        <input type="search" placeholder="Filtrer par titre ou tag..." aria-label="Filtrer les fiches par titre ou catégorie">
+                    </label>
+                    <button class="records_refresh" type="button" aria-label="Actualiser le répertoire">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <path d="M20 4v6h-6M4 20v-6h6"></path>
+                            <path d="M5.6 8a7 7 0 0 1 11.5-3L20 10M4 14l2.9 5A7 7 0 0 0 18.4 16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="records_scroll" tabindex="0" role="region" aria-label="Répertoire des œuvres, défilement horizontal disponible">
+                <table class="records_table" aria-labelledby="records_title">
+                    <colgroup>
+                        <col class="records_col_id">
+                        <col class="records_col_visual">
+                        <col class="records_col_title">
+                        <col class="records_col_category">
+                        <col class="records_col_year">
+                        <col class="records_col_collections">
+                        <col class="records_col_actions">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Visuel</th>
+                        <th scope="col">Titre &amp; notice</th>
+                        <th scope="col">Catégorie</th>
+                        <th scope="col">Sortie</th>
+                        <th scope="col">Collections<br>liées</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    include "./includes/templates/pages/admin/media-management/get-data.php";
+                    render_all_media();
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="records_footer">
+                <p class="records_summary">Affichage : 5 / 12 fiches primaires</p>
+                <nav class="records_pagination" aria-label="Pagination du répertoire">
+                    <button type="button" aria-label="Page précédente" disabled>Prev</button>
+                    <button class="records_page_active" type="button" aria-label="Page 1" aria-current="page">1</button>
+                    <button type="button" aria-label="Page 2">2</button>
+                    <button type="button" aria-label="Page 3">3</button>
+                    <button type="button" aria-label="Page suivante">Next</button>
+                </nav>
+            </div>
+        </section>
+    </div>
+</main>
 </body>
 </html>
