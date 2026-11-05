@@ -4,8 +4,12 @@
 require_once dirname(__DIR__, 4) . '/db.php';
 require_once __DIR__ . '/card.php';
 
-// Affiche le catalogue public (null) ou la collection personnelle.
-function getCatalogue(?int $userId = null)
+/**
+ * Render the catalogue
+ * @param int|null $userId Render the whole catalogue if not provided
+ * @return void
+ */
+function getCatalogue(?int $userId = null): void
 {
     $pdo = getPDO();
 
@@ -38,7 +42,7 @@ function getCatalogue(?int $userId = null)
     ];
     $media_count = 0;
 
-    // Construit les fiche et leurs compteurs de catégories.
+    // Construit les fiches et leurs compteurs de catégories.
     while ($media = $query->fetch()) {
         $content .= renderCatalogueCard($media);
 

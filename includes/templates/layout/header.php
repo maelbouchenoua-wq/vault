@@ -25,6 +25,12 @@ $headerUrl = static fn(string $path): string => htmlspecialchars(authUrl($path),
         </nav>
     </div>
     <div class="right_container">
+        <div class="level_container">
+            <div class="level_indicator" style="--percentage: <?= (int) ($percentage ?? 0) ?>%;"></div>
+            <p class="level">Niv. 2</p>
+            <p class="dot_separator">•</p>
+            <p class="xp">135 XP</p>
+        </div>
         <div class="search_bar">
             <img class="icon" src="<?= $headerUrl('assets/images/magnifying-glass.svg') ?>" alt="icon de loupe">
             <input type="text" placeholder="Rechercher film, série, jeu...">
