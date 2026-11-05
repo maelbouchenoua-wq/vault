@@ -17,5 +17,8 @@
                 <path d="m16 3 5 5M4 15 16 3l5 5L9 20l-6 1z"></path>
             </svg>
         </a>
+        <a class="records_edit" href="/delete_media.php?media_id=<?= $media["id"] ?>" aria-label="Supprimer <?= $media["title"] ?>">
+            <img src="../../../../../assets/images/trash_icon.svg" alt="Image de poubelle">
+        </a>
     </td>
 </tr>
