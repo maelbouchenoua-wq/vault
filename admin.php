@@ -1,6 +1,15 @@
 <?php
 // Administration : accès réservé au rôle admin.
 require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/controllers/profil_controller.php';
+
+$result2 = get_current_user_exp();
+# permet de récuperer les xp de niveau actuel
+$currentLevelExp2 = $result2['total_xp'] %100;
+# permet de récuperer les xp
+$currentExpTotal1 = $result2['total_xp'];
+# permet de récuperer le level
+$currentLevel2 = $result2['level'];
 requireAdmin();
 header('Cache-Control: no-store');
 ?>
@@ -74,10 +83,10 @@ header('Cache-Control: no-store');
 
         <div class="console_account">
             <div class="level_container">
-                <div class="level_indicator" style="--percentage: <?= $percentage?>%;"></div>
-                <p class="level">Niv. 2</p>
+                <div class="level_indicator" style="--percentage: <?= $currentLevelExp2?>%;"></div>
+                <p class="level">Niv. <?= $currentLevel2 ?></p>
                 <p class="dot_separator">•</p>
-                <p class="xp">135 XP</p>
+                <p class="xp"><?= $currentExpTotal1 ?> XP</p>
             </div>
             <a class="console_profile" href="profile.php" aria-label="Mon profil">
                 <img class="console_avatar" src="./assets/images/profil-picture.jpg" alt="">
