@@ -4,20 +4,27 @@
 require_once dirname(__DIR__, 4) . '/db.php';
 require_once __DIR__ . '/card.php';
 
-// Affiche le catalogue public (null) ou la collection personnelle.
-function getCatalogue(?int $userId = null)
+/**
+ * Render the catalogue
+ * @param int|null $userId Render the whole catalogue if not provided
+ * @return void
+ */
+function getCatalogue(?int $userId = null): void
 {
     $pdo = getPDO();
 
-    // Joint les données du compte avec des paramètres PDO typés.
-    $query = $pdo->query(
-        "SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
+    if ($userId !== null) {
+        $query = $pdo->query("SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
                 FROM user_media
                          INNER JOIN medias ON medias.id = user_media.media_id
                          INNER JOIN users ON users.id = user_media.user_id
                          INNER JOIN categories ON categories.id = medias.category_id
-                WHERE user_id = $userId;"
-    );
+                WHERE user_id = $userId;");
+    } else {
+        $query = $pdo->query("SELECT medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
+                FROM medias
+                         INNER JOIN categories ON categories.id = medias.category_id;");
+    }
 
     $content = '';
     $categories_count = [
@@ -27,7 +34,7 @@ function getCatalogue(?int $userId = null)
     ];
     $media_count = 0;
 
-    // Construit les fiche et leurs compteurs de catégories.
+    // Construit les fiches et leurs compteurs de catégories.
     while ($media = $query->fetch()) {
         $content .= renderCatalogueCard($media);
 
