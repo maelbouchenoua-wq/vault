@@ -52,26 +52,46 @@ function renderCardStatusTag($tag = 'planned'): string
 }
 
 // Complète la note avec cinq étoiles pleines ou vides.
-function renderStarsNotation($starCount): string
+function renderStarsNotation($starCount, int $mediaId): string
 {
-    $starCount = is_numeric($starCount) ? max(0, min(5, (int) $starCount)) : 0;
-    $content = '';
+    $starCount = is_numeric($starCount)
+        ? max(0, min(5, (int) $starCount))
+        : 0;
 
-    for ($i = 1; $i <= $starCount; $i++) {
-        $content .= "<img src='/assets/images/star_filled.svg' alt='Étoile de notation $i/5'>";
+    $content = "<div class='star_container'>";
+
+    for ($i = 1; $i <= 5; $i++) {
+        $image = $i <= $starCount
+            ? '/assets/images/star_filled.svg'
+            : '/assets/images/star_empty.svg';
+
+        $content .= "
+            <button
+                type='submit'
+                form='rating-form-$mediaId'
+                name='rating'
+                value='$i'
+                class='star-button'
+                aria-label='Donner une note de $i sur 5'
+            >
+                <img src='$image' alt=''>
+            </button>
+        ";
     }
-    for (; $i <= 5; $i++) {
-        $content .= "<img src='/assets/images/star_empty.svg' alt='Étoile de notation $i/5'>";
-    }
+
+    $content .= "</div>";
 
     return $content;
 }
+
+
 
 // Assemble une fiche avec les données déjà sélectionnées.
 function renderCatalogueCard(array $media): string
 {
     $tag = renderCardStatusTag($media['status'] ?? 'planned');
-    $stars = renderStarsNotation($media['rating'] ?? null);
+    $mediaId = (int) ($media['id'] ?? 0);
+    $stars = renderStarsNotation($media['rating'] ?? null, $mediaId);
     $status = catalogueHtml(getStatusText($media['status'] ?? 'planned'));
     $category = catalogueHtml($media['categories'] ?? '');
 
@@ -84,6 +104,7 @@ function renderCatalogueCard(array $media): string
     $title = catalogueHtml($media['title'] ?? '');
     $description = catalogueHtml($media['description'] ?? '');
     $year = catalogueHtml($media['release_year'] ?? '');
+    $mediaId = (int) ($media['id'] ?? 0);
 
     $imagePath = is_string($media['image_path'] ?? null) ? trim($media['image_path']) : '';
     $imageFile = basename(str_replace('\\', '/', $imagePath));
@@ -111,12 +132,25 @@ function renderCatalogueCard(array $media): string
                 <div class='status_container'>
                     <div class='note'>
                         <p>EVALUATION :</p>
-                        <div class='star_container'>$stars</div>
+                        <form method='POST' id='rating-form-$mediaId'>
+    <input type='hidden' name='media_id' value='$mediaId'>
+    $stars
+</form>
                     </div>
                     <div class='status'>
                         <p class='state'>Statut: $status</p>
                         <div class='state_action'>
-                            <!-- Les actions personnelles seront ajoutées séparément. -->
+
+ 
+    <form method='POST'>
+        <input type='hidden' name='media_id' value='$mediaId'>
+
+        <button type='submit' name='add_media'>
+            Add
+        </button>
+    </form>
+
+
                         </div>
                     </div>
                 </div>

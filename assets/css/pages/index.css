@@ -559,3 +559,79 @@ body main section#catalogue .content .card .footer .status_container .status .st
 
 
 }
+
+/* Fond sombre de la modale */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+/* Contenu de la modale */
+.modal-box {
+    background: #171923;
+    border: 1px solid #343746;
+    border-radius: 18px;
+    padding: 35px 25px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    color: white;
+    animation: modalAppear 0.3s ease;
+}
+
+.modal-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #173d32;
+    color: #65d9a0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    font-size: 35px;
+}
+
+.modal-box h2 {
+    margin-bottom: 12px;
+    font-size: 23px;
+}
+
+.modal-box p {
+    color: #b4b8c5;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.modal-box button {
+    background: #65d9a0;
+    color: #10251d;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 9px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+.modal-box button:hover {
+    background: #4fc58b;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(0);
+    }
+}

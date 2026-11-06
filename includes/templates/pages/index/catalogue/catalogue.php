@@ -9,15 +9,33 @@ function getCatalogue(?int $userId = null)
 {
     $pdo = getPDO();
 
-    // Joint les données du compte avec des paramètres PDO typés.
-    $query = $pdo->query(
-        "SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
-                FROM user_media
-                         INNER JOIN medias ON medias.id = user_media.media_id
-                         INNER JOIN users ON users.id = user_media.user_id
-                         INNER JOIN categories ON categories.id = medias.category_id
-                WHERE user_id = $userId;"
-    );
+    $query = $pdo->prepare(
+    "SELECT
+        medias.id AS id,
+        user_media.user_id AS utilisateur,
+        user_media.status,
+        user_media.rating,
+        medias.title,
+        medias.image_path,
+        medias.release_year,
+        medias.description,
+        categories.name AS categories
+    FROM medias
+    LEFT JOIN user_media
+        ON user_media.media_id = medias.id
+        AND user_media.user_id = :user_id
+    INNER JOIN categories
+        ON categories.id = medias.category_id
+    ORDER BY medias.id"
+);
+
+$query->bindValue(
+    ':user_id',
+    $userId,
+    $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT
+);
+
+$query->execute();
 
     $content = '';
     $categories_count = [
