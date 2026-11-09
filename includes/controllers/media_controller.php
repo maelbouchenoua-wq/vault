@@ -6,6 +6,20 @@ require_once __DIR__ . "/../../includes/db.php";
 
 const ATTACHEMENT_FOLDER_PATH = __DIR__ . "/../../assets/images/content";
 
+/** Fetch and return all the data of the media with the provided `$id`. */
+function fetch_media(int $id): ?array
+{
+    $pdo = getPDO();
+    $query = $pdo->prepare("SELECT * FROM medias WHERE id = :id");
+    $query->bindValue(':id', $id);
+    try {
+        $query->execute();
+        return $query->fetch();
+    } catch (PDOException) {
+        throw new Error("La base de donnée à renvoyé une erreur.");
+    }
+}
+
 
 /**
  * Insert a new `$media` in the database.
@@ -79,4 +93,36 @@ function _download_attachement($file): string
     $path = ATTACHEMENT_FOLDER_PATH . "/" . $file_name;
     move_uploaded_file($file["tmp_name"], $path);
     return $file_name;
+}
+
+
+/** Delete a media from the database and its attachements */
+function delete_media(int $id): void
+{
+    $media = fetch_media($id);
+
+    if ($media === null) throw new Error("Cannot delete media: Media doesn't exists");
+
+    # Delete attachement
+    if ($media["image_path"] !== null) _delete_attachement($media["image_path"]);
+
+    $pdo = getPDO();
+    $query = $pdo->prepare("DELETE FROM medias WHERE id = :id");
+    try {
+        $query->execute(['id' => $id]);
+    } catch (PDOException) {
+        throw new Error("La base de donnée à renvoyé une erreur.");
+    }
+}
+
+/**
+ * Delete the provided `$file_name`
+ * @internal
+ */
+function _delete_attachement(string $file_name): void
+{
+    $path = ATTACHEMENT_FOLDER_PATH . "/" . $file_name;
+    if (is_file($path)) {
+        unlink($path);
+    }
 }

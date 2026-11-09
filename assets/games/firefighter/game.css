@@ -1,0 +1,154 @@
+/* Terrain plein écran, indépendant des styles du site. */
+button.fire-launcher { position: fixed; right: 16px; bottom: 16px; z-index: 80; width: auto; min-height: 36px; margin: 0; padding: 9px 13px; border: 2px solid #ffad62; border-radius: 0; background: #0a1b26; color: #ffe4c8; font: 700 11px/1.3 Consolas, monospace; cursor: pointer; }
+button.fire-launcher[hidden] { display: none !important; }
+button.fire-launcher:focus-visible { outline: 3px solid #6bd4dc; outline-offset: 3px; }
+#fire-game { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; overflow: hidden; border: 0; border-radius: 0; background: #07141d; color: #e8f3ed; font: 400 13px/1.5 Consolas, "Courier New", monospace; color-scheme: dark; isolation: isolate; overscroll-behavior: none; }
+#fire-game:not([open]) { display: none; }
+#fire-game[open] { display: block; }
+#fire-game::backdrop { background: #07141d; }
+#fire-game, #fire-game * { box-sizing: border-box; }
+#fire-game [hidden] { display: none !important; }
+#fire-game h1, #fire-game h2, #fire-game h3, #fire-game p { width: auto; margin: 0; padding: 0; color: inherit; font-family: inherit; text-align: left; }
+#fire-game button { width: auto; min-width: 0; max-width: 100%; margin: 0; font-family: inherit; cursor: pointer; }
+#fire-game button:disabled { opacity: .4; cursor: not-allowed; }
+#fire-game :is(button, a, summary):focus-visible { outline: 3px solid #6bd4dc; outline-offset: 4px; }
+#fire-game a { color: #b0e6ec; text-underline-offset: 3px; }
+#fire-game a:hover { color: #ffc58b; }
+#fire-game svg { display: block; flex-shrink: 0; }
+#fire-game kbd { padding: 1px 4px; border: 1px solid #43616f; border-bottom-width: 2px; border-radius: 0; background: #102a37; color: #d4e7e7; font: inherit; font-size: .9em; }
+#fire-game #fire-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; outline: none; background: #173c2b; image-rendering: pixelated; touch-action: none; }
+#fire-game #fire-canvas:focus-visible { outline: 2px solid #6bd4dc; outline-offset: -2px; }
+#fire-game .fire-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; border: 0; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; }
+#fire-game .fire-overlay { position: absolute; inset: 0; z-index: 3; overflow: auto; }
+#fire-game .fire-eyebrow { margin-bottom: 8px; color: #ffad62; font-size: 10px; font-weight: 700; letter-spacing: 1.6px; }
+#fire-game .fire-button { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 46px; padding: 12px 18px; border: 2px solid #456675; border-radius: 0; background: #12303e; color: #e8f3ed; font-size: 12px; font-weight: 700; line-height: 1.3; text-align: center; box-shadow: 3px 3px 0 #02090f; }
+#fire-game .fire-button > span[aria-hidden] { margin-left: auto; font-size: 11px; }
+#fire-game .fire-button-primary { border-color: #ffc58b; background: #ff9139; color: #07141d; }
+#fire-game .fire-button-primary:hover:not(:disabled) { background: #ffb266; }
+#fire-game .fire-button-cyan { border-color: #a4f0f1; background: #6bd4dc; color: #07141d; }
+#fire-game .fire-button-cyan:hover:not(:disabled) { background: #9ae9eb; }
+#fire-game .fire-button-light:hover:not(:disabled) { border-color: #6bd4dc; background: #183f4e; }
+#fire-game .fire-button-quit { border-color: #9c544b; background: #341e23; color: #ffb7a5; }
+#fire-game .fire-button-quit:hover:not(:disabled) { border-color: #ff9179; background: #51292d; }
+
+/* Accueil, séquence photo et ordres au-dessus du terrain. */
+#fire-game .fire-home { display: grid; align-items: center; justify-items: center; padding: 32px 20px 56px; background: linear-gradient(180deg, #07141d9c, #07141d70 45%, #07141dd9); }
+#fire-game .fire-home-copy { display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 100%; }
+#fire-game .fire-home-mark { width: 54px; height: 54px; color: #ff9139; filter: drop-shadow(4px 4px 0 #02090f); }
+#fire-game .fire-home-mark svg { width: 100%; height: 100%; }
+#fire-game #fire-title { color: #f0e9cb; font-size: clamp(28px, 7vw, 76px); font-weight: 900; line-height: 1; letter-spacing: clamp(1px, .5vw, 6px); text-align: center; text-shadow: 5px 5px 0 #02090f; }
+#fire-game .fire-home-subtitle { color: #c0d9db; font-size: clamp(13px, 2vw, 19px); letter-spacing: 1px; text-align: center; }
+#fire-game #fire-start { min-width: 250px; max-width: 100%; margin-top: 18px; }
+#fire-game .fire-intro { z-index: 4; overflow: hidden; background: #07141d; }
+#fire-game .fire-intro-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
+#fire-game #fire-photo-one { opacity: 1; }
+#fire-game #fire-photo-two.is-active, #fire-game #fire-photo-two.is-visible, #fire-game #fire-photo-two.is-current { opacity: 1; }
+#fire-game .fire-intro-photo.is-inactive { opacity: 0 !important; }
+#fire-game #fire-intro:not([hidden]) .fire-intro-photo { animation: fire-photo-pan 10s ease-in-out both; }
+#fire-game[data-state="paused"] .fire-intro-photo { animation-play-state: paused; }
+#fire-game .fire-photo-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, #02090f22 25%, #02090f33 52%, #02090ff5); }
+#fire-game .fire-intro-copy { position: absolute; right: 230px; bottom: 46px; left: 32px; z-index: 1; }
+#fire-game #fire-intro-caption { max-width: 30ch; margin-bottom: 14px; color: #f0e9cb; font-size: clamp(24px, 3.5vw, 44px); font-weight: 900; line-height: 1.15; text-shadow: 3px 3px 0 #02090f; }
+#fire-game .fire-photo-credit { max-width: 70ch; color: #e5efee; font-size: 10px; line-height: 1.6; text-shadow: 0 1px 2px #02090f; }
+#fire-game .fire-photo-credit a { color: #e8f3ed; }
+#fire-game #fire-skip { position: absolute; right: 26px; bottom: 46px; z-index: 2; max-width: 205px; }
+#fire-game .fire-orders { z-index: 5; display: flex; align-items: center; justify-content: flex-end; padding: 30px; overflow: hidden; background: transparent; pointer-events: none; }
+#fire-game .fire-orders-window { width: 370px; max-width: 45%; max-height: 100%; padding: 18px; overflow: auto; border: 2px solid #53707c; background: #091c27f5; box-shadow: 5px 5px 0 #02090f; pointer-events: auto; }
+#fire-game #fire-orders-title { margin-bottom: 7px; color: #f0e9cb; font-size: 22px; font-weight: 900; line-height: 1.15; }
+#fire-game .fire-orders-subtitle { color: #9db8c2; font-size: 11px; }
+#fire-game .fire-team-card { margin-top: 14px; padding-top: 13px; border-top: 1px solid #355460; }
+#fire-game .fire-team-card h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; color: #dce9e5; font-size: 11px; font-weight: 700; line-height: 1.4; }
+#fire-game .fire-team-code { padding: 3px 5px; background: #ff9139; color: #07141d; font-size: 11px; font-weight: 900; }
+#fire-game .fire-team-code-cyan { background: #6bd4dc; }
+#fire-game .fire-team-card p { margin-top: 8px; color: #b0c8ce; font-size: 11px; line-height: 1.5; }
+#fire-game .fire-team-card .fire-button { width: 100%; min-height: 42px; margin-top: 11px; padding: 10px 12px; font-size: 11px; }
+
+/* Menu Échap et fin : aucune barre permanente autour du canvas. */
+#fire-game .fire-menu, #fire-game .fire-result { z-index: 10; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); align-items: center; justify-items: center; padding: 24px; background: #02090fc9; }
+#fire-game .fire-menu-window, #fire-game .fire-result-window { width: min(380px, 100%); min-width: 0; min-height: 0; max-width: 100%; max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px); padding: 26px; overflow: auto; border: 2px solid #4d6a78; background: #0a1b26; box-shadow: 6px 6px 0 #02090f; }
+#fire-game #fire-menu-title, #fire-game #fire-result-title { margin-bottom: 22px; color: #f0e9cb; font-size: 28px; font-weight: 900; line-height: 1.15; letter-spacing: 1px; }
+#fire-game .fire-menu-buttons { display: flex; flex-direction: column; gap: 10px; }
+#fire-game .fire-menu-buttons .fire-button { width: 100%; }
+#fire-game #fire-sound svg { width: 19px; height: 19px; }
+#fire-game #fire-sound [data-fire-label] { margin: 0; }
+#fire-game .fire-menu-controls { margin-top: 22px; color: #9bb9c4; font-size: 10px; line-height: 2.2; }
+#fire-game .fire-credits { margin-top: 16px; border-top: 1px solid #2e4a57; color: #a4bdc5; font-size: 9px; line-height: 1.6; }
+#fire-game .fire-credits summary { width: fit-content; padding: 11px 0 0; color: #b7d0d5; cursor: pointer; }
+#fire-game .fire-credits summary::marker { color: #ff9139; }
+#fire-game .fire-credits > div { padding-top: 10px; }
+#fire-game .fire-credits p + p { margin-top: 7px; }
+#fire-game #fire-result-text { margin-bottom: 22px; color: #b8d0d5; font-size: 13px; line-height: 1.7; }
+#fire-game .fire-result-window .fire-button { width: 100%; margin-top: 10px; }
+#fire-game .fire-menu-hint { position: absolute; bottom: max(8px, env(safe-area-inset-bottom)); left: max(12px, env(safe-area-inset-left)); z-index: 8; min-height: 26px; padding: 4px 7px; border: 0; border-radius: 0; background: #07141d80; color: #d2e1de; font-size: 10px; line-height: 1.4; opacity: .65; }
+#fire-game .fire-menu-hint:hover, #fire-game .fire-menu-hint:focus-visible { opacity: 1; }
+#fire-game[data-state="paused"] .fire-menu-hint { display: none; }
+#fire-game .fire-notice { position: absolute; right: 18px; bottom: 44px; left: 18px; z-index: 7; width: fit-content; max-width: min(560px, calc(100% - 36px)); margin: 0 auto; padding: 8px 12px; border-left: 3px solid #ff9139; background: #07141de8; color: #e7eee4; font-size: 12px; line-height: 1.5; pointer-events: none; }
+#fire-game .fire-touch { position: absolute; inset: 0; z-index: 6; display: none; pointer-events: none; }
+#fire-game .fire-dpad { position: absolute; bottom: max(40px, calc(env(safe-area-inset-bottom) + 32px)); left: max(12px, env(safe-area-inset-left)); display: grid; grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 4px; }
+#fire-game .fire-dpad [data-fire-move="up"] { grid-column: 2; }
+#fire-game .fire-dpad [data-fire-move="left"] { grid-column: 1; grid-row: 2; }
+#fire-game .fire-dpad [data-fire-move="down"] { grid-column: 2; grid-row: 2; }
+#fire-game .fire-dpad [data-fire-move="right"] { grid-column: 3; grid-row: 2; }
+#fire-game .fire-touch button { min-width: 44px; min-height: 44px; padding: 8px; border: 2px solid #8cabb5b3; border-radius: 0; background: #0a2230b8; color: #e1f5f4; font-size: 20px; line-height: 1; text-align: center; touch-action: none; user-select: none; -webkit-user-select: none; pointer-events: auto; }
+#fire-game .fire-touch button:active:not(:disabled) { border-color: #ffd1a1; background: #a35425df; }
+#fire-game .fire-touch-actions { position: absolute; right: max(12px, env(safe-area-inset-right)); bottom: max(40px, calc(env(safe-area-inset-bottom) + 32px)); display: flex; flex-direction: column; gap: 6px; }
+#fire-game .fire-touch-actions button { min-width: 82px; font-size: 10px; font-weight: 700; }
+#fire-game .fire-touch-actions .fire-spray-button { border-color: #8de6ebc9; background: #125362c9; color: #d4fcff; }
+
+@keyframes fire-photo-pan { from { transform: scale(1.04) translateX(-.6%); } to { transform: scale(1.12) translateX(.6%); } }
+@media (pointer: coarse), (max-width: 700px) {
+    #fire-game[data-state="playing"]:not([data-phase="orders"]) .fire-touch { display: block; }
+    #fire-game[data-state="playing"] .fire-notice { bottom: 150px; }
+}
+@media (max-width: 700px) {
+    #fire-game .fire-home { padding: 20px 16px 52px; }
+    #fire-game .fire-home-copy { gap: 14px; }
+    #fire-game .fire-home-mark { width: 42px; height: 42px; }
+    #fire-game #fire-start { min-width: 235px; margin-top: 14px; }
+    #fire-game .fire-intro-copy { right: 18px; bottom: 110px; left: 18px; }
+    #fire-game #fire-intro-caption { font-size: clamp(24px, 6vw, 34px); }
+    #fire-game .fire-photo-credit { font-size: 9px; }
+    #fire-game #fire-skip { right: 18px; bottom: 46px; min-height: 42px; padding: 10px 12px; font-size: 10px; }
+    #fire-game .fire-orders { justify-content: center; padding: 18px 14px 46px; overflow: auto; background: #02090fc9; pointer-events: auto; }
+    #fire-game .fire-orders-window { width: 370px; max-width: 100%; padding: 17px; }
+    #fire-game #fire-orders-title { font-size: 21px; }
+    #fire-game .fire-menu, #fire-game .fire-result { padding: 18px; }
+    #fire-game .fire-menu-window, #fire-game .fire-result-window { max-height: calc(100vh - 36px); max-height: calc(100dvh - 36px); padding: 22px; }
+}
+@media (max-width: 360px) {
+    #fire-game #fire-title { font-size: 28px; letter-spacing: .5px; }
+    #fire-game .fire-menu, #fire-game .fire-result { padding: 14px; }
+    #fire-game .fire-menu-window, #fire-game .fire-result-window { max-height: calc(100vh - 28px); max-height: calc(100dvh - 28px); padding: 18px; }
+    #fire-game .fire-dpad { left: 9px; grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(2, 42px); gap: 3px; }
+    #fire-game .fire-dpad button { min-width: 40px; min-height: 42px; }
+    #fire-game .fire-touch-actions { right: 9px; }
+    #fire-game .fire-touch-actions button { min-width: 76px; }
+}
+@media (max-height: 520px) {
+    #fire-game .fire-home-copy { gap: 10px; }
+    #fire-game .fire-home-mark { width: 36px; height: 36px; }
+    #fire-game #fire-title { font-size: clamp(28px, 7vw, 52px); }
+    #fire-game #fire-start { margin-top: 8px; }
+    #fire-game .fire-orders { padding: 14px 18px 42px; }
+    #fire-game .fire-orders-window { padding: 12px; }
+    #fire-game #fire-orders-title { font-size: 19px; }
+    #fire-game .fire-eyebrow { margin-bottom: 5px; font-size: 9px; }
+    #fire-game .fire-team-card { margin-top: 10px; padding-top: 9px; }
+    #fire-game .fire-team-card p { margin-top: 6px; font-size: 10px; }
+    #fire-game .fire-team-card .fire-button { min-height: 38px; margin-top: 8px; padding: 8px 10px; }
+    #fire-game .fire-menu, #fire-game .fire-result { padding: 16px; }
+    #fire-game .fire-menu-window, #fire-game .fire-result-window { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); padding: 18px 22px; }
+    #fire-game #fire-menu-title, #fire-game #fire-result-title { margin-bottom: 15px; font-size: 24px; }
+    #fire-game .fire-menu-buttons { gap: 8px; }
+    #fire-game .fire-menu-buttons .fire-button { min-height: 40px; padding: 9px 14px; }
+    #fire-game .fire-menu-controls { margin-top: 16px; }
+    #fire-game .fire-intro-copy { bottom: 46px; }
+    #fire-game #fire-intro-caption { margin-bottom: 9px; font-size: 27px; }
+}
+@media (max-height: 520px) and (max-width: 700px) {
+    #fire-game .fire-intro-copy { right: 190px; bottom: 46px; }
+    #fire-game #fire-intro-caption { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #fire-game *, button.fire-launcher { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
