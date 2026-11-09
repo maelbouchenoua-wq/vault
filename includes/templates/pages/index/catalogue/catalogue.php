@@ -10,7 +10,7 @@ function getCatalogue(?int $userId = null)
     $pdo = getPDO();
 
     $query = $pdo->prepare(
-    "SELECT
+        "SELECT
         medias.id AS id,
         user_media.user_id AS utilisateur,
         user_media.status,
@@ -27,15 +27,15 @@ function getCatalogue(?int $userId = null)
     INNER JOIN categories
         ON categories.id = medias.category_id
     ORDER BY medias.id"
-);
+    );
 
-$query->bindValue(
-    ':user_id',
-    $userId,
-    $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT
-);
+    $query->bindValue(
+        ':user_id',
+        $userId,
+        $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT
+    );
 
-$query->execute();
+    $query->execute();
 
     $content = '';
     $categories_count = [
@@ -45,7 +45,7 @@ $query->execute();
     ];
     $media_count = 0;
 
-    // Construit les fiche et leurs compteurs de catégories.
+    // Construit les fiches et leurs compteurs de catégories.
     while ($media = $query->fetch()) {
         $content .= renderCatalogueCard($media);
 

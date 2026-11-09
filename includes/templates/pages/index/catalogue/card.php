@@ -132,25 +132,20 @@ function renderCatalogueCard(array $media): string
                 <div class='status_container'>
                     <div class='note'>
                         <p>EVALUATION :</p>
-                        <form method='POST' id='rating-form-$mediaId'>
-    <input type='hidden' name='media_id' value='$mediaId'>
-    $stars
-</form>
+                        <form method='POST' id='rating-form-$mediaId' action='/includes/actions/set_rating_action.php'>
+                            <input type='hidden' name='media_id' value='$mediaId'>
+                            $stars
+                        </form>
                     </div>
                     <div class='status'>
                         <p class='state'>Statut: $status</p>
                         <div class='state_action'>
-
- 
-    <form method='POST'>
-        <input type='hidden' name='media_id' value='$mediaId'>
-
-        <button type='submit' name='add_media'>
-            Add
-        </button>
-    </form>
-
-
+                             <form method='POST' action='/includes/actions/add_media_to_collection_action.php'>
+                                 <input type='hidden' name='media_id' value='$mediaId'>
+                                 <button type='submit' name='add_media'>
+                                     Add
+                                 </button>
+                             </form>
                         </div>
                     </div>
                 </div>
