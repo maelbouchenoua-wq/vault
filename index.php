@@ -1,5 +1,5 @@
 <?php
-// Accueil : catalogue public ou collection personelle.
+/* Accueil : catalogue public ou collection personelle. */
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 $user = currentUser();

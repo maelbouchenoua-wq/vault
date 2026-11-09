@@ -1,10 +1,10 @@
 <?php
-// En-tête commun : liens adapté à la session et à la page active.
+/* En-tête commun : liens adapté à la session et à la page active. */
 require_once __DIR__ . '/../../auth.php';
 startSession();
 $headerUser = currentUser();
 $current_page = $current_page ?? '';
-// Les URLs du site sont adaptées au dossier, puis échappées pour le HTML.
+/* Les URLs du site sont adaptées au dossier, puis échappées pour le HTML. */
 $headerUrl = static fn(string $path): string => htmlspecialchars(authUrl($path), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
 <header>

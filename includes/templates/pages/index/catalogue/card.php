@@ -1,12 +1,12 @@
 <?php
 
-// Échappe une valeur pour son affichage dans le HTML.
+/* Échappe une valeur pour son affichage dans le HTML. */
 function catalogueHtml($value): string
 {
     return htmlspecialchars(is_scalar($value) ? (string) $value : '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-// Uniformise les catégories reconnues pour les compteurs et styles.
+/* Uniformise les catégories reconnues pour les compteurs et styles. */
 function catalogueCategoryKey($category): ?string
 {
     $category = is_string($category) ? strtolower(trim($category)) : '';
@@ -19,13 +19,13 @@ function catalogueCategoryKey($category): ?string
     };
 }
 
-// Conserve un statut reconnu, sinon utilise le statut planned.
+/* Conserve un statut reconnu, sinon utilise le statut planned. */
 function catalogueStatus($status): string
 {
     return in_array($status, ['planned', 'in_progress', 'completed'], true) ? $status : 'planned';
 }
 
-// Traduit le statut normalisé en libellé francais.
+/* Traduit le statut normalisé en libellé francais. */
 function getStatusText($status): string
 {
     return match (catalogueStatus($status)) {
@@ -35,7 +35,7 @@ function getStatusText($status): string
     };
 }
 
-// Construit le badge HTML et sa classe CSS.
+/* Construit le badge HTML et sa classe CSS. */
 function renderCardStatusTag($tag = 'planned'): string
 {
     $class = match (catalogueStatus($tag)) {
@@ -51,7 +51,7 @@ function renderCardStatusTag($tag = 'planned'): string
             </div>";
 }
 
-// Complète la note avec cinq étoiles pleines ou vides.
+/* Complète la note avec cinq étoiles pleines ou vides. */
 function renderStarsNotation($starCount): string
 {
     $starCount = is_numeric($starCount) ? max(0, min(5, (int) $starCount)) : 0;
@@ -67,7 +67,7 @@ function renderStarsNotation($starCount): string
     return $content;
 }
 
-// Assemble une fiche avec les données déjà sélectionnées.
+/* Assemble une fiche avec les données déjà sélectionnées. */
 function renderCatalogueCard(array $media): string
 {
     $tag = renderCardStatusTag($media['status'] ?? 'planned');
@@ -88,7 +88,7 @@ function renderCatalogueCard(array $media): string
     $imagePath = is_string($media['image_path'] ?? null) ? trim($media['image_path']) : '';
     $imageFile = basename(str_replace('\\', '/', $imagePath));
 
-    // Choisit l'image générique lorsque le nom est inexploitable.
+    /* Choisit l'image générique lorsque le nom est inexploitable. */
     $imageUrl = $imageFile === '' || $imageFile === '.' || $imageFile === '..'
         ? authUrl('assets/images/media.png')
         : authUrl('assets/images/content/' . rawurlencode($imageFile));

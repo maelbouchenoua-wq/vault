@@ -1,11 +1,11 @@
 <?php
-// Formulaire de connexion, réutilisé en cas d'erreur du seveur.
+/* Formulaire de connexion, réutilisé en cas d'erreur du seveur. */
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 $loginError = $loginError ?? '';
 $loginEmail = $loginEmail ?? '';
 
-// Une session déjà connectée rejoint le profil avant le HTML.
+/* Une session déjà connectée rejoint le profil avant le HTML. */
 if ($loginError === '' && currentUser() !== null) {
     header('Location: ' . authUrl('profile.php'), true, 302);
     exit;

@@ -1,11 +1,11 @@
 <?php
-// Profil privé : accès réservé aux comptes connectés.
+/* Profil privé : accès réservé aux comptes connectés. */
 require_once __DIR__ . '/includes/auth.php';
 require 'includes/db.php';
 requireLogin();
 header('Cache-Control: no-store');
 $profileUser = currentUser();
-// Prépare le pseudo et l’email pour l’affichage HTML.
+/* Prépare le pseudo et l’email pour l’affichage HTML. */
 $profileName = htmlspecialchars($profileUser['username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $profileEmail = htmlspecialchars($profileUser['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 

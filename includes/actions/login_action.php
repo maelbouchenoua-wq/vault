@@ -1,6 +1,6 @@
 <?php
 
-// Vérifie les identifants reçus par le formulaire POST.
+/* Vérifie les identifants reçus par le formulaire POST. */
 require_once __DIR__ . '/../auth.php';
 startSession();
 
@@ -12,7 +12,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 $loginEmail = is_string($_POST['email'] ?? null) ? trim($_POST['email']) : '';
 $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
 
-// Même message pour e-mail inconnu ou mauvais mot de passe.
+/* Même message pour e-mail inconnu ou mauvais mot de passe. */
 $loginError = 'Adresse e-mail ou mot de passe incorrect.';
 
 if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
@@ -28,18 +28,18 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
 
     try {
         $pdo = getPDO(true);
-        // Recherche le compte avec une requête SQL préparé.
+        /* Recherche le compte avec une requête SQL préparé. */
         $query = $pdo->prepare('SELECT id, username, email, password, role FROM users WHERE email = :email LIMIT 1');
         $query->execute(['email' => $loginEmail]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        // Vérifie aussi une empreinte quand aucun compte n’existe.
+        /* Vérifie aussi une empreinte quand aucun compte n’existe. */
         $dummyHash = '$argon2id$v=19$m=65536,t=4,p=1$ODhobHRzdXR5NmE2Y3dLQQ$6ouEzuneOcLkkzdJB7lSO8LY7tnSVAjtnKSbUMfdTzA';
-        // Reconnaît automatiquement les empreintes bcrypt et Argon2 existantes.
+        /* Reconnaît automatiquement les empreintes bcrypt et Argon2 existantes. */
         $passwordIsValid = password_verify($password, $user !== false ? $user['password'] : $dummyHash);
 
         if ($user !== false && $passwordIsValid) {
-            // Renouvelle la session et conserve le rôle enregistré en base.
+            /* Renouvelle la session et conserve le rôle enregistré en base. */
             if (!session_regenerate_id(true)) {
                 throw new RuntimeException('Session renewal failed.');
             }

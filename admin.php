@@ -1,5 +1,5 @@
 <?php
-// Administration : accès réservé au rôle admin.
+/* Administration : accès réservé au rôle admin. */
 require_once __DIR__ . '/includes/auth.php';
 requireAdmin();
 header('Cache-Control: no-store');

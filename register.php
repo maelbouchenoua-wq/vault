@@ -1,9 +1,9 @@
 <?php
-// Formulaire d'inscription et réaffichage des erreurs du serveur.
+/* Formulaire d'inscription et réaffichage des erreurs du serveur. */
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 
-// Un membre déjà connecté est rediriger vers son profil.
+/* Un membre déjà connecté est rediriger vers son profil. */
 if (currentUser() !== null) {
     header('Location: ' . authUrl('profile.php'), true, 303);
     exit;
