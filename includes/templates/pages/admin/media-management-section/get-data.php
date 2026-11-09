@@ -1,5 +1,5 @@
 <?php
-include_once "./includes/db.php";
+include_once __DIR__ . "/../../../../libs/db.php";
 
 /** Render all media on admin page */
 function render_all_media(): void
@@ -12,6 +12,6 @@ function render_all_media(): void
                                 ORDER BY media.id;
                                 ");
     while ($media = $query->fetch()) {
-        include __DIR__ . "/table-row.php";
+        require __DIR__ . "/table-row.php";
     }
 }

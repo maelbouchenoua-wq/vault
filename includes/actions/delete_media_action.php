@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../auth.php';
-require_once __DIR__ . '/../router-helper.php';
+require_once __DIR__ . '/../libs/auth.php';
+require_once __DIR__ . '/../libs/router-helper.php';
 require_once __DIR__ . '/../controllers/media_controller.php';
 
 /**

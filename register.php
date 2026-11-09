@@ -1,6 +1,6 @@
 <?php
 // Formulaire d'inscription et réaffichage des erreurs du serveur.
-require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/libs/auth.php';
 startSession();
 
 // Un membre déjà connecté est rediriger vers son profil.

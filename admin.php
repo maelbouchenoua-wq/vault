@@ -1,6 +1,6 @@
 <?php
 // Administration : accès réservé au rôle admin.
-require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/libs/auth.php';
 require_once __DIR__ . '/includes/controllers/profil_controller.php';
 
 $result2 = get_current_user_exp();
@@ -95,7 +95,7 @@ header('Cache-Control: no-store');
         </div>
     </div>
     <?php
-    include "includes/templates/operation_status.php";
+    include "includes/components/operation_status.php";
     render_operation_status();
     ?>
 
@@ -146,7 +146,7 @@ header('Cache-Control: no-store');
                     <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049" maxlength="150" required>
                 </div>
                 <?php
-                require_once "includes/categories_manager.php";
+                require_once "includes/controllers/categories_controller.php";
                 $categories = get_categories_list();
                 ?>
                 <fieldset class="form_field media_field" name="category">
@@ -297,7 +297,7 @@ header('Cache-Control: no-store');
                     </thead>
                     <tbody>
                     <?php
-                    include "./includes/templates/pages/admin/media-management/get-data.php";
+                    require_once __DIR__ . "/includes/templates/pages/admin/media-management-section/get-data.php";
                     render_all_media();
                     ?>
                     </tbody>

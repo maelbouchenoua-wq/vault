@@ -1,6 +1,6 @@
 <?php
 // Formulaire de connexion, réutilisé en cas d'erreur du seveur.
-require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/libs/auth.php';
 startSession();
 $loginError = $loginError ?? '';
 $loginEmail = $loginEmail ?? '';

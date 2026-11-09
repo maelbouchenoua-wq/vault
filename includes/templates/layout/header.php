@@ -1,6 +1,6 @@
 <?php
 // En-tête commun : liens adapté à la session et à la page active.
-require_once __DIR__ . '/../../auth.php';
+require_once __DIR__ . '/../../libs/auth.php';
 require_once __DIR__ . '/../../controllers/profil_controller.php';
 startSession();
 $headerUser = currentUser();
@@ -11,7 +11,7 @@ $profileUser = currentUser();
 
 $result1 = get_current_user_exp();
 # permet de récuperer les xp de niveau actuel
-$currentLevelExp1 = $result1['total_xp'] %100;
+$currentLevelExp1 = $result1['total_xp'] % 100;
 # permet de récuperer les xp
 $currentExpTotal = $result1['total_xp'];
 # permet de récuperer le level
@@ -37,7 +37,7 @@ $currentLevel1 = $result1['level'];
     </div>
     <div class="right_container">
         <div class="level_container">
-            <div class="level_indicator" style="--percentage: <?= $currentLevelExp1?>%;"></div>
+            <div class="level_indicator" style="--percentage: <?= $currentLevelExp1 ?>%;"></div>
             <p class="level">Niv. <?= $currentLevel1 ?></p>
             <p class="dot_separator">•</p>
             <p class="xp"><?= $currentExpTotal ?> XP</p>

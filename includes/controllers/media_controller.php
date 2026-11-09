@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../../includes/db.php";
+require_once __DIR__ . "/../../includes/libs/db.php";
 /**
  * This file contains all function related to media manipulation.
  */

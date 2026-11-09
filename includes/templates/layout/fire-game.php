@@ -1,6 +1,6 @@
 <?php
 // Chemins du jeu adaptés à la racine du site et à ses sous-dossiers.
-require_once __DIR__ . '/../../auth.php';
+require_once __DIR__ . '/../../libs/auth.php';
 $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('assets/games/firefighter/' . $path), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
 <link rel="stylesheet" href="<?= $fireAssetUrl('game.css') ?>">

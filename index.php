@@ -1,7 +1,7 @@
 <?php
 // Accueil : catalogue public ou collection personnelle.
-require_once __DIR__ . '/includes/auth.php';
-require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/libs/auth.php';
+require_once __DIR__ . '/includes/libs/db.php';
 startSession();
 $user = currentUser();
 
@@ -64,7 +64,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
         </div>
     </div>
     <?php
-    require_once __DIR__ . '/includes/templates/pages/index/catalogue/catalogue.php';
+    require_once __DIR__ . '/includes/templates/pages/index/catalogue-section/catalogue.php';
     // null affiche le catalogue public ; sinon, la collection du compte.
     getCatalogue($user === null ? null : (int)$user['id']);
     ?>

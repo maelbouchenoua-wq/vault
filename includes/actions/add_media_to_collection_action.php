@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../auth.php';
-require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../libs/auth.php';
+require_once __DIR__ . '/../libs/db.php';
 require_once __DIR__ . '/../controllers/collection_controller.php';
-require_once __DIR__ . '/../router-helper.php';
+require_once __DIR__ . '/../libs/router-helper.php';
 
 $user = currentUser();
 

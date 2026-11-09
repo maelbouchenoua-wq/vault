@@ -1,4 +1,4 @@
-<?php include_once "./includes/categories_manager.php" ?>
+<?php include_once "./includes/controllers/categories_controller.php" ?>
 
 <!--TODO: Ajouter la classe 'records_row_active' pour les lignes entrain d'être édité.-->
 <tr class="records_row">

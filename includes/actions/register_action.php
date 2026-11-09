@@ -1,7 +1,7 @@
 <?php
 /** Traite l'inscription : vérifie le formulaire, hache le mot de passe et crée un compte user. */
-// __DIR__ pointe ici sur includes/actions ; ../auth.php charge les outils communs de session et de CSRF.
-require_once __DIR__ . '/../auth.php';
+// __DIR__ pointe ici sur includes/actions ; ../libs/auth.php charge les outils communs de session et de CSRF.
+require_once __DIR__ . '/../libs/auth.php';
 startSession();
 
 // L'action reçoit un formulaire POST ; un accès direct renvoie vers la page d'inscription.
@@ -68,7 +68,7 @@ if ($passwordConfirmation === '') {
 
 // N'interroger et ne modifier la base que si toutes les validations précédentes ont réussi.
 if ($errors === []) {
-    require_once __DIR__ . '/../db.php';
+    require_once __DIR__ . '/../libs/db.php';
 
     try {
         // true permet d'intercepter ici une indisponibilité de la connexion PDO.

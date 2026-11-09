@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../auth.php';
+require_once __DIR__ . '/../libs/auth.php';
 startSession();
 
 // Accepte uniquement une déconnexion demandée en POST.

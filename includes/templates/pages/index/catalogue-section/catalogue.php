@@ -1,7 +1,7 @@
 <?php
 // Prépare les données et l'affichage du catalogue.
 
-require_once dirname(__DIR__, 4) . '/db.php';
+require_once dirname(__DIR__, 4) . '/libs/db.php';
 require_once __DIR__ . '/card.php';
 
 /**

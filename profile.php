@@ -1,7 +1,7 @@
 <?php
 // Profil privé : accès réservé aux comptes connectés.
-require_once __DIR__ . '/includes/auth.php';
-require_once 'includes/db.php';
+require_once __DIR__ . '/includes/libs/auth.php';
+require_once 'includes/libs/db.php';
 require_once __DIR__ . '/includes/controllers/profil_controller.php';
 requireLogin();
 header('Cache-Control: no-store');

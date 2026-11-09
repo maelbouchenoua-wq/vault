@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/includes/auth.php';
-require_once __DIR__ . '/includes/router-helper.php';
+require_once __DIR__ . '/includes/libs/auth.php';
+require_once __DIR__ . '/includes/libs/router-helper.php';
 require_once __DIR__ . '/includes/controllers/media_controller.php';
 
 # Require to be logged to a valid admin account.

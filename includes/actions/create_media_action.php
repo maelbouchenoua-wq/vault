@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/../auth.php';
-require_once __DIR__ . '/../router-helper.php';
-require_once __DIR__ . '/../validator.php';
+require_once __DIR__ . '/../libs/auth.php';
+require_once __DIR__ . '/../libs/router-helper.php';
+require_once __DIR__ . '/../libs/validator.php';
 require_once __DIR__ . '/../controllers/media_controller.php';
-require_once __DIR__ . '/../categories_manager.php';
+require_once __DIR__ . '/../controllers/categories_controller.php';
 
 /**
  * Action for creating a new media.
