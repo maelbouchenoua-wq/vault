@@ -73,7 +73,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
 
             <div>
                 <p class="banner_texte">
-                    <img class="banner_icon" width="14.67px" height="14px" src="./assets/icon/Icon.svg" alt="Logo de Vault">
+                    <img class="banner_icon" width="14.67px" height="14px" src="assets/images/check_yellow.svg" alt="Logo de Vault">
                     ARCHITECTURE WEB SPRINT 1 & 4
 
                 </p>
