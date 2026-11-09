@@ -25,8 +25,7 @@ function sendForm(event) {
 
     const request = {body: data, method: method};
 
-
-    console.log(request)
+    notification_displayer?.clearAllError();
     try {
         // Send
         fetch(targetPath, request)
@@ -60,9 +59,13 @@ try {
 }
 
 const display_error = (error) => {
-    console.error(error);
+    const message = (error instanceof Error) ? error.message : error;
+    notification_displayer.notify(NOTIFICATION_TYPE.error, message)
+    console.error(message);
 }
 
 const display_success = (message) => {
-    console.info(message ?? "L'action a été transmise correctement.")
+    message = message ?? "L'action a été transmise correctement.";
+    notification_displayer.notify(NOTIFICATION_TYPE.success, message);
+    console.info(message);
 }
