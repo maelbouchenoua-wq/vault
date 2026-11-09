@@ -2,6 +2,11 @@
 
 require_once __DIR__ . '/../auth.php';
 require_once __DIR__ . '/../db.php';
+
+/*
+ cette fonction récupère l'utilisateur actuel avec la fonction
+ "currentUser()" et calcul le niveau et le total d'xp de l'utilisateur.
+*/
 function get_current_user_exp(){
 
     requireLogin();
@@ -29,6 +34,4 @@ function get_current_user_exp(){
                          WHERE user_id = :user_id) AS xp_calculation;");
     $query->execute(['user_id' => $profileUser['id']]);
     return $query->fetch();
-
-
 }
