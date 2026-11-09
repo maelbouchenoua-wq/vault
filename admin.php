@@ -5,7 +5,7 @@ require_once __DIR__ . '/includes/controllers/profil_controller.php';
 
 $result2 = get_current_user_exp();
 # permet de récuperer les xp de niveau actuel
-$currentLevelExp2 = $result2['total_xp'] %100;
+$currentLevelExp2 = $result2['total_xp'] % 100;
 # permet de récuperer les xp
 $currentExpTotal1 = $result2['total_xp'];
 # permet de récuperer le level
@@ -23,11 +23,12 @@ header('Cache-Control: no-store');
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/components/header.css">
-    <link rel="stylesheet" href="./assets/css/components/operation_status.css">
+    <link rel="stylesheet" href="assets/css/components/notification.css">
     <link rel="stylesheet" href="./assets/css/pages/admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="./includes/js/form_action.js" defer></script>
 </head>
 <body class="admin_page">
 
@@ -83,7 +84,7 @@ header('Cache-Control: no-store');
 
         <div class="console_account">
             <div class="level_container">
-                <div class="level_indicator" style="--percentage: <?= $currentLevelExp2?>%;"></div>
+                <div class="level_indicator" style="--percentage: <?= $currentLevelExp2 ?>%;"></div>
                 <p class="level">Niv. <?= $currentLevel2 ?></p>
                 <p class="dot_separator">•</p>
                 <p class="xp"><?= $currentExpTotal1 ?> XP</p>
@@ -94,13 +95,7 @@ header('Cache-Control: no-store');
             </a>
         </div>
     </div>
-    <?php
-    include "includes/components/operation_status.php";
-    render_operation_status();
-    ?>
-
     <div class="dashboard">
-
         <section class="admin_banner" aria-labelledby="dashboard_title">
             <div>
                 <h2 id="dashboard_title"><span class="title_dot">•</span> Console d’Administration du Catalogue</h2>
@@ -316,6 +311,9 @@ header('Cache-Control: no-store');
         </section>
     </div>
 </main>
+<?php
+require_once __DIR__ . '/includes/components/notification_displayer/notification_component.php';
+?>
 <?php require_once __DIR__ . '/includes/templates/layout/fire-game.php'; ?>
 </body>
 </html>
