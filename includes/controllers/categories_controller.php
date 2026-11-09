@@ -53,7 +53,7 @@ function get_display_category(string $category): string
 /**
  * Returns if the provided `$value` is a valid category.
  */
-function is_valid_category(string $value): bool
+function is_category_valid(string $value): bool
 {
     $categories = [];
     foreach (get_categories_list() as $cat) {

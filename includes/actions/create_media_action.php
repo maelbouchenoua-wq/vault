@@ -27,7 +27,7 @@ if (is_string_valid($title, 150)) {
 # Category
 $category = $_POST["category"];
 if (is_string_valid($category, 1000)) {
-    if (is_valid_category($category)) {
+    if (is_category_valid($category)) {
         $data["category"] = $category;
     } else {
         redirect_error("/admin.php", 400, "ValidationError: Category is not valid");
