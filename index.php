@@ -1,8 +1,10 @@
 <?php
-// Accueil : catalogue public ou collection personelle.
+// Accueil : catalogue public ou collection personnelle.
 require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/db.php';
 startSession();
 $user = currentUser();
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -63,7 +65,8 @@ include __DIR__ . '/includes/templates/layout/header.php';
     </div>
     <?php
     require_once __DIR__ . '/includes/templates/pages/index/catalogue/catalogue.php';
-    getCatalogue();
+    // null affiche le catalogue public ; sinon, la collection du compte.
+    getCatalogue($user === null ? null : (int)$user['id']);
     ?>
     <section>
         <div class="banner">
@@ -104,6 +107,46 @@ include __DIR__ . '/includes/templates/layout/header.php';
         </div>
     </section>
 </main>
-<?php  include __DIR__ . '/includes/templates/layout/footer.php'; ?>
+<?php include __DIR__ . '/includes/templates/layout/footer.php'; ?>
+<!--Message-->
+<?php
+$message = $_SESSION['message'] ?? null;
+unset($_SESSION['message']);
+?>
+<?php if ($message !== null): ?>
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-box">
+            <div class="modal-icon">
+                <span>✓</span>
+            </div>
+
+            <h2>
+                <?= $message === 'success'
+                    ? 'Ajout réussi !'
+                    : 'Déjà dans votre collection !' ?>
+            </h2>
+
+            <p>
+                <?= $message === 'success'
+                    ? 'Le média a bien été ajouté à votre collection.'
+                    : 'Ce média existe déjà dans votre collection.' ?>
+            </p>
+
+            <button type="button" id="closeModal">
+                Continuer
+            </button>
+        </div>
+    </div>
+<?php endif; ?>
+<script>
+    const closeButton = document.getElementById('closeModal');
+    const modal = document.getElementById('successModal');
+
+    if (closeButton && modal) {
+        closeButton.addEventListener('click', function () {
+            modal.remove();
+        });
+    }
+</script>
 </body>
 </html>

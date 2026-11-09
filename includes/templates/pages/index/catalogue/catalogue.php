@@ -13,26 +13,33 @@ function getCatalogue(?int $userId = null): void
 {
     $pdo = getPDO();
 
-    // Charge le catalogue public ou les données du compte.
-    if ($userId === null) {
-        // Le visiteur consulte les médias sans données personnelles.
-        $query = $pdo->query(
-            "SELECT NULL AS utilisateur, 'planned' AS status, NULL AS rating,
-                    medias.title, medias.image_path, medias.release_year, medias.description,
-                    categories.name AS categories
-             FROM medias
-             INNER JOIN categories ON categories.id = medias.category_id;"
-        );
-    } else {
-        $query = $pdo->query(
-            "SELECT users.id as utilisateur, user_media.status, user_media.rating, medias.title, medias.image_path, medias.release_year, medias.description, categories.name as categories
-                FROM user_media
-                         INNER JOIN medias ON medias.id = user_media.media_id
-                         INNER JOIN users ON users.id = user_media.user_id
-                         INNER JOIN categories ON categories.id = medias.category_id
-                WHERE user_id = $userId;"
-        );
-    }
+    $query = $pdo->prepare(
+        "SELECT
+        medias.id AS id,
+        user_media.user_id AS utilisateur,
+        user_media.status,
+        user_media.rating,
+        medias.title,
+        medias.image_path,
+        medias.release_year,
+        medias.description,
+        categories.name AS categories
+    FROM medias
+    LEFT JOIN user_media
+        ON user_media.media_id = medias.id
+        AND user_media.user_id = :user_id
+    INNER JOIN categories
+        ON categories.id = medias.category_id
+    ORDER BY medias.id"
+    );
+
+    $query->bindValue(
+        ':user_id',
+        $userId,
+        $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT
+    );
+
+    $query->execute();
 
     $content = '';
     $categories_count = [

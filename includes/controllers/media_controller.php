@@ -51,6 +51,38 @@ function add_new_media(array $media): void
 }
 
 
+function add_media_to_collection(int $user_id, int $media_id): void
+{
+    $pdo = getPDO();
+
+    $query = $pdo->prepare(
+        "SELECT id FROM user_media
+         WHERE user_id = :user_id AND media_id = :media_id"
+    );
+
+    $query->execute([
+        'user_id' => $user_id,
+        'media_id' => $media_id
+    ]);
+
+    $media = $query->fetch();
+
+    if ($media) {
+        return;
+    }
+
+    $query = $pdo->prepare(
+        "INSERT INTO user_media (user_id, media_id, status, rating)
+         VALUES (:user_id, :media_id, 'planned', NULL)"
+    );
+
+    $query->execute([
+        'user_id' => $user_id,
+        'media_id' => $media_id
+    ]);
+}
+
+
 /**
  * Insert the `$file` in the attachement directory.
  * @internal
