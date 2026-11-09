@@ -16,7 +16,12 @@ $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('ass
             <span class="fire-home-mark" aria-hidden="true"><svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M14 2h6v8h4v6h4v10h-4v4H8v-4H4V16h4v-6h4v10h4v-8h-2Z" fill="currentColor"/><path d="M14 20h6v6h-6Z" fill="#fff1b8"/></svg></span>
             <h1 id="fire-title">INTERVENTION</h1>
             <p class="fire-home-subtitle">Feu d’habitation</p>
-            <button type="button" id="fire-start" class="fire-button fire-button-primary">Prendre le départ <span aria-hidden="true">▶</span></button>
+            <div class="fire-guard-launch">
+                <button type="button" id="fire-daily" class="fire-button fire-button-primary">Garde du jour <span aria-hidden="true">▶</span></button>
+                <p id="fire-guard-info" class="fire-guard-info">Une même intervention à rejouer aujourd’hui. Record par binôme.</p>
+                <button type="button" id="fire-random" class="fire-button fire-button-light">Nouvelle garde</button>
+                <button type="button" id="fire-start" class="fire-button fire-training">Exercice classique</button>
+            </div>
         </div>
     </section>
 
@@ -34,18 +39,20 @@ $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('ass
 
     <section id="fire-orders" class="fire-orders fire-overlay" aria-labelledby="fire-orders-title" hidden>
         <div class="fire-orders-window">
-            <p class="fire-eyebrow">CHEF D’AGRÈS / ORDRES</p>
+            <p id="fire-duty-label" class="fire-eyebrow">CHEF D’AGRÈS / ORDRES</p>
             <h2 id="fire-orders-title">CHOISIS TON BINÔME</h2>
             <p class="fire-orders-subtitle">L’autre binôme intervient à tes côtés.</p>
             <article class="fire-team-card">
                 <h3><span class="fire-team-code">BAT</span> Binôme d’attaque</h3>
-                <p id="fire-order-bat">Attaque le feu et reconnais l’habitation avec ton équipier.</p>
+                <p id="fire-order-bat">Établis ta lance sur la DAT, avec une LAT de 3 × 20 m, puis reconnais le rez-de-chaussée.</p>
                 <button type="button" class="fire-button fire-button-primary" data-fire-team="BAT" aria-describedby="fire-order-bat">Prendre le BAT <span aria-hidden="true">▶</span></button>
+                <p class="fire-role-best" data-fire-best="BAT" hidden></p>
             </article>
             <article class="fire-team-card">
                 <h3><span class="fire-team-code fire-team-code-cyan">BAL</span> Binôme d’alimentation</h3>
-                <p id="fire-order-bal">Prépare l’alimentation et l’échelle, puis porte secours à l’étage.</p>
+                <p id="fire-order-bal">Établis la DAT au pied de l’habitation et alimente le BAT. Sur ordre du chef, reconnais le deuxième étage par l’échelle à coulisse.</p>
                 <button type="button" class="fire-button fire-button-cyan" data-fire-team="BAL" aria-describedby="fire-order-bal">Prendre le BAL <span aria-hidden="true">▶</span></button>
+                <p class="fire-role-best" data-fire-best="BAL" hidden></p>
             </article>
         </div>
     </section>
@@ -61,7 +68,7 @@ $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('ass
                 <button type="button" id="fire-sound" class="fire-button fire-button-light" aria-label="Activer le son" aria-pressed="false" title="Activer le son"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span data-fire-label>Son coupé</span></button>
                 <button type="button" id="fire-close" class="fire-button fire-button-quit">Quitter</button>
             </div>
-            <p id="fire-menu-controls" class="fire-menu-controls"><kbd>Flèches</kbd> ou <kbd>ZQSD</kbd> : déplacement<br><kbd>E</kbd> : agir près d’un repère<br>Souris : viser · Clic ou <kbd>Espace</kbd> : arroser<br><kbd>Échap</kbd> : menu / reprendre</p>
+            <p id="fire-menu-controls" class="fire-menu-controls"><kbd>Flèches</kbd> ou <kbd>ZQSD</kbd> : déplacement<br><kbd>E</kbd> : agir près d’un repère<br>Souris : viser · Clic ou <kbd>Espace</kbd> : arroser<br>LAT : 3 tuyaux de 20 m, soit 60 m maximum. Le tuyau suit le binôme au retour.<br><kbd>Échap</kbd> : menu / reprendre</p>
             <details class="fire-credits">
                 <summary>Crédits et licences</summary>
                 <div>
@@ -80,7 +87,14 @@ $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('ass
             <p class="fire-eyebrow">FIN D’INTERVENTION</p>
             <h2 id="fire-result-title">MISSION ACCOMPLIE</h2>
             <p id="fire-result-text">L’équipe a terminé son intervention.</p>
+            <div id="fire-result-duty" class="fire-report" hidden>
+                <p id="fire-report-name" class="fire-eyebrow"></p>
+                <p id="fire-report-time" class="fire-report-time"></p>
+                <p id="fire-report-crew"></p>
+                <p id="fire-report-best"></p>
+            </div>
             <button type="button" id="fire-result-replay" class="fire-button fire-button-primary">Recommencer <span aria-hidden="true">▶</span></button>
+            <button type="button" id="fire-result-next" class="fire-button fire-button-light" hidden>Nouvelle garde</button>
             <button type="button" class="fire-button fire-button-light" data-fire-quit>Quitter</button>
         </div>
     </section>

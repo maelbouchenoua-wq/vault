@@ -1,4 +1,5 @@
 import { MAP } from './mission.js';
+import { HOSE_SEGMENT_METERS, HOSE_MAX_METERS, PIXELS_PER_METER } from './hose.js';
 
 const P = Object.freeze({ ink: '#07141D', navy: '#142B39', slate: '#344B5D', grass: '#244D44',
     grassLight: '#315F4D', road: '#293643', white: '#E8F3ED', yellow: '#F7D35C',
@@ -189,14 +190,15 @@ export class FireRenderer {
             const r=dimensions(room);
             this._box(r.x,r.y,r.w,r.h,['#45656B','#3D6257','#5C5354','#3D526A'][index%4]);
             for(let y=r.y+20;y<r.y+r.h-6;y+=32)this._box(r.x+6,y,r.w-12,2,'#203A4A35');
-            this._text(room.name||'PIECE',Math.max(r.x+14,building.x+26),r.y+16,'#A9C9C5');
+            const roomLabel=(room.name||'PIECE').replace(/\s+(?:(?:deuxième|premier|2e|1er)\s+)?étage$/i,'');
+            this._text(roomLabel,Math.max(r.x+14,building.x+26),r.y+16,'#A9C9C5');
             this._furniture(r,index,floor);
             const doorY=r.y<430?r.y+r.h:r.y-16;
             this._box(room.searchX-38,doorY,76,16,'#889690');this._box(room.searchX-34,doorY+6,68,4,'#B5C9B7');
         });
         this._box(636,430,688,80,'#435765');
         for(let x=650;x<1310;x+=48)this._box(x,468,16,2,'#6B838A');
-        this._tag(floor===1?'1ER ETAGE':'RDC',building.x+building.w/2,building.y-44,P.white);
+        this._tag(floor===2?'2E ETAGE':'RDC',building.x+building.w/2,building.y-44,P.white);
     }
 
     _furniture(r, index, floor) {
@@ -248,7 +250,7 @@ export class FireRenderer {
     }
 
     _walls(map, floor) {
-        for (const value of [...(map.walls || []), ...(floor === 1 ? map.upperWalls || [] : [])]) {
+        for (const value of [...(map.walls || []), ...(floor === 2 ? map.upperWalls || [] : [])]) {
             if (value.floor !== undefined && floorOf(value) !== floor) continue;
             const wall = dimensions(value);
             this._box(wall.x + 6, wall.y + 8, wall.w, wall.h, '#07141D65');
@@ -271,17 +273,48 @@ export class FireRenderer {
     }
 
     _hoses(mission, floor) {
-        const hose = (path, color) => {
+        const hose = (path, color, offsetMeters = null) => {
             if (!Array.isArray(path) || path.length < 2) return;
             this._line(path, P.ink, 10);
             this._line(path, color, 6);
             this._line(path, '#E8F3ED70', 2);
+            if (offsetMeters !== null) this._hoseCouplings(path, offsetMeters);
         };
-        if (floor === 0) hose(mission.supplyPath, P.blue);
-        hose(mission.hosePath, P.yellow);
-        for (const item of mission.npcHoses || []) {
-            if (!Array.isArray(item) && item.floor !== undefined && floorOf(item) !== floor) continue;
-            hose(Array.isArray(item) ? item : item.path, item.team === 'BAL' ? '#C9E3A3' : '#ECB252');
+        if (floor === 0) {
+            hose(mission.supplyPath, P.blue);
+            hose(mission.divisionSupplyPath, mission.divisionConnected ? '#7CBABB' : '#647B87');
+        }
+        for (const line of mission.hoseLines || []) {
+            for (const segment of line.segments || []) {
+                if (floorOf(segment) !== floor) continue;
+                hose(segment.path, line.limited ? P.red : line.team === 'BAL' ? '#C9E3A3' : P.yellow,
+                    n(segment.offsetMeters));
+            }
+            if (line.limited && line.actorId === mission.player?.id && floorOf(mission.player) === floor) {
+                this._tag('60M', mission.player.x, mission.player.y + 32, P.red);
+            }
+        }
+    }
+
+    // Les deux raccords suivent la longueur réelle de la LAT, y compris son passage dans l’échelle.
+    _hoseCouplings(path, offsetMeters = 0, lengthScale = 1) {
+        let travelled = offsetMeters * PIXELS_PER_METER;
+        const spacing = HOSE_SEGMENT_METERS * PIXELS_PER_METER;
+        const maximum = HOSE_MAX_METERS * PIXELS_PER_METER;
+        for (let i = 1; i < path.length; i++) {
+            const from = path[i - 1], to = path[i];
+            const drawnLength = Math.hypot(to.x - from.x, to.y - from.y);
+            const length = drawnLength * lengthScale;
+            if (length < 0.001) continue;
+            for (let mark = spacing; mark < maximum; mark += spacing) {
+                if (mark <= travelled || mark > travelled + length) continue;
+                const ratio = (mark - travelled) / length;
+                const x = from.x + (to.x - from.x) * ratio, y = from.y + (to.y - from.y) * ratio;
+                const acrossX = -(to.y - from.y) / drawnLength * 6, acrossY = (to.x - from.x) / drawnLength * 6;
+                this._line([{ x: x - acrossX, y: y - acrossY }, { x: x + acrossX, y: y + acrossY }], P.ink, 8);
+                this._line([{ x: x - acrossX, y: y - acrossY }, { x: x + acrossX, y: y + acrossY }], '#CBD8D9', 4);
+            }
+            travelled += length;
         }
     }
 
@@ -309,10 +342,10 @@ export class FireRenderer {
             b(135, 61, 4, 10, P.ink); b(137, 70, 12, 3, '#718E9C');
             b(115, 12, 13, 4, '#3E90C6'); b(115, 62, 13, 4, '#3E90C6');
             if (moving && Math.floor(time * 9) % 2) { b(26, 71, 4, 2, '#B2C5C7'); b(124, 3, 5, 2, '#B2C5C7'); }
-        }, x, y - 4);
+        }, x, y - 4, true);
         const pulse = Math.floor(time * 3) % 2;
-        this._box(x + 232 + pulse * 8, y + 20, 12, 6, '#B8F7FD');
-        this._box(x + 232 + (1 - pulse) * 8, y + 122, 12, 6, '#B8F7FD');
+        this._box(x + 76 - pulse * 8, y + 20, 12, 6, '#B8F7FD');
+        this._box(x + 76 - (1 - pulse) * 8, y + 122, 12, 6, '#B8F7FD');
     }
 
     _pointList(value) {
@@ -336,10 +369,7 @@ export class FireRenderer {
             this._truck(n(mission.truckX,truck.x),truck.y,time,mission.phase==='arrival');
             this._waterReserve(map,mission);
             if(mission.phase!=='arrival'){
-                const pump=map.pump||MAP.pump;
-                this._panel(pump.x-22,pump.y-20,44,34,'#92ADB2',P.ink,4);
-                this._box(pump.x-12,pump.y-10,8,8,mission.supplyConnected?P.blue:'#42616E');
-                this._box(pump.x+4,pump.y-10,8,8,P.yellow);
+                this._truckConnections(map,mission);
                 const equipment=map.equipment||MAP.equipment;
                 this._panel(equipment.x-22,equipment.y-18,44,36,'#3F5C70',P.ink,4);
                 this._panel(equipment.x-13,equipment.y-12,26,24,mission.attackHoseStarted?'#638395':P.yellow,'#1A3343',4);
@@ -351,16 +381,36 @@ export class FireRenderer {
                     for(let rung=-24;rung<=24;rung+=12)this._box(gear.x+rung,gear.y-8,4,16,'#BBCDC5');
                 }
             }
-            if(map.division){
+            if(map.division&&mission.divisionReady){
                 const d=map.division;
                 this._box(d.x-14,d.y-12,28,24,P.ink);
-                this._box(d.x-10,d.y-8,20,16,mission.divisionReady?P.yellow:'#748A91');
+                this._box(d.x-10,d.y-8,20,16,mission.divisionConnected?P.yellow:'#748A91');
                 this._box(d.x-18,d.y-4,8,8,'#D7E5D8');this._box(d.x+10,d.y-10,8,8,'#D7E5D8');this._box(d.x+10,d.y+2,8,8,'#D7E5D8');
+                this._text('DAT',d.x-18,d.y-34,P.yellow);
+                this._text('LAT 3X20M',d.x-138,d.y+28,'#C2D0BD');
             }
         }
         this._ladder(map,mission,floor);
         this._taskMarkers(map,mission,floor,time);
         if(floor===0&&['unload','rally','orders'].includes(mission.phase))for(const point of this._pointList(map.rallyPoints))this._groundMark(point.x,point.y,P.white,22);
+    }
+
+    _truckConnections(map,mission) {
+        const truck=map.truck||MAP.truck;
+        const rear=truck.x+truck.w;
+        const ports=[
+            {point:map.discharge,label:'REFOUL.',color:P.yellow,ready:mission.divisionConnected},
+            {point:map.intake||map.pump,label:'ALIM.',color:P.blue,ready:mission.supplyConnected},
+        ];
+        for(const port of ports){
+            if(!port.point)continue;
+            const p=port.point;
+            this._line([{x:rear-12,y:p.y},{x:p.x,y:p.y}],P.ink,14);
+            this._line([{x:rear-12,y:p.y},{x:p.x,y:p.y}],port.ready?port.color:'#647B87',8);
+            this._panel(p.x-7,p.y-8,14,16,'#D2DEDA',P.ink,2);
+            this._box(p.x-3,p.y-4,6,8,port.ready?port.color:'#344B5D');
+            this._text(port.label,rear-94,p.y-26,port.color);
+        }
     }
 
     // La petite jauge reste attachée au camion, même pendant son arrivée.
@@ -391,7 +441,16 @@ export class FireRenderer {
                 const x = from.x + (to.x - from.x) * ratio, y = from.y + (to.y - from.y) * ratio;
                 this._line([{ x, y: y - 11 }, { x, y: y + 11 }], '#CAD8D0', 4);
             }
-            const access = floor === 1 ? top : bottom;
+            const line=(mission.hoseLines||[]).find(item=>item.team==='BAL');
+            const upstairs=line?.segments?.find(segment=>segment.floor===2);
+            if(upstairs){
+                const path=[from,to],color=line.limited?P.red:'#C9E3A3';
+                this._line(path,P.ink,10);this._line(path,color,6);
+                const height=n(ladder.heightMeters,6);
+                const drawnLength=Math.hypot(to.x-from.x,to.y-from.y);
+                if(drawnLength>0)this._hoseCouplings(path,n(upstairs.offsetMeters)-height,height*PIXELS_PER_METER/drawnLength);
+            }
+            const access = floor === 2 ? top : bottom;
             this._groundMark(access.x, access.y, P.blue, 34);
         }
     }
@@ -410,15 +469,18 @@ export class FireRenderer {
         const task=tasks[0];let point=null;
         if(task){
             const id=task.id.toLowerCase();
-            if(/division/.test(id))point=floor===0?map.division:null;
-            else if(/ladder-gear/.test(id))point=floor===0?map.ladder?.equipment:null;
-            else if(/ladder/.test(id))point=floor===1?map.ladder?.landing:map.ladder;
+            if(id==='bal-division-gear')point=floor===0?map.equipment:null;
+            else if(id==='bal-division'||id==='bal-feed'||id==='bat-line'||id==='bal-line')point=floor===0?map.division:null;
+            else if(id==='bal-ladder-gear')point=floor===0?map.ladder?.equipment:null;
+            else if(id==='bal-ladder')point=floor===2?map.ladder?.landing:map.ladder;
             else if(/gear/.test(id))point=floor===0?map.equipment:null;
-            else if(/line/.test(id))point=mission.attackHoseStarted?map.entry:map.equipment;
         }
         if(point&&Number.isFinite(point.x)){
             this._groundMark(point.x,point.y,Math.floor(time*2)%2?P.yellow:'#BC943A',40);
-            if(Math.hypot(mission.player.x-point.x,mission.player.y-point.y)<66)this._tag('E',point.x,point.y-55,P.yellow);
+            if(Math.hypot(mission.player.x-point.x,mission.player.y-point.y)<66){
+                if(task.id==='BAL-feed')this._text('ATTENDRE',point.x-130,point.y-56,'#C2D0BD');
+                else this._tag('E',point.x,point.y-55,P.yellow);
+            }
         }
         const manualPending=tasks.some(item=>item.type==='manual');
         for(const room of manualPending?[]:mission.rooms||[]){
@@ -524,7 +586,7 @@ export class FireRenderer {
     _spray(map, actor, aim, time, floor, subtle = false) {
         if (!aim) return;
         const angle = Math.atan2(aim.y - actor.y, aim.x - actor.x);
-        const obstacles = [...(map.walls || []), ...(floor === 1 ? map.upperWalls || [] : [])].filter(wall => wall.floor === undefined || floorOf(wall) === floor);
+        const obstacles = [...(map.walls || []), ...(floor === 2 ? map.upperWalls || [] : [])].filter(wall => wall.floor === undefined || floorOf(wall) === floor);
         if (floor === 0) {
             if (map.truck) obstacles.push(map.truck);
         }

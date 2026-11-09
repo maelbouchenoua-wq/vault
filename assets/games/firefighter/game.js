@@ -1,5 +1,6 @@
 import { MAP, FireMission } from './mission.js';
 import { FireRenderer } from './renderer.js';
+import { dailyGuard, newGuard, formatTime, bestTime, recordVictory } from './guards.js';
 
 const dialog = document.getElementById('fire-game');
 const canvas = document.getElementById('fire-canvas');
@@ -10,21 +11,27 @@ function initialize() {
     const ids = ['start', 'close', 'sound', 'restart', 'skip', 'home', 'intro',
         'photo-one', 'photo-two', 'intro-label', 'intro-caption', 'intro-credit',
         'result', 'result-title', 'result-text', 'result-replay', 'resume', 'paused',
-        'orders', 'order-bat', 'order-bal', 'notice', 'dialogue-live', 'menu-title'];
+        'orders', 'order-bat', 'order-bal', 'notice', 'dialogue-live', 'menu-title',
+        'daily', 'random', 'guard-info', 'duty-label', 'result-next', 'result-duty',
+        'report-name', 'report-time', 'report-crew', 'report-best'];
     const ui = Object.fromEntries(ids.map(id => [id, document.getElementById(`fire-${id}`)]));
     const assets = {};
     const renderer = new FireRenderer(context, assets);
     const base = new URL(dialog.dataset.assets, location.href);
     const siren = new RadioSound();
     const openers = [...document.querySelectorAll('[data-fire-open]')];
+    const secretLogos = [...document.querySelectorAll('header .logo, .admin_sidemenu .navigation h2 > a')];
+    const logoDelay = 3000;
+    let logoClicks = 0, logoFirstClick = 0, logoTimer = null;
     const pressed = new Map(), directions = new Map(), spraySources = new Set(), consumed = new Set();
-    const makeMission = () => new FireMission();
+    let guard = null;
+    const makeMission = () => new FireMission({ guardSeed: guard?.seed });
     let mission = makeMission();
     let state = 'home', pausedFrom = 'home';
     let unlocked = false, sequence = 0, interactPending = false, ordersVisible = false;
     let animation = null, resizeRequest = null, previousTime = null, visualTime = 0, introElapsed = 0;
     let previousFocus = null, scrollState = null, assetPromise = null, pointerAim = null;
-    let noticeUntil = 0, dialogueSignature = '';
+    let noticeUntil = 0, dialogueSignature = '', hoseWasLimited = false;
     let size = { width: MAP.width, height: MAP.height, ratio: 1 };
     let camera = { scale: 1, x: 0, y: 0 };
     const editable = target => target instanceof Element && (target.isContentEditable
@@ -37,6 +44,49 @@ function initialize() {
     const clamp = (n, low, high) => Math.max(low, Math.min(high, n));
 
     function resetInput() { pressed.clear(); directions.clear(); spraySources.clear(); interactPending = false; }
+
+    function refreshGuardHome() {
+        const today = dailyGuard();
+        const records = ['BAT', 'BAL'].map(team => {
+            const best = bestTime(today.seed, team);
+            return best === null ? null : team + ' ' + formatTime(best);
+        }).filter(Boolean);
+        write(ui['guard-info'], records.length ? today.label + ' · ' + records.join(' / ')
+            : today.label + ' · Même départ pour tous, record par binôme.');
+    }
+
+    function prepareOrders() {
+        write(ui['duty-label'], guard ? guard.label + ' / Ordres' : 'Chef d’agrès / Ordres');
+        for (const line of dialog.querySelectorAll('[data-fire-best]')) {
+            const best = guard ? bestTime(guard.seed, line.dataset.fireBest) : null;
+            line.hidden = best === null;
+            if (best !== null) write(line, 'Record à battre · ' + formatTime(best));
+        }
+    }
+
+    function debrief() {
+        const won = mission.phase === 'won';
+        write(ui['result-title'], won ? 'Intervention terminée' : 'Repli');
+        write(ui['result-text'], won
+            ? 'Chef d’agrès : les deux secteurs sont sûrs. On rassemble le matériel.'
+            : 'Chef d’agrès : on se replie. Reprenez vos distances avant de repartir.');
+        ui['result-duty'].hidden = !guard;
+        ui['result-next'].hidden = !guard;
+        write(ui['result-replay'], guard ? 'Rejouer cette garde' : 'Recommencer');
+        if (!guard) return;
+        const tenths = Math.round(mission.interventionSeconds * 10);
+        const previous = won ? recordVictory(guard.seed, mission.team, tenths) : bestTime(guard.seed, mission.team);
+        const rescued = mission.victims.filter(person => person.rescued).length;
+        write(ui['report-name'], guard.label + ' · ' + mission.team);
+        write(ui['report-time'], 'Temps en intervention · ' + formatTime(tenths));
+        write(ui['report-crew'], 'Victimes à l’abri · ' + rescued + ' / ' + mission.victims.length);
+        let feedback = 'Repli · aucun temps enregistré';
+        if (won && previous === null) feedback = 'Premier record pour ce binôme.';
+        else if (won && tenths < previous) feedback = 'Record battu de ' + formatTime(previous - tenths) + ' !';
+        else if (won && tenths === previous) feedback = 'Record égalé !';
+        else if (previous !== null) feedback = 'Record à battre · ' + formatTime(previous);
+        write(ui['report-best'], feedback);
+    }
 
     function setState(next) {
         state = next;
@@ -126,7 +176,10 @@ function initialize() {
         dialog.dataset.floor = String(mission.floor);
         const showOrders = state === 'playing' && mission.phase === 'orders';
         ui.orders.hidden = !showOrders;
-        if (showOrders && !ordersVisible) dialog.querySelector('[data-fire-team="BAT"]')?.focus({ preventScroll: true });
+        if (showOrders && !ordersVisible) {
+            prepareOrders();
+            dialog.querySelector('[data-fire-team="BAT"]')?.focus({ preventScroll: true });
+        }
         ordersVisible = showOrders;
         const speech = mission.dialogue || mission.bubble;
         const signature = speech ? `${speech.id ?? ''}|${speech.actorId}|${speech.text}` : '';
@@ -142,10 +195,7 @@ function initialize() {
         dialogueSignature = signature;
         if (noticeUntil && visualTime >= noticeUntil) { ui.notice.hidden = true; noticeUntil = 0; }
         if (state === 'playing' && ['won', 'lost'].includes(mission.phase)) {
-            write(ui['result-title'], mission.phase === 'won' ? 'Intervention terminée' : 'Repli');
-            write(ui['result-text'], mission.phase === 'won'
-                ? 'Chef d’agrès : les deux binômes sont revenus. On rassemble le matériel.'
-                : 'Chef d’agrès : on se replie. Reprenez vos distances avant de repartir.');
+            debrief();
             setState('result');
             ui['result-replay'].focus({ preventScroll: true });
         }
@@ -191,23 +241,60 @@ function initialize() {
             const command = input();
             mission.update(dt, command);
             if (command.interact) showNotice(mission.message);
+            const hoseLimited = mission.hoseLines?.some(line => line.team === mission.team && line.limited) || false;
+            if (hoseLimited && !hoseWasLimited) showNotice('LAT : 60 m maximum (3 × 20 m). Revenez sur votre chemin pour récupérer du tuyau.');
+            hoseWasLimited = hoseLimited;
         }
         hud(); draw();
         animation = requestAnimationFrame(frame);
     }
 
     function freshMission() {
-        mission = makeMission(); pointerAim = null; dialogueSignature = ''; ordersVisible = false;
+        mission = makeMission(); pointerAim = null; dialogueSignature = ''; ordersVisible = false; hoseWasLimited = false;
+    }
+
+    function resetLogoTrigger() {
+        if (logoTimer !== null) clearTimeout(logoTimer);
+        logoClicks = 0; logoFirstClick = 0; logoTimer = null;
+    }
+
+    function unlockAndOpen() {
+        resetLogoTrigger(); sequence = 0; unlocked = true;
+        openers.forEach(button => { button.hidden = false; });
+        open();
+    }
+
+    // Cinq clics dans une fenêtre fixe de trois secondes depuis le premier clic.
+    function onLogoClick(event) {
+        if (event.defaultPrevented || event.button !== 0
+            || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return;
+        event.preventDefault();
+        if (dialog.open) return;
+
+        const now = performance.now();
+        if (logoClicks > 0 && now - logoFirstClick >= logoDelay) resetLogoTrigger();
+        if (logoClicks === 0) {
+            logoFirstClick = now;
+            const destination = event.currentTarget.href;
+            logoTimer = setTimeout(() => {
+                resetLogoTrigger();
+                // Sans cinq clics, le lien garde son retour au catalogue.
+                if (!dialog.open && destination !== location.href) location.assign(destination);
+            }, logoDelay);
+        }
+        logoClicks++;
+        if (logoClicks === 5) unlockAndOpen();
     }
 
     function open() {
         if (!unlocked || dialog.open) return;
+        resetLogoTrigger();
         previousFocus = document.activeElement;
         scrollState = { x: scrollX, y: scrollY, html: document.documentElement.style.overflow, body: document.body.style.overflow };
         document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
-        freshMission(); setState('home'); dialog.showModal();
+        guard = null; refreshGuardHome(); freshMission(); setState('home'); dialog.showModal();
         loadAssets().then(() => { if (dialog.open) draw(); });
-        resize(); hud(); ui.start.focus({ preventScroll: true });
+        resize(); hud(); ui.daily.focus({ preventScroll: true });
         previousTime = null; animation = requestAnimationFrame(frame);
     }
 
@@ -217,7 +304,7 @@ function initialize() {
         if (animation !== null) cancelAnimationFrame(animation);
         if (resizeRequest !== null) cancelAnimationFrame(resizeRequest);
         animation = null; resizeRequest = null; previousTime = null;
-        resetInput(); sequence = 0; consumed.clear(); siren.setRunning(false);
+        resetLogoTrigger(); resetInput(); sequence = 0; consumed.clear(); siren.setRunning(false);
         if (scrollState) {
             document.documentElement.style.overflow = scrollState.html;
             document.body.style.overflow = scrollState.body;
@@ -243,7 +330,7 @@ function initialize() {
     function resume() {
         if (state !== 'paused') return;
         setState(pausedFrom); previousTime = null;
-        const target = state === 'home' ? ui.start : state === 'intro' ? ui.skip : state === 'result' ? ui['result-replay']
+        const target = state === 'home' ? ui.daily : state === 'intro' ? ui.skip : state === 'result' ? ui['result-replay']
             : mission.phase === 'orders' ? dialog.querySelector('[data-fire-team="BAT"]') : canvas;
         target?.focus({ preventScroll: true });
     }
@@ -260,7 +347,7 @@ function initialize() {
             if (event.repeat) return;
             if (key === 'feu'[sequence]) {
                 event.preventDefault(); consumed.add(identity); sequence++;
-                if (sequence === 3) { sequence = 0; unlocked = true; openers.forEach(button => { button.hidden = false; }); open(); }
+                if (sequence === 3) unlockAndOpen();
             } else { if (sequence) { event.preventDefault(); consumed.add(identity); } sequence = 0; }
             return;
         }
@@ -321,6 +408,7 @@ function initialize() {
         button.addEventListener('lostpointercapture', releasePointer);
     }
     for (const button of dialog.querySelectorAll('[data-fire-interact]')) button.addEventListener('click', () => { if (playable()) interactPending = true; });
+    for (const logo of secretLogos) logo.addEventListener('click', onLogoClick);
     for (const button of openers) button.addEventListener('click', open);
     for (const button of dialog.querySelectorAll('[data-fire-team]')) button.addEventListener('click', () => {
         if (state === 'playing' && mission.phase === 'orders' && mission.chooseTeam(button.dataset.fireTeam)) {
@@ -330,9 +418,14 @@ function initialize() {
     for (const button of dialog.querySelectorAll('[data-fire-quit]')) button.addEventListener('click', close);
     for (const button of dialog.querySelectorAll('[data-fire-pause]')) button.addEventListener('click', toggleMenu);
     for (const button of dialog.querySelectorAll('[data-fire-home]')) button.addEventListener('click', () => {
-        freshMission(); setState('home'); ui.start.focus({ preventScroll: true });
+        guard = null; refreshGuardHome(); freshMission(); setState('home'); ui.daily.focus({ preventScroll: true });
     });
-    ui.start.addEventListener('click', start); ui.close.addEventListener('click', close);
+    const startRandom = () => { guard = newGuard(guard?.seed); start(); };
+    ui.daily.addEventListener('click', () => { guard = dailyGuard(); start(); });
+    ui.random.addEventListener('click', startRandom);
+    ui['result-next'].addEventListener('click', startRandom);
+    ui.start.addEventListener('click', () => { guard = null; start(); });
+    ui.close.addEventListener('click', close);
     ui.restart.addEventListener('click', start); ui['result-replay'].addEventListener('click', start);
     ui.skip.addEventListener('click', beginArrival); ui.resume.addEventListener('click', resume);
     ui.sound.addEventListener('click', async () => {
@@ -346,18 +439,18 @@ function initialize() {
     dialog.addEventListener('cancel', event => { event.preventDefault(); toggleMenu(); });
     dialog.addEventListener('close', () => { if (!dialog.open) cleanup(); });
     window.addEventListener('blur', () => {
-        sequence = 0; consumed.clear(); resetInput(); if (['intro', 'playing'].includes(state)) pause();
+        resetLogoTrigger(); sequence = 0; consumed.clear(); resetInput(); if (['intro', 'playing'].includes(state)) pause();
     });
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { sequence = 0; consumed.clear(); resetInput(); if (['intro', 'playing'].includes(state)) pause(); }
+        if (document.hidden) { resetLogoTrigger(); sequence = 0; consumed.clear(); resetInput(); if (['intro', 'playing'].includes(state)) pause(); }
     });
     window.addEventListener('resize', () => {
         if (!dialog.open) return;
         if (resizeRequest !== null) cancelAnimationFrame(resizeRequest);
         resizeRequest = requestAnimationFrame(() => { resizeRequest = null; resize(); });
     });
-    write(ui['order-bat'], 'BAT, prenez la ligne et engagez-vous au rez-de-chaussée. Extinction, recherche et sauvetage.');
-    write(ui['order-bal'], 'BAL, établissez la division, puis l’échelle à coulisse. Rejoignez le premier étage.');
+    write(ui['order-bat'], 'BAT, prenez votre LAT de 3 × 20 m. Raccordez votre lance à la DAT alimentée par le BAL, puis reconnaissez le rez-de-chaussée.');
+    write(ui['order-bal'], 'BAL, établissez la DAT au pied de l’habitation et alimentez le BAT. Sur mon nouvel ordre : reconnaissance au deuxième étage par l’échelle à coulisse, avec votre LAT de 60 m.');
     setState('home'); dialog.dataset.ready = 'true';
 }
 
