@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../libs/auth.php';
-require_once __DIR__ . '/../libs/router-helper.php';
 require_once __DIR__ . '/../controllers/media_controller.php';
 require_once __DIR__ . '/action-helper.php';
 
@@ -19,7 +18,7 @@ if ($media_id === null) {
 
 try {
     delete_media($media_id);
-    redirect("/admin.php");
+    respond_success("Nous avons bien supprimé le média.");
 } catch (Exception $error) {
     if ($error->getMessage() == "La base de donnée à renvoyé une erreur.")
         respond_error(500, $error->getMessage());

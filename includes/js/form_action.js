@@ -56,19 +56,6 @@ function sendForm(event) {
     }
 }
 
-try {
-    // Attach event listener to all form that are is the file witch the script is loaded in.
-    forms = document.querySelectorAll("form");
-    forms.forEach(form => form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        sendForm(event);
-    }));
-    console.info(`Bound ${forms.length} forms.`);
-} catch (error) {
-    console.error(error)
-    throw new Error("Cannot bind forms.")
-}
-
 const display_error = (error) => {
     const message = (error instanceof Error) ? error.message : error;
     notification_displayer.notify(NOTIFICATION_TYPE.error, message)
@@ -81,7 +68,6 @@ const display_success = (message) => {
     console.info(message);
 }
 
-
 async function parse_response_data(response) {
     try {
         return await response.json();
@@ -89,3 +75,8 @@ async function parse_response_data(response) {
         return null;
     }
 }
+
+document.addEventListener('submit', (event) => {
+    event.preventDefault();
+    sendForm(event);
+});

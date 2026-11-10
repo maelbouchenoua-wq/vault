@@ -5,7 +5,7 @@ function sendDeleteMedia(id, name) {
         <p>Cette action est irreversible. <br>
             Elle supprimera le média de toutes les collections qui le contiennent.</p>
         <div class="button-container">
-            <form action="/includes/actions/delete_media_action.php?media_id=${id}" method="POST">
+            <form onsubmit="Modal.delete('${`delete-confirmation-${id}`}')" action="/includes/actions/delete_media_action.php?media_id=${id}" method="POST">
                 <input type="submit" id="submit">
                 <label for="submit">
                     <a class="danger">Supprimer</a>
