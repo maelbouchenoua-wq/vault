@@ -28,7 +28,10 @@ header('Cache-Control: no-store');
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/components/modal.css">
     <script src="./includes/js/form_action.js" defer></script>
+    <script src="./includes/components/modal/modal_utils.js" defer></script>
+    <script src="./includes/js/admin-collection-delete.js" defer></script>
 </head>
 <body class="admin_page">
 
