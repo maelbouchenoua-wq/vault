@@ -148,5 +148,6 @@ unset($_SESSION['message']);
         });
     }
 </script>
+<script src="assets/js/filter_index.js" defer></script>
 </body>
 </html>

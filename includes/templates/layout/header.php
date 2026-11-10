@@ -44,7 +44,7 @@ $currentLevel1 = $result1['level'];
         </div>
         <div class="search_bar">
             <img class="icon" src="<?= $headerUrl('assets/images/magnifying-glass.svg') ?>" alt="icon de loupe">
-            <input type="text" placeholder="Rechercher film, série, jeu...">
+            <input class ="search-bar1" type="text" placeholder="Rechercher film, série, jeu...">
             <p class="keyboard_indicator">CTRL+K</p>
         </div>
         <div class="auth-actions">
@@ -64,4 +64,5 @@ $currentLevel1 = $result1['level'];
             <?php endif; ?>
         </div>
     </div>
+    <script src="../../../assets/js/filter_header.js" defer></script>
 </header>
