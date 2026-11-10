@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../libs/auth.php';
 require_once __DIR__ . '/../libs/router-helper.php';
 require_once __DIR__ . '/../controllers/media_controller.php';
+require_once __DIR__ . '/action-helper.php';
 
 /**
  * Action for deleting a media.

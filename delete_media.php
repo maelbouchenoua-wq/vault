@@ -10,9 +10,9 @@ $media_id = $_GET["media_id"];
 if ($media_id === null) {
     redirect("/admin.php");
 } else $media_id = intval($media_id);
-$media = fetch_media($media_id);
-if ($media === null) redirect_error("/admin.php", 400, "Ce média n'existe pas.");
 
+$media = fetch_media($media_id);
+if ($media === null) redirect("/admin.php");
 ?>
 
 
@@ -27,6 +27,8 @@ if ($media === null) redirect_error("/admin.php", 400, "Ce média n'existe pas."
     <link rel="stylesheet" href="./assets/css/components/header.css">
     <link rel="stylesheet" href="./assets/css/components/footer.css">
     <link rel="stylesheet" href="./assets/css/pages/delete_media.css">
+    <link rel="stylesheet" href="assets/css/components/notification.css">
+    <script src="./includes/js/form_action.js" defer></script>
 </head>
 <body>
 <?php
@@ -39,11 +41,19 @@ include __DIR__ . '/includes/templates/layout/header.php';
         <p>Cette action est irreversible. <br>
             Elle supprimera le média de toutes les collections qui le contiennent.</p>
         <div class="button-container">
-            <a class="danger" href="/includes/actions/delete_media_action.php?media_id=<?= $media["id"] ?>">Supprimer</a>
+            <form action="/includes/actions/delete_media_action.php?media_id=<?= $media["id"] ?>" method="POST">
+                <input type="submit" id="submit">
+                <label for="submit">
+                    <a class="danger">Supprimer</a>
+                </label>
+            </form>
             <a href="/admin.php">Retour</a>
         </div>
     </div>
 </section>
+<?php
+require_once __DIR__ . '/includes/components/notification_displayer/notification_component.php';
+?>
 <?php include __DIR__ . '/includes/templates/layout/footer.php'; ?>
 </body>
 </html>

@@ -48,6 +48,9 @@ body section#deletion_confirmation .container .button-container {
     gap: 20px;
 }
 
+body section#deletion_confirmation .container .button-container input {
+    display: none;
+}
 
 body section#deletion_confirmation .container .button-container a {
     text-decoration: none;
@@ -59,6 +62,7 @@ body section#deletion_confirmation .container .button-container a {
     font-family: JetBrains Mono, serif;
     font-weight: 600;
     font-size: 20px;
+    cursor: pointer;
 }
 
 body section#deletion_confirmation .container .button-container a.danger {
