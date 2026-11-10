@@ -5,7 +5,7 @@ function sendDeleteMedia(id, name) {
         <p>Cette action est irreversible. <br>
             Elle supprimera le média de toutes les collections qui le contiennent.</p>
         <div class="button-container">
-            <form onsubmit="Modal.delete('${`delete-confirmation-${id}`}')" action="/includes/actions/delete_media_action.php?media_id=${id}" method="POST">
+            <form onsubmit="Modal.delete('delete-confirmation-${id}'); remove_row('${id}');" action="/includes/actions/delete_media_action.php?media_id=${id}" method="POST">
                 <input type="submit" id="submit">
                 <label for="submit">
                     <a class="danger">Supprimer</a>
@@ -15,4 +15,17 @@ function sendDeleteMedia(id, name) {
         </div>
     </div>
     `);
+}
+
+const table_container = document.querySelector("body .records_table");
+if (table_container === null) throw new Error("Cannot find the table container.");
+
+
+function remove_row(id) {
+    console.log(id)
+    table_container.querySelector(`#media-${id}`).remove()
+}
+
+function add_row(content) {
+    table_container.append(content)
 }
