@@ -37,11 +37,11 @@ if ($loginError === '' && currentUser() !== null) {
             <form action="<?= authUrl('includes/actions/login_action.php') ?>" method="post">
                 <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" maxlength="80" autocomplete="email"
-                       value="<?= htmlspecialchars($loginEmail, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" required>
+                <input id="email" name="email" 
+                       value="<?= htmlspecialchars($loginEmail, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
 
                 <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" maxlength="128" autocomplete="current-password" required>
+                <input type="password" id="password" name="password">
 
                 <button type="submit">Se connecter</button>
             </form>

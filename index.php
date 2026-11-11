@@ -148,6 +148,10 @@ unset($_SESSION['message']);
         });
     }
 </script>
+<<<<<<< Updated upstream
 <script src="assets/js/filter_index.js" defer></script>
+=======
+<script src="formulaire.js" defer></script>
+>>>>>>> Stashed changes
 </body>
 </html>

@@ -143,7 +143,7 @@ header('Cache-Control: no-store');
                         <label for="record_name">Intitulé de l’œuvre</label>
                         <small>1 à 150 car.</small>
                     </div>
-                    <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049" maxlength="150" required>
+                    <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049">
                 </div>
                 <?php
                 require_once "includes/controllers/categories_controller.php";
