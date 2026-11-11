@@ -1,28 +1,102 @@
 <?php
-// Profil privé : accès réservé aux comptes connectés.
 require_once __DIR__ . '/includes/libs/auth.php';
-require_once 'includes/libs/db.php';
-require_once __DIR__ . '/includes/controllers/profil_controller.php';
+require_once __DIR__ . '/includes/controllers/collection_controller.php';
 requireLogin();
-header('Cache-Control: no-store');
+
 $profileUser = currentUser();
-// Prépare le pseudo et l’email pour l’affichage HTML.
-$profileName = htmlspecialchars($profileUser['username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-$profileEmail = htmlspecialchars($profileUser['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$profileName = collectionHtml($profileUser['username']);
+$profileEmail = collectionHtml($profileUser['email']);
+$collectionToken = csrfToken();
 
-$pdo = getPDO();
-/*
-mettre des explication
- */
+// Récupère le message laissé après l'envoi du formulaire.
+$collectionFlash = null;
+if (isset($_SESSION['collection_flash']) && is_array($_SESSION['collection_flash'])) {
+    $collectionFlash = $_SESSION['collection_flash'];
+}
+unset($_SESSION['collection_flash']);
 
-$result = get_current_user_exp();
-# permet de récuperer les xp de niveau actuel
-$currentLevelExp = $result['total_xp'] %100;
-# permet de récuperer les xp manquant pour le prochain niveau
-$currentLevelExpNextPalier = 100-$result['total_xp'] %100;
+// Le lien choisi indique quel formulaire afficher.
+$collectionMode = null;
+$modesPossibles = ['add', 'edit', 'remove'];
+if (isset($_GET['collection']) && is_string($_GET['collection'])) {
+    if (in_array($_GET['collection'], $modesPossibles, true)) {
+        $collectionMode = $_GET['collection'];
+    }
+}
 
+$collectionEntry = null;
+$collectionError = null;
+$collectionChoices = [];
+$collectionItems = [];
+$collectionStats = [
+    'count' => 0,
+    'completed_films' => 0,
+    'series_count' => 0,
+    'rated_count' => 0,
+    'average' => null,
+    'total_xp' => 0,
+    'completed_count' => 0,
+    'level' => 1,
+    'progress' => 0,
+    'remaining' => 100
+];
+$collectionForm = ['media_id' => '', 'status' => 'planned', 'rating' => ''];
 
+try {
+    $collection = getProfileCollection($profileUser['id']);
+    $collectionItems = $collection['items'];
+    $collectionStats = $collection['stats'];
 
+    if ($collectionMode === 'add') {
+        $collectionChoices = getCollectionChoices($profileUser['id']);
+    }
+
+    if ($collectionMode === 'edit' || $collectionMode === 'remove') {
+        $entryId = false;
+        if (isset($_GET['entry_id']) && is_string($_GET['entry_id'])) {
+            $entryId = filter_var($_GET['entry_id'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        }
+
+        // Cherche l'œuvre uniquement dans la collection de ce compte.
+        foreach ($collectionItems as $item) {
+            if ($item['id'] === $entryId) {
+                $collectionEntry = $item;
+                $collectionForm['media_id'] = (string) $item['media_id'];
+                $collectionForm['status'] = $item['status'];
+                if ($item['rating'] !== null) {
+                    $collectionForm['rating'] = (string) $item['rating'];
+                }
+                break;
+            }
+        }
+
+        if ($collectionEntry === null) {
+            $collectionMode = null;
+            $collectionError = 'Cette œuvre ne fait pas partie de votre collection.';
+        }
+    }
+
+    // Après une erreur, remet les valeurs saisies dans le formulaire.
+    if ($collectionMode !== null && isset($collectionFlash['form']) && is_array($collectionFlash['form'])) {
+        foreach ($collectionForm as $field => $value) {
+            if (isset($collectionFlash['form'][$field]) && is_string($collectionFlash['form'][$field])) {
+                $collectionForm[$field] = $collectionFlash['form'][$field];
+            }
+        }
+    }
+} catch (PDOException $exception) {
+    http_response_code(503);
+    $collectionMode = null;
+    $collectionError = 'Votre collection est momentanément indisponible. Veuillez réessayer plus tard.';
+}
+
+// Réutilise les mêmes XP dans la carte du profil.
+$result = [
+    'total_xp' => $collectionStats['total_xp'],
+    'level' => $collectionStats['level']
+];
+$currentLevelExp = $collectionStats['progress'];
+$currentLevelExpNextPalier = $collectionStats['remaining'];
 ?>
 <!doctype html>
 <html lang="fr">
@@ -36,6 +110,7 @@ $currentLevelExpNextPalier = 100-$result['total_xp'] %100;
     <link rel="stylesheet" href="./assets/css/components/header.css">
     <link rel="stylesheet" href="./assets/css/components/footer.css">
     <link rel="stylesheet" href="./assets/css/pages/profile.css">
+    <link rel="stylesheet" href="./assets/css/pages/profile-collection.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap"
@@ -82,7 +157,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
                 </div>
             </div>
 
-            <!-- XP, badges et tableau : données de démonstration. -->
+            <!-- Résumé de l’expérience calculée depuis la collection. -->
             <div class="info-profile">
                 <div class="xp-div">
                     <div class="lightning-frame">
@@ -93,7 +168,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
                             EXPERIENCE TOTALE
                         </div>
                         <div class=xp-points-label-div>
-                            <p class="xp-points"> <?= $result['total_xp'] ?> </p>
+                            <p class="xp-points" data-profile-stat="xp"> <?= $result['total_xp'] ?> </p>
                             <p class="xp-label"> XP POINTS </p>
                         </div>
                     </div>
@@ -101,7 +176,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
                         <div class="current-tier">
                             PALIER ACTUEL
                         </div>
-                        <div class="current-level">
+                        <div class="current-level" data-profile-stat="level">
                             <?= $result['level'] ?>
                         </div>
                     </div>
@@ -109,7 +184,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
                 <div class="progression-info">
                     <div class="title-value-div">
                         <div class="progress-title">
-                            <p>Progression vers le niveau <?= $result['level'] +=1 ?></p>
+                            <p>Progression vers le niveau <?= $result['level'] + 1 ?></p>
                         </div>
                         <div class="progress-value">
                             <p><?= $currentLevelExp ?>
@@ -125,7 +200,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
                 </div>
                 <div class="level-current-next-div">
                     <div class="level-current">
-                        <p>Niv. <?= $result['level']?> (<?= $currentLevelExp ?> XP cumulés)</p>
+                        <p>Niv. <?= $result['level']?> (<?= $result['total_xp'] ?> XP cumulés)</p>
                     </div>
                     <div class="level-next">
                         Prochain palier : (<?= $currentLevelExpNextPalier ?>XP)
@@ -286,152 +361,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
         </div>
     </section>
 
-    <section id='collection'>
-        <div class='header'>
-            <div class='title-container'>
-                <div class='title'>
-                    <h2>Collection personnelle</h2>
-                    <p class='tag'>5 ŒUVRES</p>
-                </div>
-                <p class='description'>Équilibre exact du scénario de validation : 3 Films terminés notés + 2 Séries ajoutées notées = 135 XP.</p>
-            </div>
-            <div class='tag-container'>
-                <div class='tag'>
-                    <img src="./assets/images/movie_clap_icon.svg" alt="Icon de clap de film">
-                    <p>3 Films terminés</p>
-                </div>
-                <div class='tag'>
-                    <img src="./assets/images/screen_icon.svg" alt="Icon d'écran d'ordinateur">
-                    <p>2 Séries en liste</p>
-                </div>
-                <div class='tag'>
-                    <img src="./assets/images/star.svg" alt="Icon d'étoile">
-                    <p>Moyenne : 4.6 / 5</p>
-                </div>
-                <div class='button'>
-                    <img src="./assets/images/plus.svg" alt="Icon de plus">
-                    <p>Ajouter une œuvre</p>
-                </div>
-            </div>
-        </div>
-        <table>
-            <tr class='head'>
-                <th>MÉDIA</th>
-                <th>TITRE & CATÉGORIE</th>
-                <th>STATUT</th>
-                <th>NOTE ATTRIBUÉE</th>
-                <th>VALEUR XP</th>
-                <th>ACTIONS</th>
-            </tr>
-            <tr>
-                <td>
-                    <img src="./assets/images/content/arcane_cover.jpg" alt="">
-                </td>
-                <td>
-                    <div class='flex'>
-                        <h2>Arcane</h2>
-                        <div class='data'>
-                            <p class='status'>FILM</p>
-                            <p class='infos'>2017 • Denis Villeneuve</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class='status to_discover'>À découvrir</div>
-                </td>
-                <td>
-                    <div class='rating'>
-                        <div class='star-container'>
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 1/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 2/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 3/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 4/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 5/5">
-                        </div>
-                        <p>5.0</p>
-                    </div>
-                </td>
-                <td>
-                    <div class='xp-container'>
-                        <p>+15 XP</p>
-                        <img src="./assets/images/light_gray_icon.svg" alt="Icon d'éclaire">
-                    </div>
-                </td>
-                <td>
-                    <div class='action-container'>
-                        <div class='button'>
-                            <img src="./assets/images/pen.svg" alt="Icon de stylo">
-                        </div>
-                        <div class='button'>
-                            <img src="./assets/images/star_empty.svg" alt="Icon d'étoile">
-                        </div>
-                        <div class='button'>
-                            <img src="./assets/images/trash_icon.svg" alt="Icon de poubelle">
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="./assets/images/content/arcane_cover.jpg" alt="">
-                </td>
-                <td>
-                    <div class='flex'>
-                        <h2>Arcane</h2>
-                        <div class='data'>
-                            <p class='status'>FILM</p>
-                            <p class='infos'>2017 • Denis Villeneuve</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class='status to_discover'>À découvrir</div>
-                </td>
-                <td>
-                    <div class='rating'>
-                        <div class='star-container'>
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 1/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 2/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 3/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 4/5">
-                            <img src="./assets/images/star_filled.svg" alt="Etoile 5/5">
-                        </div>
-                        <p>5.0</p>
-                    </div>
-                </td>
-                <td>
-                    <div class='xp-container'>
-                        <p>+15 XP</p>
-                        <img src="./assets/images/light_gray_icon.svg" alt="Icon d'éclaire">
-                    </div>
-                </td>
-                <td>
-                    <div class='action-container'>
-                        <div class='button'>
-                            <img src="./assets/images/pen.svg" alt="Icon de stylo">
-                        </div>
-                        <div class='button'>
-                            <img src="./assets/images/star_empty.svg" alt="Icon d'étoile">
-                        </div>
-                        <div class='button'>
-                            <img src="./assets/images/trash_icon.svg" alt="Icon de poubelle">
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <div class='footer'>
-            <div class='bilan'>
-                <img src="./assets/images/content_check.svg" alt="Icon de contenu">
-                <p>Bilan arithmétique : (35 × 3 films) + (15 × 2 séries) = <span>135 XP validés</span></p>
-            </div>
-            <div class='export'>
-                <p>Exportation données :</p>
-                    <div class='button'>JSON</div>
-                    <div class='button'>CSV</div>
-            </div>
-        </div>
-    </section>
+    <?php require __DIR__ . '/includes/templates/pages/profile/collection.php'; ?>
 
 </main>
 <?php  include __DIR__ . '/includes/templates/layout/footer.php'; ?>
