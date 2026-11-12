@@ -187,7 +187,7 @@ include __DIR__ . '/includes/templates/layout/header.php';
             </div>
 
         </div>
-
+        
     </div>
 
     <section id="badges">
