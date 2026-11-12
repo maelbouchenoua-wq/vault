@@ -5,7 +5,7 @@ require_once __DIR__ . '/includes/controllers/profil_controller.php';
 
 $result2 = get_current_user_exp();
 # permet de récuperer les xp de niveau actuel
-$currentLevelExp2 = $result2['total_xp'] %100;
+$currentLevelExp2 = $result2['total_xp'] % 100;
 # permet de récuperer les xp
 $currentExpTotal1 = $result2['total_xp'];
 # permet de récuperer le level
@@ -23,11 +23,15 @@ header('Cache-Control: no-store');
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/components/header.css">
-    <link rel="stylesheet" href="./assets/css/components/operation_status.css">
+    <link rel="stylesheet" href="assets/css/components/notification.css">
     <link rel="stylesheet" href="./assets/css/pages/admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/components/modal.css">
+    <script src="assets/js/form_action.js" defer></script>
+    <script src="./includes/components/modal/modal_utils.js" defer></script>
+    <script src="assets/js/page/admin.js" defer></script>
 </head>
 <body class="admin_page">
 
@@ -51,7 +55,7 @@ header('Cache-Control: no-store');
                 </a>
             </li>
             <li>
-                <a href="#record_form">
+                <a href="#add_media_form">
                     <img src="./assets/images/Icon admin 2.png" alt="">
                     Gestion Œuvres
                 </a>
@@ -73,7 +77,6 @@ header('Cache-Control: no-store');
 </aside>
 
 <main class="top_bar">
-
     <div class="console">
         <div class="console_title">
             <span class="console_mode">MODE ADMINISTRATEUR</span>
@@ -83,7 +86,7 @@ header('Cache-Control: no-store');
 
         <div class="console_account">
             <div class="level_container">
-                <div class="level_indicator" style="--percentage: <?= $currentLevelExp2?>%;"></div>
+                <div class="level_indicator" style="--percentage: <?= $currentLevelExp2 ?>%;"></div>
                 <p class="level">Niv. <?= $currentLevel2 ?></p>
                 <p class="dot_separator">•</p>
                 <p class="xp"><?= $currentExpTotal1 ?> XP</p>
@@ -94,13 +97,7 @@ header('Cache-Control: no-store');
             </a>
         </div>
     </div>
-    <?php
-    include "includes/components/operation_status.php";
-    render_operation_status();
-    ?>
-
     <div class="dashboard">
-
         <section class="admin_banner" aria-labelledby="dashboard_title">
             <div>
                 <h2 id="dashboard_title"><span class="title_dot">•</span> Console d’Administration du Catalogue</h2>
@@ -114,7 +111,7 @@ header('Cache-Control: no-store');
                         <img class="small_icon" src="./assets/images/coche_valider 2.png" alt="">
                         MODE ADMINISTRATEUR (RÔLE : ADMIN)
                     </span>
-                <a href="#record_form" class="new_button" type="button">
+                <a href="#add_media_form" class="new_button" type="button">
                     <img class="small_icon" src="./assets/images/plus_entouré.png" alt="">
                     + Nouvelle fiche
                 </a>
@@ -122,7 +119,7 @@ header('Cache-Control: no-store');
         </section>
 
         <div class="dashboard_content">
-            <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title" enctype="multipart/form-data">
+            <form class="record_form" id="add_media_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title" enctype="multipart/form-data">
                 <div class="form_tabs">
                     <input id="create" name="operation_type" type="radio" checked>
                     <label for="create" class="tab_active">⊕ Créer une œuvre</label>
@@ -143,7 +140,7 @@ header('Cache-Control: no-store');
                         <label for="record_name">Intitulé de l’œuvre</label>
                         <small>1 à 150 car.</small>
                     </div>
-                    <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049" maxlength="150" required>
+                    <input id="record_name" name="title" type="text" placeholder="Blade Runner 2049">
                 </div>
                 <?php
                 require_once "includes/controllers/categories_controller.php";
@@ -201,7 +198,6 @@ header('Cache-Control: no-store');
                     </button>
                 </div>
             </form>
-
             <!-- Statistiques de démonstration -->
             <section class="catalog_stats" aria-label="Statistiques du catalogue">
                 <div class="stats_cards">
@@ -256,7 +252,7 @@ header('Cache-Control: no-store');
                     <span class="records_count">12 Fiches</span>
                 </div>
                 <div class="records_tools">
-                    <a class="records_add" href="#record_form">
+                    <a class="records_add" href="#add_media_form">
                         <span aria-hidden="true">＋</span>
                         Ajouter une fiche
                     </a>
@@ -316,6 +312,9 @@ header('Cache-Control: no-store');
         </section>
     </div>
 </main>
+<?php
+require_once __DIR__ . '/includes/components/notification_displayer/notification_component.php';
+?>
 <?php require_once __DIR__ . '/includes/templates/layout/fire-game.php'; ?>
 </body>
 </html>
