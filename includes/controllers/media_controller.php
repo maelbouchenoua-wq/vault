@@ -24,10 +24,11 @@ function fetch_media(int $id): ?array
 /**
  * Insert a new `$media` in the database.
  * @param array $media The data of the media to add. THE PROVIDED MEDIA SHOULD HAVE BEEN VALIDATED AND PARSED.
- * @throws Error If the operation failed.
+ * @return array The inserted media.
  * @throws Exception
+ * @throws Error If the operation failed.
  */
-function add_new_media(array $media): void
+function add_new_media(array $media): array
 {
     $pdo = getPDO();
     # Add attachement
@@ -38,13 +39,17 @@ function add_new_media(array $media): void
     # Add to database
     $query = $pdo->prepare("INSERT INTO medias (category_id, title, release_year, description, image_path) VALUES (:category, :title, :release_year, :description,:image_path)");
     try {
-        $query->execute([
+        $data = [
             'category' => $media["category"],
             'title' => $media["title"],
             'release_year' => $media["release_year"],
             'description' => $media["description"],
             'image_path' => $file_path ?? null,
-        ]);
+        ];
+        $query->execute($data);
+
+        $data["id"] = $pdo->lastInsertId();
+        return $data;
     } catch (PDOException) {
         throw new Error("La base de donnée à renvoyé une erreur.");
     }
