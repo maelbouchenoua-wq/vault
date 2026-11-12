@@ -57,6 +57,6 @@ if ($loginError === '' && currentUser() !== null) {
     </section>
 </main>
 <?php require_once __DIR__ . '/includes/templates/layout/fire-game.php'; ?>
-<script src="./assets/js/formulaire.js" defer></script>
+<script src="assets/js/page/login.js" defer></script>
 </body>
 </html>

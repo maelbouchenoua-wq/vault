@@ -1,3 +1,9 @@
+/**
+ * This is the script for the login page.
+ */
+
+
+// Bind login form.
 // Get the login form
 const loginForm = document.querySelector("#loginForm");
 
@@ -38,7 +44,3 @@ loginForm.addEventListener("submit", function (event) {
 
     loginForm.submit();
 });
-
-
-
-
