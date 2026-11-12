@@ -22,8 +22,10 @@ if ($loginError === '' && currentUser() !== null) {
 </head>
 
 <body>
+
     <main class="auth-container">
         <section class="auth-card" aria-labelledby="login-title">
+
             <h1 id="login-title">Connexion</h1>
 
             <!-- Messages et e-mail sont échappés ; le mot de passe reste vide. -->
@@ -36,7 +38,7 @@ if ($loginError === '' && currentUser() !== null) {
             <?php endif; ?>
 
             <!-- POST envoie les identifiants avec un jeton CSRF lié à la session. -->
-            <form id="loginForm" method="POST">
+            <form id="loginForm" method="POST" novalidate>
 
                 <input type="hidden" name="csrf_token" value="">
 
@@ -50,7 +52,7 @@ if ($loginError === '' && currentUser() !== null) {
 
                 <small id="passwordError" class="error"></small>
 
-                <button onclick="login()">Se connecter</button>
+                <button type="submit">Se connecter</button>
 
             </form>
 
@@ -62,5 +64,4 @@ if ($loginError === '' && currentUser() !== null) {
     <script src="./assets/js/formulaire.js" defer></script>
 
 </body>
-
 </html>
