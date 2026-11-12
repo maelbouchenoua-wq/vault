@@ -9,7 +9,11 @@ $current_page = $current_page ?? '';
 $headerUrl = static fn(string $path): string => htmlspecialchars(authUrl($path), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $profileUser = currentUser();
 
-$result1 = get_current_user_exp();
+// Un visiteur n’a pas encore de progression.
+$result1 = ['total_xp' => 0, 'level' => 1];
+if ($headerUser !== null) {
+    $result1 = get_current_user_exp();
+}
 # permet de récuperer les xp de niveau actuel
 $currentLevelExp1 = $result1['total_xp'] % 100;
 # permet de récuperer les xp

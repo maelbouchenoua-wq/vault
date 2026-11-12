@@ -31,54 +31,331 @@ button.fire-launcher:focus-visible { outline: 3px solid #6bd4dc; outline-offset:
 #fire-game .fire-button-quit { border-color: #9c544b; background: #341e23; color: #ffb7a5; }
 #fire-game .fire-button-quit:hover:not(:disabled) { border-color: #ff9179; background: #51292d; }
 
-/* Accueil, séquence photo et ordres au-dessus du terrain. */
-#fire-game .fire-home { display: grid; align-items: center; justify-items: center; padding: 32px 20px 56px; background: linear-gradient(180deg, #07141d9c, #07141d70 45%, #07141dd9); }
-#fire-game .fire-home-copy { display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 100%; }
-#fire-game .fire-home-mark { width: 54px; height: 54px; color: #ff9139; filter: drop-shadow(4px 4px 0 #02090f); }
-#fire-game .fire-home-mark svg { width: 100%; height: 100%; }
-#fire-game #fire-title { color: #f0e9cb; font-size: clamp(28px, 7vw, 76px); font-weight: 900; line-height: 1; letter-spacing: clamp(1px, .5vw, 6px); text-align: center; text-shadow: 5px 5px 0 #02090f; }
-#fire-game .fire-home-subtitle { color: #c0d9db; font-size: clamp(13px, 2vw, 19px); letter-spacing: 1px; text-align: center; }
-#fire-game #fire-start { min-width: 250px; max-width: 100%; margin-top: 18px; }
-#fire-game .fire-intro { z-index: 4; overflow: hidden; background: #07141d; }
-#fire-game .fire-intro-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
-#fire-game #fire-photo-one { opacity: 1; }
-#fire-game #fire-photo-two.is-active, #fire-game #fire-photo-two.is-visible, #fire-game #fire-photo-two.is-current { opacity: 1; }
-#fire-game .fire-intro-photo.is-inactive { opacity: 0 !important; }
-#fire-game #fire-intro:not([hidden]) .fire-intro-photo { animation: fire-photo-pan 10s ease-in-out both; }
-#fire-game[data-state="paused"] .fire-intro-photo { animation-play-state: paused; }
-#fire-game .fire-photo-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, #02090f22 25%, #02090f33 52%, #02090ff5); }
-#fire-game .fire-intro-copy { position: absolute; right: 230px; bottom: 46px; left: 32px; z-index: 1; }
-#fire-game #fire-intro-caption { max-width: 30ch; margin-bottom: 14px; color: #f0e9cb; font-size: clamp(24px, 3.5vw, 44px); font-weight: 900; line-height: 1.15; text-shadow: 3px 3px 0 #02090f; }
-#fire-game .fire-photo-credit { max-width: 70ch; color: #e5efee; font-size: 10px; line-height: 1.6; text-shadow: 0 1px 2px #02090f; }
-#fire-game .fire-photo-credit a { color: #e8f3ed; }
-#fire-game #fire-skip { position: absolute; right: 26px; bottom: 46px; z-index: 2; max-width: 205px; }
-#fire-game .fire-orders { z-index: 5; display: flex; align-items: center; justify-content: flex-end; padding: 30px; overflow: hidden; background: transparent; pointer-events: none; }
-#fire-game .fire-orders-window { width: 370px; max-width: 45%; max-height: 100%; padding: 18px; overflow: auto; border: 2px solid #53707c; background: #091c27f5; box-shadow: 5px 5px 0 #02090f; pointer-events: auto; }
-#fire-game #fire-orders-title { margin-bottom: 7px; color: #f0e9cb; font-size: 22px; font-weight: 900; line-height: 1.15; }
-#fire-game .fire-orders-subtitle { color: #9db8c2; font-size: 11px; }
-#fire-game .fire-team-card { margin-top: 14px; padding-top: 13px; border-top: 1px solid #355460; }
-#fire-game .fire-team-card h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; color: #dce9e5; font-size: 11px; font-weight: 700; line-height: 1.4; }
-#fire-game .fire-team-code { padding: 3px 5px; background: #ff9139; color: #07141d; font-size: 11px; font-weight: 900; }
-#fire-game .fire-team-code-cyan { background: #6bd4dc; }
-#fire-game .fire-team-card p { margin-top: 8px; color: #b0c8ce; font-size: 11px; line-height: 1.5; }
-#fire-game .fire-team-card .fire-button { width: 100%; min-height: 42px; margin-top: 11px; padding: 10px 12px; font-size: 11px; }
+/* Menu Échap : les actions à gauche, le choix du binôme à droite. */
+#fire-game .fire-menu {
+    z-index: 10;
+    display: grid;
+    place-items: center;
+    padding: 32px;
+    background: #080c10b8;
+}
+#fire-game .fire-menu-window {
+    width: min(640px, 100%);
+    min-width: 0;
+    max-height: calc(100dvh - 64px);
+    padding: 32px;
+    overflow: auto;
+    border: 1px solid #424745;
+    border-radius: 5px;
+    background: #1a1f20;
+    box-shadow: 0 20px 70px #0008;
+    color: #f1eddf;
+    scrollbar-width: thin;
+    scrollbar-color: #666960 #1a1f20;
+}
+#fire-game .fire-menu-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+#fire-game .fire-menu-heading .fire-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    color: #b8baae;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+}
+#fire-game .fire-menu-heading .fire-eyebrow::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: #ee745c;
+}
+#fire-game #fire-menu-title {
+    color: #f1eddf;
+    font: 700 44px/1.1 system-ui, sans-serif;
+    letter-spacing: -1.5px;
+}
+#fire-game .fire-menu-key {
+    padding: 4px 7px;
+    border: 1px solid #525852;
+    border-radius: 3px;
+    color: #a6ada3;
+    font-size: 10px;
+    letter-spacing: .5px;
+}
+#fire-game .fire-menu-body {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    align-items: start;
+    gap: 32px;
+}
+#fire-game .fire-menu .fire-button {
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: transparent;
+    box-shadow: none;
+    color: #d5d9ce;
+    font: 500 14px/1.3 system-ui, sans-serif;
+    text-align: left;
+    justify-content: flex-start;
+}
+#fire-game .fire-menu .fire-button:hover {
+    border-color: #444d47;
+    background: #292f2d;
+    color: #f8f4e8;
+}
+#fire-game .fire-menu :is(button, a, summary):focus-visible {
+    outline: 2px solid #eee7d4;
+    outline-offset: 3px;
+}
+#fire-game .fire-menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+#fire-game .fire-menu-buttons .fire-button {
+    width: 100%;
+    min-height: 48px;
+    font-size: 15px;
+}
+#fire-game .fire-menu-buttons .fire-button-primary {
+    background: #eee7d4;
+    border-color: #eee7d4;
+    color: #202622;
+    font-weight: 700;
+}
+#fire-game .fire-menu-buttons .fire-button-primary:hover {
+    background: #fff8e5;
+    border-color: #fff8e5;
+    color: #111815;
+}
+#fire-game .fire-menu .fire-menu-arrow {
+    margin-left: auto;
+    color: #a8b1a4;
+    font: 18px/1 Consolas, monospace;
+}
+#fire-game .fire-menu-buttons .fire-button-primary .fire-menu-arrow {
+    color: #a3412f;
+}
+#fire-game .fire-menu-buttons .fire-button-quit { color: #d99382; }
+#fire-game .fire-menu-buttons .fire-button-quit:hover { color: #ffbaa8; }
+#fire-game .fire-menu-modes {
+    align-self: stretch;
+    min-width: 0;
+    margin: 0;
+    padding: 0 0 0 30px;
+    border: 0;
+    border-left: 1px solid #3a413c;
+}
+#fire-game .fire-menu-modes legend {
+    float: left;
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 0;
+    color: #b7beb1;
+    font: 500 12px/1.4 system-ui, sans-serif;
+}
+#fire-game .fire-team-buttons {
+    clear: both;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+#fire-game .fire-team-buttons .fire-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    min-height: 64px;
+    padding: 10px 12px;
+    border-color: #485149;
+    background: #242b27;
+}
+#fire-game .fire-team-buttons strong {
+    color: #f0ecdd;
+    font: 700 14px/1.2 Consolas, monospace;
+    letter-spacing: 1px;
+}
+#fire-game .fire-team-buttons span {
+    color: #abb4a6;
+    font: 400 11px/1.4 system-ui, sans-serif;
+}
 
-/* Menu Échap et fin : aucune barre permanente autour du canvas. */
-#fire-game .fire-menu, #fire-game .fire-result { z-index: 10; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); align-items: center; justify-items: center; padding: 24px; background: #02090fc9; }
-#fire-game .fire-menu-window, #fire-game .fire-result-window { width: min(380px, 100%); min-width: 0; min-height: 0; max-width: 100%; max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px); padding: 26px; overflow: auto; border: 2px solid #4d6a78; background: #0a1b26; box-shadow: 6px 6px 0 #02090f; }
-#fire-game #fire-menu-title, #fire-game #fire-result-title { margin-bottom: 22px; color: #f0e9cb; font-size: 28px; font-weight: 900; line-height: 1.15; letter-spacing: 1px; }
-#fire-game .fire-menu-buttons { display: flex; flex-direction: column; gap: 10px; }
-#fire-game .fire-menu-buttons .fire-button { width: 100%; }
-#fire-game #fire-sound svg { width: 19px; height: 19px; }
-#fire-game #fire-sound [data-fire-label] { margin: 0; }
-#fire-game .fire-menu-controls { margin-top: 22px; color: #9bb9c4; font-size: 10px; line-height: 2.2; }
-#fire-game .fire-credits { margin-top: 16px; border-top: 1px solid #2e4a57; color: #a4bdc5; font-size: 9px; line-height: 1.6; }
-#fire-game .fire-credits summary { width: fit-content; padding: 11px 0 0; color: #b7d0d5; cursor: pointer; }
-#fire-game .fire-credits summary::marker { color: #ff9139; }
-#fire-game .fire-credits > div { padding-top: 10px; }
-#fire-game .fire-credits p + p { margin-top: 7px; }
-#fire-game #fire-result-text { margin-bottom: 22px; color: #b8d0d5; font-size: 13px; line-height: 1.7; }
-#fire-game .fire-result-window .fire-button { width: 100%; margin-top: 10px; }
+/* L'aide est repliée pour laisser les actions visibles. */
+#fire-game .fire-menu-help {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 28px;
+    border-top: 1px solid #3a413c;
+}
+#fire-game .fire-menu-help details {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: #aeb7a7;
+    font: 400 12px/1.6 system-ui, sans-serif;
+}
+#fire-game .fire-menu-help summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+    width: 100%;
+    padding: 8px 0;
+    list-style: none;
+    color: #b9c0b2;
+    cursor: pointer;
+}
+#fire-game .fire-menu-help summary::-webkit-details-marker { display: none; }
+#fire-game .fire-menu-help summary::after {
+    content: "+";
+    color: #b4b9ab;
+    font: 16px/1 Consolas, monospace;
+}
+#fire-game .fire-menu-help details[open] > summary::after { content: "−"; }
+#fire-game .fire-menu-help details:not([open]) > div { display: none; }
+#fire-game .fire-menu-help summary:hover { color: #f4eedf; }
+#fire-game .fire-controls { border-bottom: 1px solid #343b35; }
+#fire-game .fire-menu-controls { padding: 2px 0 18px; }
+#fire-game .fire-menu-controls dl {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 8px 14px;
+    margin: 0 0 14px;
+}
+#fire-game .fire-menu-controls dt { color: #d6dace; }
+#fire-game .fire-menu-controls dd { margin: 0; }
+#fire-game .fire-menu-controls p { max-width: 48ch; color: #a2ad9b; font-size: 11px; }
+#fire-game .fire-menu kbd {
+    padding: 2px 5px;
+    border: 1px solid #555f51;
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    background: #293128;
+    color: #e0e4d5;
+    font-size: 10px;
+}
+
+/* La fin de partie reprend les couleurs du menu. */
+#fire-game .fire-result {
+    z-index: 10;
+    display: grid;
+    place-items: center;
+    padding: 32px;
+    background: #080c10b8;
+}
+#fire-game .fire-result-window {
+    width: min(500px, 100%);
+    min-width: 0;
+    max-height: calc(100dvh - 64px);
+    padding: 32px;
+    overflow: auto;
+    border: 1px solid #424745;
+    border-radius: 5px;
+    background: #1a1f20;
+    box-shadow: 0 20px 70px #0008;
+    color: #f1eddf;
+    scrollbar-width: thin;
+    scrollbar-color: #666960 #1a1f20;
+}
+#fire-game .fire-result-heading .fire-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #b8baae;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+}
+#fire-game .fire-result-heading .fire-eyebrow::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    background: #ee745c;
+}
+#fire-game #fire-result-title {
+    color: #f1eddf;
+    font: 700 40px/1.1 system-ui, sans-serif;
+    letter-spacing: -1.2px;
+    overflow-wrap: anywhere;
+}
+#fire-game #fire-result-text {
+    margin: 16px 0 26px;
+    color: #b8c1b3;
+    font: 400 14px/1.7 system-ui, sans-serif;
+}
+#fire-game .fire-result-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding-top: 22px;
+    border-top: 1px solid #3a413c;
+}
+#fire-game .fire-result-actions .fire-button {
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    box-shadow: none;
+    background: transparent;
+    color: #d5d9ce;
+    font: 500 14px/1.3 system-ui, sans-serif;
+    text-align: left;
+}
+#fire-game .fire-result-actions .fire-button-primary {
+    border-color: #eee7d4;
+    background: #eee7d4;
+    color: #202622;
+    font-weight: 700;
+}
+#fire-game .fire-result-actions .fire-button-primary:hover {
+    border-color: #fff8e5;
+    background: #fff8e5;
+    color: #111815;
+}
+#fire-game .fire-result-actions .fire-button-quit { color: #d99382; }
+#fire-game .fire-result-actions .fire-button-quit:hover {
+    border-color: #444d47;
+    background: #292f2d;
+    color: #ffbaa8;
+}
+#fire-game .fire-result-actions .fire-button .fire-result-arrow {
+    margin-left: auto;
+    color: #a8b1a4;
+    font: 18px/1 Consolas, monospace;
+}
+#fire-game .fire-result-actions .fire-button-primary .fire-result-arrow { color: #a3412f; }
+#fire-game .fire-result button:focus-visible {
+    outline: 2px solid #eee7d4;
+    outline-offset: 3px;
+}
+
+@media (max-width: 400px) {
+    #fire-game .fire-result { padding: 12px; }
+    #fire-game .fire-result-window { max-height: calc(100dvh - 24px); padding: 24px 20px; }
+    #fire-game #fire-result-title { font-size: 34px; }
+    #fire-game .fire-result-actions { grid-template-columns: 1fr; gap: 6px; padding-top: 18px; }
+}
+@media (max-height: 520px) {
+    #fire-game .fire-result { padding: 16px; }
+    #fire-game .fire-result-window { max-height: calc(100dvh - 32px); padding: 24px; }
+    #fire-game #fire-result-title { font-size: 32px; }
+    #fire-game #fire-result-text { margin: 12px 0 18px; }
+    #fire-game .fire-result-actions { padding-top: 18px; }
+}
 #fire-game .fire-menu-hint { position: absolute; bottom: max(8px, env(safe-area-inset-bottom)); left: max(12px, env(safe-area-inset-left)); z-index: 8; min-height: 26px; padding: 4px 7px; border: 0; border-radius: 0; background: #07141d80; color: #d2e1de; font-size: 10px; line-height: 1.4; opacity: .65; }
 #fire-game .fire-menu-hint:hover, #fire-game .fire-menu-hint:focus-visible { opacity: 1; }
 #fire-game[data-state="paused"] .fire-menu-hint { display: none; }
@@ -95,60 +372,49 @@ button.fire-launcher:focus-visible { outline: 3px solid #6bd4dc; outline-offset:
 #fire-game .fire-touch-actions button { min-width: 82px; font-size: 10px; font-weight: 700; }
 #fire-game .fire-touch-actions .fire-spray-button { border-color: #8de6ebc9; background: #125362c9; color: #d4fcff; }
 
-@keyframes fire-photo-pan { from { transform: scale(1.04) translateX(-.6%); } to { transform: scale(1.12) translateX(.6%); } }
 @media (pointer: coarse), (max-width: 700px) {
     #fire-game[data-state="playing"]:not([data-phase="orders"]) .fire-touch { display: block; }
     #fire-game[data-state="playing"] .fire-notice { bottom: 150px; }
 }
-@media (max-width: 700px) {
-    #fire-game .fire-home { padding: 20px 16px 52px; }
-    #fire-game .fire-home-copy { gap: 14px; }
-    #fire-game .fire-home-mark { width: 42px; height: 42px; }
-    #fire-game #fire-start { min-width: 235px; margin-top: 14px; }
-    #fire-game .fire-intro-copy { right: 18px; bottom: 110px; left: 18px; }
-    #fire-game #fire-intro-caption { font-size: clamp(24px, 6vw, 34px); }
-    #fire-game .fire-photo-credit { font-size: 9px; }
-    #fire-game #fire-skip { right: 18px; bottom: 46px; min-height: 42px; padding: 10px 12px; font-size: 10px; }
-    #fire-game .fire-orders { justify-content: center; padding: 18px 14px 46px; overflow: auto; background: #02090fc9; pointer-events: auto; }
-    #fire-game .fire-orders-window { width: 370px; max-width: 100%; padding: 17px; }
-    #fire-game #fire-orders-title { font-size: 21px; }
-    #fire-game .fire-menu, #fire-game .fire-result { padding: 18px; }
-    #fire-game .fire-menu-window, #fire-game .fire-result-window { max-height: calc(100vh - 36px); max-height: calc(100dvh - 36px); padding: 22px; }
-}
 @media (max-width: 360px) {
-    #fire-game #fire-title { font-size: 28px; letter-spacing: .5px; }
-    #fire-game .fire-menu, #fire-game .fire-result { padding: 14px; }
-    #fire-game .fire-menu-window, #fire-game .fire-result-window { max-height: calc(100vh - 28px); max-height: calc(100dvh - 28px); padding: 18px; }
     #fire-game .fire-dpad { left: 9px; grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(2, 42px); gap: 3px; }
     #fire-game .fire-dpad button { min-width: 40px; min-height: 42px; }
     #fire-game .fire-touch-actions { right: 9px; }
     #fire-game .fire-touch-actions button { min-width: 76px; }
 }
 @media (max-height: 520px) {
-    #fire-game .fire-home-copy { gap: 10px; }
-    #fire-game .fire-home-mark { width: 36px; height: 36px; }
-    #fire-game #fire-title { font-size: clamp(28px, 7vw, 52px); }
-    #fire-game #fire-start { margin-top: 8px; }
-    #fire-game .fire-orders { padding: 14px 18px 42px; }
-    #fire-game .fire-orders-window { padding: 12px; }
-    #fire-game #fire-orders-title { font-size: 19px; }
     #fire-game .fire-eyebrow { margin-bottom: 5px; font-size: 9px; }
-    #fire-game .fire-team-card { margin-top: 10px; padding-top: 9px; }
-    #fire-game .fire-team-card p { margin-top: 6px; font-size: 10px; }
-    #fire-game .fire-team-card .fire-button { min-height: 38px; margin-top: 8px; padding: 8px 10px; }
-    #fire-game .fire-menu, #fire-game .fire-result { padding: 16px; }
-    #fire-game .fire-menu-window, #fire-game .fire-result-window { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); padding: 18px 22px; }
-    #fire-game #fire-menu-title, #fire-game #fire-result-title { margin-bottom: 15px; font-size: 24px; }
-    #fire-game .fire-menu-buttons { gap: 8px; }
-    #fire-game .fire-menu-buttons .fire-button { min-height: 40px; padding: 9px 14px; }
-    #fire-game .fire-menu-controls { margin-top: 16px; }
-    #fire-game .fire-intro-copy { bottom: 46px; }
-    #fire-game #fire-intro-caption { margin-bottom: 9px; font-size: 27px; }
-}
-@media (max-height: 520px) and (max-width: 700px) {
-    #fire-game .fire-intro-copy { right: 190px; bottom: 46px; }
-    #fire-game #fire-intro-caption { font-size: 22px; }
+    #fire-game .fire-result { padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
     #fire-game *, button.fire-launcher { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Style du binôme BAT. */
+#fire-game .fire-training { color: #c7d9d9; background: #0b1f2a; border-color: #425c66; }
+
+/* Sur petit écran, les commandes restent après les actions principales. */
+@media (max-width: 600px) {
+    #fire-game .fire-menu { padding: 18px; }
+    #fire-game .fire-menu-window { max-height: calc(100dvh - 36px); padding: 24px; }
+    #fire-game .fire-menu-heading { margin-bottom: 24px; }
+    #fire-game #fire-menu-title { font-size: 38px; }
+    #fire-game .fire-menu-body { grid-template-columns: 1fr; gap: 24px; }
+    #fire-game .fire-menu-buttons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+    #fire-game #fire-resume { grid-column: 1 / -1; }
+    #fire-game .fire-menu-buttons .fire-button { padding: 12px 10px; font-size: 13px; }
+    #fire-game .fire-menu-modes { padding: 0; border: 0; }
+    #fire-game .fire-menu-help { margin-top: 20px; }
+}
+@media (max-width: 360px) {
+    #fire-game .fire-menu { padding: 12px; }
+    #fire-game .fire-menu-window { max-height: calc(100dvh - 24px); padding: 20px 18px; }
+    #fire-game .fire-menu-controls dl { grid-template-columns: 90px 1fr; gap: 8px; }
+}
+@media (max-height: 520px) and (min-width: 601px) {
+    #fire-game .fire-menu { padding: 16px; }
+    #fire-game .fire-menu-window { max-height: calc(100dvh - 32px); padding: 22px 28px; }
+    #fire-game .fire-menu-heading { margin-bottom: 20px; }
+    #fire-game #fire-menu-title { font-size: 36px; }
+    #fire-game .fire-menu-help { margin-top: 20px; }
 }

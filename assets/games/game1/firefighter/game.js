@@ -7,24 +7,25 @@ const canvas = document.getElementById('fire-canvas');
 function initialize() {
     const context = canvas.getContext('2d');
     if (!context) return;
-    const ids = ['start', 'close', 'sound', 'restart', 'skip', 'home', 'intro',
-        'photo-one', 'photo-two', 'intro-label', 'intro-caption', 'intro-credit',
-        'result', 'result-title', 'result-text', 'result-replay', 'resume', 'paused',
-        'orders', 'order-bat', 'order-bal', 'notice', 'dialogue-live', 'menu-title'];
+    const ids = ['close', 'restart', 'result', 'result-title', 'result-text', 'result-replay',
+        'resume', 'paused', 'notice', 'dialogue-live', 'menu-title', 'start', 'bal'];
     const ui = Object.fromEntries(ids.map(id => [id, document.getElementById(`fire-${id}`)]));
     const assets = {};
     const renderer = new FireRenderer(context, assets);
     const base = new URL(dialog.dataset.assets, location.href);
-    const siren = new RadioSound();
     const openers = [...document.querySelectorAll('[data-fire-open]')];
+    const secretLogos = [...document.querySelectorAll('header .logo, .admin_sidemenu .navigation h2 > a')];
+    const logoDelay = 3000;
+    let logoClicks = 0, logoFirstClick = 0, logoTimer = null;
     const pressed = new Map(), directions = new Map(), spraySources = new Set(), consumed = new Set();
+    let selectedTeam = 'BAT';
     const makeMission = () => new FireMission();
     let mission = makeMission();
-    let state = 'home', pausedFrom = 'home';
-    let unlocked = false, sequence = 0, interactPending = false, ordersVisible = false;
-    let animation = null, resizeRequest = null, previousTime = null, visualTime = 0, introElapsed = 0;
+    let state = 'playing', pausedFrom = 'playing';
+    let unlocked = false, sequence = 0, interactPending = false;
+    let animation = null, resizeRequest = null, previousTime = null, visualTime = 0;
     let previousFocus = null, scrollState = null, assetPromise = null, pointerAim = null;
-    let noticeUntil = 0, dialogueSignature = '';
+    let noticeUntil = 0, dialogueSignature = '', hoseWasLimited = false;
     let size = { width: MAP.width, height: MAP.height, ratio: 1 };
     let camera = { scale: 1, x: 0, y: 0 };
     const editable = target => target instanceof Element && (target.isContentEditable
@@ -38,28 +39,25 @@ function initialize() {
 
     function resetInput() { pressed.clear(); directions.clear(); spraySources.clear(); interactPending = false; }
 
+    function debrief() {
+        const won = mission.phase === 'won';
+        write(ui['result-title'], won ? 'Feu maîtrisé' : 'Repli du binôme');
+        write(ui['result-text'], won
+            ? 'Tout le monde est à l’abri. L’intervention est terminée.'
+            : 'Le binôme doit se replier. Tu peux recommencer l’intervention.');
+    }
+
     function setState(next) {
         state = next;
         dialog.dataset.state = state;
         for (const child of dialog.children) child.inert = state === 'paused' && child !== ui.paused;
-        ui.home.hidden = state !== 'home';
-        ui.intro.hidden = state !== 'intro' && !(state === 'paused' && pausedFrom === 'intro');
         ui.paused.hidden = state !== 'paused';
         ui.result.hidden = state !== 'result';
-        ui.orders.hidden = !(state === 'playing' && mission.phase === 'orders');
-        ui.skip.hidden = state !== 'intro';
-        ui.restart.disabled = state === 'paused' && pausedFrom === 'home';
-        write(ui.resume, pausedFrom === 'home' ? 'Retour' : 'Reprendre');
-        write(ui['menu-title'], 'MENU');
+        write(ui.resume, pausedFrom === 'result' ? 'Retour au résultat' : 'Reprendre');
         if (ui.notice) ui.notice.hidden = true;
         noticeUntil = 0;
         resetInput();
-        updateSound();
         if (dialog.open) resize();
-    }
-
-    function updateSound() {
-        siren.setRunning(state === 'intro' || (state === 'playing' && mission.phase === 'arrival'));
     }
 
     function loadImage(name) {
@@ -78,8 +76,7 @@ function initialize() {
     }
 
     function loadAssets() {
-        if (!assetPromise) assetPromise = Promise.all(['flames.png', 'station.jpg', 'departure.jpg'].map(loadImage))
-            .then(([flames, station, departure]) => Object.assign(assets, { flames, station, departure }));
+        if (!assetPromise) assetPromise = loadImage('flames.png').then(flames => Object.assign(assets, { flames }));
         return assetPromise;
     }
 
@@ -124,10 +121,6 @@ function initialize() {
     function hud() {
         dialog.dataset.phase = mission.phase;
         dialog.dataset.floor = String(mission.floor);
-        const showOrders = state === 'playing' && mission.phase === 'orders';
-        ui.orders.hidden = !showOrders;
-        if (showOrders && !ordersVisible) dialog.querySelector('[data-fire-team="BAT"]')?.focus({ preventScroll: true });
-        ordersVisible = showOrders;
         const speech = mission.dialogue || mission.bubble;
         const signature = speech ? `${speech.id ?? ''}|${speech.actorId}|${speech.text}` : '';
         if (speech && signature !== dialogueSignature) {
@@ -142,14 +135,10 @@ function initialize() {
         dialogueSignature = signature;
         if (noticeUntil && visualTime >= noticeUntil) { ui.notice.hidden = true; noticeUntil = 0; }
         if (state === 'playing' && ['won', 'lost'].includes(mission.phase)) {
-            write(ui['result-title'], mission.phase === 'won' ? 'Intervention terminée' : 'Repli');
-            write(ui['result-text'], mission.phase === 'won'
-                ? 'Chef d’agrès : les deux binômes sont revenus. On rassemble le matériel.'
-                : 'Chef d’agrès : on se replie. Reprenez vos distances avant de repartir.');
+            debrief();
             setState('result');
             ui['result-replay'].focus({ preventScroll: true });
         }
-        updateSound();
     }
 
     function input() {
@@ -169,45 +158,72 @@ function initialize() {
         return result;
     }
 
-    function updateIntro() {
-        const departure = introElapsed >= 3.8;
-        ui['photo-one'].style.opacity = departure ? '0' : '1';
-        ui['photo-two'].style.opacity = departure ? '1' : '0';
-        ui['photo-one'].classList.toggle('is-active', !departure);
-        ui['photo-two'].classList.toggle('is-active', departure);
-        write(ui['intro-label'], departure ? 'EN ROUTE' : 'DÉPART CASERNE');
-        write(ui['intro-caption'], departure ? 'Chef d’agrès : à l’arrivée, écoutez les ordres.' : 'Feu d’habitation. L’équipage est engagé.');
-        for (const link of ui['intro-credit'].querySelectorAll('[data-fire-credit-photo]')) link.href = departure ? PHOTO_TWO : PHOTO_ONE;
-        if (introElapsed >= 7.6) beginArrival();
-    }
-
     function frame(timestamp) {
         if (!dialog.open) { animation = null; return; }
         const dt = previousTime === null ? 0 : Math.min(0.05, (timestamp - previousTime) / 1000);
         previousTime = timestamp;
         if (state !== 'paused') visualTime += dt;
-        if (state === 'intro') { introElapsed += dt; updateIntro(); }
         if (state === 'playing') {
             const command = input();
             mission.update(dt, command);
             if (command.interact) showNotice(mission.message);
+            const hoseLimited = mission.hoseLines?.some(line => line.team === mission.team && line.limited) || false;
+            if (hoseLimited && !hoseWasLimited) showNotice('LAT : 60 m maximum (3 × 20 m). Revenez sur votre chemin pour récupérer du tuyau.');
+            hoseWasLimited = hoseLimited;
         }
         hud(); draw();
         animation = requestAnimationFrame(frame);
     }
 
     function freshMission() {
-        mission = makeMission(); pointerAim = null; dialogueSignature = ''; ordersVisible = false;
+        mission = makeMission();
+        mission.startOnScene(selectedTeam);
+        pointerAim = null; dialogueSignature = ''; hoseWasLimited = false;
+    }
+
+    function resetLogoTrigger() {
+        if (logoTimer !== null) clearTimeout(logoTimer);
+        logoClicks = 0; logoFirstClick = 0; logoTimer = null;
+    }
+
+    function unlockAndOpen() {
+        resetLogoTrigger(); sequence = 0; unlocked = true;
+        openers.forEach(button => { button.hidden = false; });
+        open();
+    }
+
+    // Cinq clics dans une fenêtre fixe de trois secondes depuis le premier clic.
+    function onLogoClick(event) {
+        if (event.defaultPrevented || event.button !== 0
+            || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return;
+        event.preventDefault();
+        if (dialog.open) return;
+
+        const now = performance.now();
+        if (logoClicks > 0 && now - logoFirstClick >= logoDelay) resetLogoTrigger();
+        if (logoClicks === 0) {
+            logoFirstClick = now;
+            const destination = event.currentTarget.href;
+            logoTimer = setTimeout(() => {
+                resetLogoTrigger();
+                // Sans cinq clics, le lien garde son retour au catalogue.
+                if (!dialog.open && destination !== location.href) location.assign(destination);
+            }, logoDelay);
+        }
+        logoClicks++;
+        if (logoClicks === 5) unlockAndOpen();
     }
 
     function open() {
         if (!unlocked || dialog.open) return;
+        resetLogoTrigger();
         previousFocus = document.activeElement;
         scrollState = { x: scrollX, y: scrollY, html: document.documentElement.style.overflow, body: document.body.style.overflow };
         document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
-        freshMission(); setState('home'); dialog.showModal();
+        selectedTeam = 'BAT';
+        freshMission(); setState('playing'); dialog.showModal();
         loadAssets().then(() => { if (dialog.open) draw(); });
-        resize(); hud(); ui.start.focus({ preventScroll: true });
+        resize(); hud(); canvas.focus({ preventScroll: true });
         previousTime = null; animation = requestAnimationFrame(frame);
     }
 
@@ -217,7 +233,7 @@ function initialize() {
         if (animation !== null) cancelAnimationFrame(animation);
         if (resizeRequest !== null) cancelAnimationFrame(resizeRequest);
         animation = null; resizeRequest = null; previousTime = null;
-        resetInput(); sequence = 0; consumed.clear(); siren.setRunning(false);
+        resetLogoTrigger(); resetInput(); sequence = 0; consumed.clear();
         if (scrollState) {
             document.documentElement.style.overflow = scrollState.html;
             document.body.style.overflow = scrollState.body;
@@ -228,12 +244,12 @@ function initialize() {
         previousFocus = null;
     }
 
+    // Une nouvelle intervention est jouable immédiatement, sans séquence d'introduction.
     function start() {
-        freshMission(); introElapsed = 0; setState('intro'); updateIntro();
-        ui.skip.focus({ preventScroll: true });
+        freshMission(); setState('playing'); hud();
+        previousTime = null;
+        canvas.focus({ preventScroll: true });
     }
-
-    function beginArrival() { freshMission(); setState('playing'); canvas.focus({ preventScroll: true }); }
 
     function pause() {
         if (!dialog.open || state === 'paused') return;
@@ -243,8 +259,7 @@ function initialize() {
     function resume() {
         if (state !== 'paused') return;
         setState(pausedFrom); previousTime = null;
-        const target = state === 'home' ? ui.start : state === 'intro' ? ui.skip : state === 'result' ? ui['result-replay']
-            : mission.phase === 'orders' ? dialog.querySelector('[data-fire-team="BAT"]') : canvas;
+        const target = state === 'result' ? ui['result-replay'] : canvas;
         target?.focus({ preventScroll: true });
     }
     const toggleMenu = () => state === 'paused' ? resume() : pause();
@@ -260,7 +275,7 @@ function initialize() {
             if (event.repeat) return;
             if (key === 'feu'[sequence]) {
                 event.preventDefault(); consumed.add(identity); sequence++;
-                if (sequence === 3) { sequence = 0; unlocked = true; openers.forEach(button => { button.hidden = false; }); open(); }
+                if (sequence === 3) unlockAndOpen();
             } else { if (sequence) { event.preventDefault(); consumed.add(identity); } sequence = 0; }
             return;
         }
@@ -279,7 +294,7 @@ function initialize() {
         if (key === 'escape' || key === 'p') {
             event.preventDefault(); event.stopPropagation(); if (!event.repeat) toggleMenu(); return;
         }
-        if (key === 'r' && state === 'paused' && pausedFrom !== 'home' && !event.repeat) { event.preventDefault(); start(); return; }
+        if (key === 'r' && state === 'paused' && !event.repeat) { event.preventDefault(); start(); return; }
         if (!playable()) return;
         const direction = directionFor(key);
         if (direction) { event.preventDefault(); pressed.set(identity, direction); }
@@ -321,73 +336,29 @@ function initialize() {
         button.addEventListener('lostpointercapture', releasePointer);
     }
     for (const button of dialog.querySelectorAll('[data-fire-interact]')) button.addEventListener('click', () => { if (playable()) interactPending = true; });
+    for (const logo of secretLogos) logo.addEventListener('click', onLogoClick);
     for (const button of openers) button.addEventListener('click', open);
-    for (const button of dialog.querySelectorAll('[data-fire-team]')) button.addEventListener('click', () => {
-        if (state === 'playing' && mission.phase === 'orders' && mission.chooseTeam(button.dataset.fireTeam)) {
-            resetInput(); hud(); draw(); canvas.focus({ preventScroll: true });
-        }
-    });
     for (const button of dialog.querySelectorAll('[data-fire-quit]')) button.addEventListener('click', close);
     for (const button of dialog.querySelectorAll('[data-fire-pause]')) button.addEventListener('click', toggleMenu);
-    for (const button of dialog.querySelectorAll('[data-fire-home]')) button.addEventListener('click', () => {
-        freshMission(); setState('home'); ui.start.focus({ preventScroll: true });
-    });
-    ui.start.addEventListener('click', start); ui.close.addEventListener('click', close);
+    ui.start.addEventListener('click', () => { selectedTeam = 'BAT'; start(); });
+    ui.bal.addEventListener('click', () => { selectedTeam = 'BAL'; start(); });
+    ui.close.addEventListener('click', close);
     ui.restart.addEventListener('click', start); ui['result-replay'].addEventListener('click', start);
-    ui.skip.addEventListener('click', beginArrival); ui.resume.addEventListener('click', resume);
-    ui.sound.addEventListener('click', async () => {
-        const enabled = await siren.toggle(); ui.sound.setAttribute('aria-pressed', String(enabled));
-        write(ui.sound, enabled ? 'Son : activé' : 'Son : coupé');
-        ui.sound.setAttribute('aria-label', enabled ? 'Couper le son' : 'Activer le son');
-        ui.sound.title = enabled ? 'Couper le son' : 'Activer le son';
-        const waves = ui.sound.querySelectorAll('svg path')[1];
-        if (waves) waves.setAttribute('d', enabled ? 'M16 8a6 6 0 0 1 0 8M19 5a10 10 0 0 1 0 14' : 'm16 9 5 6m0-6-5 6');
-    });
+    ui.resume.addEventListener('click', resume);
     dialog.addEventListener('cancel', event => { event.preventDefault(); toggleMenu(); });
     dialog.addEventListener('close', () => { if (!dialog.open) cleanup(); });
     window.addEventListener('blur', () => {
-        sequence = 0; consumed.clear(); resetInput(); if (['intro', 'playing'].includes(state)) pause();
+        resetLogoTrigger(); sequence = 0; consumed.clear(); resetInput(); if (state === 'playing') pause();
     });
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { sequence = 0; consumed.clear(); resetInput(); if (['intro', 'playing'].includes(state)) pause(); }
+        if (document.hidden) { resetLogoTrigger(); sequence = 0; consumed.clear(); resetInput(); if (state === 'playing') pause(); }
     });
     window.addEventListener('resize', () => {
         if (!dialog.open) return;
         if (resizeRequest !== null) cancelAnimationFrame(resizeRequest);
         resizeRequest = requestAnimationFrame(() => { resizeRequest = null; resize(); });
     });
-    write(ui['order-bat'], 'BAT, prenez la ligne et engagez-vous au rez-de-chaussée. Extinction, recherche et sauvetage.');
-    write(ui['order-bal'], 'BAL, établissez la division, puis l’échelle à coulisse. Rejoignez le premier étage.');
-    setState('home'); dialog.dataset.ready = 'true';
-}
-
-const PHOTO_ONE = 'https://commons.wikimedia.org/wiki/File:Langon_-_33210_-_2026.07.10_-_SDIS_33_-_Fourgon_Pompe_Tonne_(vue_avant_gauche)_%C2%A9_Anthony_Levrot.jpg';
-const PHOTO_TWO = PHOTO_ONE.replace('vue_avant_gauche', 'vue_avant_droit');
-
-class RadioSound {
-    constructor() { this.enabled = false; this.running = false; this.audio = null; this.timer = null; this.oscillator = null; }
-    async toggle() {
-        this.enabled = !this.enabled;
-        if (this.enabled) {
-            const Audio = window.AudioContext || window.webkitAudioContext;
-            if (!Audio) { this.enabled = false; return false; }
-            if (!this.audio) this.audio = new Audio();
-            try { await this.audio.resume(); } catch (_) { this.enabled = false; }
-        }
-        this.sync(); return this.enabled;
-    }
-    setRunning(value) { if (this.running !== value) { this.running = value; this.sync(); } }
-    sync() {
-        if (this.oscillator) { try { this.oscillator.stop(); } catch (_) {} this.oscillator.disconnect(); this.oscillator = null; }
-        if (this.timer) { clearInterval(this.timer); this.timer = null; }
-        if (!this.enabled || !this.running || !this.audio) return;
-        const oscillator = this.audio.createOscillator(), gain = this.audio.createGain();
-        oscillator.type = 'sine'; gain.gain.value = 0.025; oscillator.connect(gain); gain.connect(this.audio.destination);
-        let high = false;
-        const tone = () => { high = !high; oscillator.frequency.setTargetAtTime(high ? 620 : 460, this.audio.currentTime, 0.09); };
-        tone(); oscillator.start(); this.oscillator = oscillator; this.timer = setInterval(tone, 450);
-        oscillator.onended = () => gain.disconnect();
-    }
+    setState('playing'); dialog.dataset.ready = 'true';
 }
 
 if (dialog && canvas && dialog.dataset.ready !== 'true') initialize();

@@ -1,3 +1,5 @@
+import { updateHosePath, hoseLength, HOSE_MAX_METERS, PIXELS_PER_METER } from './hose.js';
+
 const houseWalls = [
     { x: 620, y: 170, w: 720, h: 16 }, { x: 620, y: 754, w: 720, h: 16 },
     { x: 1324, y: 170, w: 16, h: 600 }, { x: 620, y: 170, w: 16, h: 260 },
@@ -10,9 +12,10 @@ const houseWalls = [
 const sharedMap = {
     width: 1440, height: 900,
     truck: { x: 160, y: 595, w: 315, h: 142 },
-    hydrant: { x: 170, y: 340 }, pump: { x: 190, y: 565 },
+    hydrant: { x: 170, y: 340 }, pump: { x: 495, y: 690 },
+    intake: { x: 495, y: 690 }, discharge: { x: 495, y: 610 },
     equipment: { x: 505, y: 650 }, safeZone: { x: 480, y: 760, w: 130, h: 95 },
-    division: { x: 550, y: 420 },
+    division: { x: 580, y: 480 },
     rallyPoints: {
         chief: { x: 105, y: 560 }, driver: { x: 105, y: 610 },
         'bat-chief': { x: 125, y: 770 }, 'bat-partner': { x: 85, y: 810 },
@@ -31,11 +34,11 @@ export const MAP = {
     building: { x: 620, y: 170, w: 720, h: 600 }, entry: { x: 620, y: 480 },
     walls: houseWalls,
     upperWalls: [{ x: 620, y: 430, w: 16, h: 80 }],
-    rooms: [0, 1].flatMap((floor) => houseRooms.map((room) => ({
-        ...room, id: `${floor}-${room.id}`, name: floor ? `${room.name} étage` : room.name,
+    rooms: [0, 2].flatMap((floor) => houseRooms.map((room) => ({
+        ...room, id: `${floor}-${room.id}`, name: floor ? `${room.name} — deuxième étage` : room.name,
         floor, team: floor ? 'BAL' : 'BAT',
     }))),
-    ladder: { x: 585, y: 300, equipment: { x: 505, y: 560 }, landing: { x: 665, y: 300 } },
+    ladder: { x: 585, y: 300, heightMeters: 6, equipment: { x: 505, y: 560 }, landing: { x: 665, y: 300 } },
 };
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -44,6 +47,19 @@ const point = (p) => ({ x: p.x, y: p.y });
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const JET_RANGE = 260;
 const JET_ANGLE = 0.24;
+
+// Une garde se reconstruit à partir du même code, y compris au redémarrage.
+function guardRandom(seed) {
+    let state = 2166136261;
+    for (let i = 0; i < seed.length; i++) {
+        state = Math.imul(state ^ seed.charCodeAt(i), 16777619);
+    }
+    return () => {
+        state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+        return state / 4294967296;
+    };
+}
+
 const ROLES = [
     ['chief', 'Chef d’agrès', 'command'], ['driver', 'Conducteur', 'driver'],
     ['bat-chief', 'Chef BAT', 'BAT'], ['bat-partner', 'Équipier BAT', 'BAT'],
@@ -72,11 +88,14 @@ function intersects(from, to, rectangle, margin = 0) {
 }
 
 export class FireMission {
-    constructor({ random = Math.random } = {}) {
+    constructor({ random = Math.random, guardSeed = null } = {}) {
         this.scenario = { id: 'habitation', name: 'Feu d’habitation' };
         this._random = typeof random === 'function' ? random : Math.random;
+        this.guardSeed = typeof guardSeed === 'string' && guardSeed.length ? guardSeed : null;
         this.reset();
     }
+
+    get interventionSeconds() { return this._missionTime; }
 
     // Réinitialise le scénario et les six équipiers.
     reset() {
@@ -85,7 +104,10 @@ export class FireMission {
         this.water = 100; this.health = 100; this.truckX = -400; this.spraying = false;
         this.supplyConnected = false; this.supplyHoseStarted = false;
         this.attackHoseStarted = false; this.hoseEstablished = false;
-        this.divisionReady = false; this.ladderReady = false;
+        this.divisionReady = false; this.divisionConnected = false; this.ladderReady = false;
+        this.balReconOrdered = false; this.divisionSupplyPath = []; this.hoseLines = [];
+        this._lines = {}; this._feederCarrier = null; this._lastProgressTime = 0;
+        this._nextReminder = 35; this._hoseWarningAt = -20;
         this.supplyPath = []; this.hosePath = []; this.npcHoses = [];
         this._done = new Set(); this._driverStep = 0; this._driverWait = 0;
         this._npcStep = 0; this._npcWait = 0; this._missionTime = 0; this._rallyHold = 0;
@@ -104,9 +126,10 @@ export class FireMission {
     }
 
     _makeObjectives() {
+        const random = this.guardSeed ? guardRandom(this.guardSeed) : () => this._random();
         const makeFire = (id, x, y, floor, team, work, hp = 100) => ({ id, x, y, floor, team,
-            hp, maxHp: hp, extinguished: false, seed: Number(this._random()) || 0, work });
-        this.fires = [0, 1].flatMap((floor) => [
+            hp, maxHp: hp, extinguished: false, seed: Number(random()) || 0, work });
+        this.fires = [0, 2].flatMap((floor) => [
             makeFire(`${floor}-nw`, 710, 250, floor, floor ? 'BAL' : 'BAT', { x: 790, y: 300 }),
             makeFire(`${floor}-ne`, 1250, 270, floor, floor ? 'BAL' : 'BAT', { x: 1150, y: 300 }),
             makeFire(`${floor}-sw`, 880, 690, floor, floor ? 'BAL' : 'BAT', { x: 790, y: 640 }),
@@ -114,8 +137,26 @@ export class FireMission {
         ]);
         this.victims = [
             { id: 'resident', roomId: '0-sw', x: 755, y: 650, floor: 0, team: 'BAT', kind: 'person' },
-            { id: 'resident-upper', roomId: '1-ne', x: 1190, y: 320, floor: 1, team: 'BAL', kind: 'person' },
+            { id: 'resident-upper', roomId: '2-ne', x: 1190, y: 320, floor: 2, team: 'BAL', kind: 'person' },
         ];
+        if (this.guardSeed) {
+            for (const victim of this.victims) {
+                const rooms = this.rooms.filter((room) => room.team === victim.team);
+                const room = rooms[Math.floor(random() * rooms.length)];
+                victim.roomId = room.id;
+                victim.x = room.searchX + 36;
+                victim.y = room.searchY + 18;
+                // La position de travail reste dans la portée de la LAT, même à l'étage.
+                const sectorFires = this.fires.filter((fire) => fire.team === victim.team);
+                const quietRoom = Math.floor(random() * (sectorFires.length + 2));
+                for (const fire of sectorFires) {
+                    fire.hp = fire.maxHp = 75 + 15 * Math.floor(random() * 4);
+                    fire.x += Math.round(random() * 16) - 8;
+                    fire.y += Math.round(random() * 16) - 8;
+                }
+                if (sectorFires[quietRoom]) this.fires = this.fires.filter((fire) => fire !== sectorFires[quietRoom]);
+            }
+        }
         this.victims = this.victims.map((victim) => ({ ...victim, visible: false, rescued: false, carried: false }));
     }
 
@@ -124,22 +165,27 @@ export class FireMission {
         const attack = (team) => [task(`${team}-fires`, 'Éteindre les foyers du secteur', team, 'fires'),
             task(`${team}-search`, 'Reconnaître toutes les zones du secteur', team, 'search'),
             task(`${team}-rescue`, 'Évacuer les victimes du secteur', team, 'rescue')];
-        const bat = [task('BAT-gear', 'Prendre la ligne au FPT', 'BAT'),
-            task('BAT-line', 'Établir la ligne à l’entrée', 'BAT'), ...attack('BAT')];
-        const bal = [task('BAL-division', 'Installer la division extérieure', 'BAL'), task('BAL-ladder-gear', 'Prendre l’échelle au FPT', 'BAL'),
-            task('BAL-ladder', 'Dresser l’échelle à la façade', 'BAL'), ...attack('BAL')];
+        const bat = [task('BAT-gear', 'Prendre la LAT : 3 tuyaux de 20 m au FPT', 'BAT'),
+            task('BAT-line', 'Raccorder la lance à la DAT pour le RDC', 'BAT'), ...attack('BAT')];
+        const bal = [task('BAL-division-gear', 'Prendre la DAT et son alimentation au FPT', 'BAL'),
+            task('BAL-division', 'Établir la DAT au pied de l’habitation', 'BAL'),
+            task('BAL-feed', 'Alimenter le BAT et attendre le nouvel ordre du chef', 'BAL'),
+            task('BAL-ladder-gear', 'Prendre l’échelle à coulisse au FPT', 'BAL'),
+            task('BAL-ladder', 'Dresser l’échelle vers le deuxième étage', 'BAL'),
+            task('BAL-gear', 'Prendre la LAT : 3 tuyaux de 20 m au FPT', 'BAL'),
+            task('BAL-line', 'Raccorder la LAT à la DAT avant la reconnaissance', 'BAL'), ...attack('BAL')];
         this.tasks = [...bat, ...bal];
     }
 
     // Chaque étage conserve ses murs et ses accès.
     _obstacles(floor = this.floor) {
-        return [...this.map.walls, ...(floor === 1 ? this.map.upperWalls : [this.map.truck])];
+        return [...this.map.walls, ...(floor === 2 ? this.map.upperWalls : [this.map.truck])];
     }
 
     _blocked(x, y, radius, floor) {
         if (x < radius || y < radius || x > 1440 - radius || y > 900 - radius) return true;
         const building = this.map.building;
-        if (floor === 1 && building && (x < building.x + 16 + radius || y < building.y + 16 + radius
+        if (floor === 2 && building && (x < building.x + 16 + radius || y < building.y + 16 + radius
             || x > building.x + building.w - 16 - radius || y > building.y + building.h - 16 - radius)) return true;
         return this._obstacles(floor).some((wall) => {
             const nx = clamp(x, wall.x, wall.x + wall.w);
@@ -201,9 +247,10 @@ export class FireMission {
         if (!next) { actor.walking = false; return false; }
         const d = distance(actor, next), amount = Math.min(d, speed * dt);
         actor.dir = Math.atan2(next.y - actor.y, next.x - actor.x);
-        actor.x += Math.cos(actor.dir) * amount; actor.y += Math.sin(actor.dir) * amount;
-        actor.walking = amount > 0;
-        if (amount >= d - 0.001) actor._route.shift();
+        const before = point(actor);
+        this._place(actor, { x: actor.x + Math.cos(actor.dir) * amount, y: actor.y + Math.sin(actor.dir) * amount });
+        actor.walking = distance(before, actor) > 0.001;
+        if (distance(actor, next) < 0.01) actor._route.shift();
         return distance(actor, goal) < 3;
     }
 
@@ -214,14 +261,106 @@ export class FireMission {
         const speed = this.player.carrying ? 110 : 185;
         const before = point(this.player);
         for (const [axis, delta] of [['x', x * speed * dt], ['y', y * speed * dt]]) {
+            if (Math.abs(delta) < 1e-9) continue;
             const steps = Math.max(1, Math.ceil(Math.abs(delta) / 4));
             for (let i = 0; i < steps; i++) {
                 const next = point(this.player); next[axis] += delta / steps;
-                if (!this._blocked(next.x, next.y, this.player.r, this.floor)) this.player[axis] = next[axis];
+                if (!this._blocked(next.x, next.y, this.player.r, this.floor)) this._place(this.player, next);
             }
         }
         this.player.walking = distance(before, this.player) > 0.01;
         if (this.player.walking) this.player.dir = Math.atan2(y, x);
+    }
+
+    // Une LAT reste ancrée à la DAT : chaque mouvement tire ou ramène ses 60 m.
+    _place(actor, target) {
+        const line = this._lines[actor.team];
+        let result = null;
+        if (line && line.actorId === actor.id) {
+            const upstairs = actor.floor === 2;
+            const path = upstairs ? line.upperPath : line.groundPath;
+            const reservedPixels = upstairs ? hoseLength(line.groundPath) + this.map.ladder.heightMeters * PIXELS_PER_METER : 0;
+            result = updateHosePath(path, target, {
+                isClear: (a, b) => this._clear(a, b, actor.floor, 3),
+                maxPixels: HOSE_MAX_METERS * PIXELS_PER_METER, reservedPixels,
+            });
+            if (upstairs) line.upperPath = result.path;
+            else line.groundPath = result.path;
+            line.limited = result.limited || result.lengthPixels >= HOSE_MAX_METERS * PIXELS_PER_METER - 1e-6;
+        } else if (this._feederCarrier === actor.id) {
+            result = updateHosePath(this.divisionSupplyPath, target, {
+                isClear: (a, b) => this._clear(a, b, 0, 3), maxPixels: HOSE_MAX_METERS * PIXELS_PER_METER,
+            });
+            this.divisionSupplyPath = result.path;
+        } else if (actor.id === 'driver' && this.supplyHoseStarted && !this.supplyConnected) {
+            result = updateHosePath(this.supplyPath, target, {
+                isClear: (a, b) => this._clear(a, b, 0, 3), maxPixels: HOSE_MAX_METERS * PIXELS_PER_METER,
+            });
+            this.supplyPath = result.path;
+        }
+        const position = result ? result.position : target;
+        actor.x = position.x; actor.y = position.y;
+        if (result?.limited && actor === this.player) {
+            this.message = 'Limite de 60 m : revenez sur votre chemin pour ramener le tuyau, puis changez de passage.';
+            if (this._missionTime - this._hoseWarningAt >= 12) {
+                this._hoseWarningAt = this._missionTime;
+                this._talk(`${actor.team.toLowerCase()}-partner`, 'Les trois tuyaux sont tendus : 60 mètres. Revenons pour reprendre du mou.');
+            }
+        }
+        return !result?.limited;
+    }
+
+    _fixedPath(origin, destination, floor = 0) {
+        return [point(origin), ...this._route({ ...point(origin), r: 4, floor }, destination)];
+    }
+
+    _startFeeder(actor) {
+        this._feederCarrier = actor.id;
+        this.divisionSupplyPath = this._fixedPath(this.map.discharge, actor);
+        this._mark('BAL-division-gear');
+        this._talk(actor.id, 'DAT prise. Nous établissons son alimentation depuis le refoulement du fourgon.');
+    }
+
+    _installDivision(actor) {
+        const result = updateHosePath(this.divisionSupplyPath, this.map.division, {
+            isClear: (a, b) => this._clear(a, b, 0, 3), maxPixels: HOSE_MAX_METERS * PIXELS_PER_METER,
+        });
+        if (result.limited || distance(result.position, this.map.division) > 0.1) return false;
+        this.divisionSupplyPath = result.path; this._feederCarrier = null;
+        this.divisionReady = true; this._mark('BAL-division');
+        this._talk(actor.id, 'DAT posée au pied de l’habitation. Conducteur, raccordez notre alimentation au refoulement.');
+        return true;
+    }
+
+    _establishLine(actor) {
+        if (!this.divisionConnected) return false;
+        this._lines[actor.team] = { actorId: actor.id, team: actor.team,
+            groundPath: this._fixedPath(this.map.division, actor), upperPath: [], limited: false };
+        this.attackHoseStarted = true; this.hoseEstablished = true;
+        this._mark(`${actor.team}-line`);
+        this._talk(actor.id, `${actor.team} : lance raccordée à la DAT, trois tuyaux de 20 mètres.`);
+        this._refreshHoses();
+        return true;
+    }
+
+    _refreshHoses() {
+        this.hoseLines = Object.values(this._lines).map((line) => {
+            const actor = this.crew.find((member) => member.id === line.actorId);
+            const groundMeters = hoseLength(line.groundPath) / PIXELS_PER_METER;
+            const segments = [{ floor: 0, path: line.groundPath, offsetMeters: 0 }];
+            let lengthMeters = groundMeters;
+            if (actor.floor === 2) {
+                const offsetMeters = groundMeters + this.map.ladder.heightMeters;
+                segments.push({ floor: 2, path: line.upperPath, offsetMeters });
+                lengthMeters = offsetMeters + hoseLength(line.upperPath) / PIXELS_PER_METER;
+            }
+            return { team: line.team, actorId: line.actorId, maxMeters: HOSE_MAX_METERS,
+                lengthMeters, limited: line.limited, segments };
+        });
+        const own = this.hoseLines.find((line) => line.team === this.team);
+        this.hosePath = own?.segments.find((segment) => segment.floor === this.floor)?.path || [];
+        this.npcHoses = this.hoseLines.filter((line) => line.team !== this.team).flatMap((line) =>
+            line.segments.map((segment) => ({ ...segment, team: line.team, actorId: line.actorId })));
     }
 
     _enter(phase, message) {
@@ -239,7 +378,11 @@ export class FireMission {
         text = text.trim().slice(0, 140);
         if (!text || (this.dialogue?.actorId === actorId && this.dialogue.text === text)
             || this._dialogueQueue.some((line) => line.actorId === actorId && line.text === text)) return false;
-        if (this._dialogueQueue.length >= 4) this._dialogueQueue.shift();
+        if (this._dialogueQueue.length >= 12) {
+            const ambient = this._dialogueQueue.findIndex((line) => line.actorId !== 'chief');
+            if (ambient >= 0) this._dialogueQueue.splice(ambient, 1);
+            else return false;
+        }
         this._dialogueQueue.push({ actorId, speaker: actor.role, text });
         if (!this.dialogue) this._nextDialogue();
         return true;
@@ -270,6 +413,24 @@ export class FireMission {
         this._talk('chief', text);
     }
 
+    // Commence sur place, sans arrivée ni temps simulé.
+    startOnScene(team = 'BAT') {
+        if (!['BAT', 'BAL'].includes(team)) return false;
+        this.reset();
+        this.truckX = this.map.truck.x;
+        for (const actor of this.crew) {
+            const position = this.map.rallyPoints[actor.id];
+            actor.x = position.x;
+            actor.y = position.y;
+            actor.visible = true;
+            actor.walking = false;
+            actor.floor = 0;
+            actor.activity = 'Prêt pour l’intervention';
+        }
+        this._enter('orders', 'Intervention en cours.');
+        return this.chooseTeam(team);
+    }
+
     // Le choix du binôme lance une mission différente.
     chooseTeam(team) {
         if (this.phase !== 'orders' || !['BAT', 'BAL'].includes(team)) return false;
@@ -281,18 +442,55 @@ export class FireMission {
         this._npcActions = this._buildActions(this._npcTeam);
         this._enter('mission', 'Rejoignez le premier repère et appuyez sur E.');
         this._dialogueQueue = []; this.dialogue = null; this.bubble = null;
-        this._talk('chief', this._orders(team));
-        this._talk('driver', 'Reçu. Je raccorde la borne puis la pompe.');
-        this._talk(this.player.id, team === 'BAT' ? 'Bien reçu. Le BAT prend le rez-de-chaussée.' : 'Bien reçu. Le BAL prend le premier étage.');
+        this._talk('chief', 'Conducteur, alimentez le fourgon par l’arrière. Raccordez ensuite la DAT au refoulement.');
+        this._talk('chief', 'BAL, prenez la DAT et alimentez le BAT au pied de l’habitation. Attendez mon ordre pour la reconnaissance.');
+        this._talk('chief', 'BAT, prenez votre LAT de trois fois 20 mètres. Raccordez la lance à la DAT, puis reconnaissance au RDC.');
+        this._talk('driver', 'Reçu. Alimentation à l’arrière, puis raccordement de la DAT au refoulement.');
+        this._talk(this.player.id, team === 'BAT' ? 'Bien reçu. Le BAT prépare sa lance pour le rez-de-chaussée.' : 'Bien reçu. Le BAL établit d’abord l’alimentation du BAT.');
         return true;
     }
 
     _orders(team) {
-        return team === 'BAT' ? 'BAT, établissez la ligne et reconnaissez le rez-de-chaussée.'
-            : 'BAL, division et échelle. Vous reconnaissez le premier étage.';
+        return team === 'BAT' ? 'BAT, lance sur DAT : trois tuyaux de 20 mètres. Reconnaissance au rez-de-chaussée.'
+            : 'BAL, établissez la DAT au pied de l’habitation et alimentez le BAT. Attendez mon nouvel ordre.';
     }
 
-    _mark(id) { this._done.add(id); this._syncTasks(); }
+    _mark(id) { this._done.add(id); this._lastProgressTime = this._missionTime; this._syncTasks(); }
+
+    _commandOnce(event, text) {
+        if (this._spoken.has(event)) return;
+        // Les ordres de progression passent avant les confirmations de déplacement.
+        this._dialogueQueue = [];
+        this.dialogue = null; this.bubble = null;
+        this._talkOnce(event, 'chief', text);
+        this.message = text;
+    }
+
+    _commander() {
+        const chief = this.crew.find((actor) => actor.id === 'chief');
+        chief.walking = false;
+        chief.activity = !this.divisionConnected ? 'Coordonne l’alimentation du fourgon et la DAT'
+            : !this.balReconOrdered ? 'Attend la lance du BAT avant de réaffecter le BAL'
+                : 'Dirige le BAT au RDC et le BAL au deuxième étage';
+        if (this.divisionConnected && !this._done.has('BAT-line'))
+            this._commandOnce('bat-water-order', 'BAT, la DAT est alimentée. Raccordez votre lance, puis engagez la reconnaissance au RDC.');
+        if (this.divisionConnected && this._done.has('BAT-line') && !this.balReconOrdered) {
+            this.balReconOrdered = true; this._mark('BAL-feed');
+            this._commandOnce('bal-recon-order', 'BAT alimenté. BAL, prenez l’échelle à coulisse et votre LAT. Partez en reconnaissance au deuxième étage.');
+            this._talk('bal-chief', 'Reçu : deuxième étage par l’échelle à coulisse, avec notre LAT de 60 mètres.');
+        }
+        for (const team of ['BAT', 'BAL']) {
+            const rooms = this.rooms.filter((room) => room.team === team);
+            const complete = this.tasks.filter((task) => task.team === team).every((task) => task.done);
+            if (complete) this._talkOnce(`sector-${team}`, 'chief', `${team}, secteur traité. Regroupez-vous à l’extérieur et restez disponibles.`);
+            else if (rooms.some((room) => room.searched)) this._talkOnce(`continue-${team}`, 'chief', `${team}, poursuivez pièce par pièce et rendez compte des victimes.`);
+        }
+        if (this._missionTime >= this._nextReminder && this._missionTime - this._lastProgressTime >= 25) {
+            this._nextReminder = this._missionTime + 35;
+            const next = this.tasks.find((task) => task.team === this.team && !task.done);
+            if (next && this._dialogueQueue.length < 3) this._talk('chief', `${this.team}, votre priorité : ${next.label.toLowerCase()}.`);
+        }
+    }
 
     _syncTasks() {
         for (const task of this.tasks) {
@@ -304,8 +502,7 @@ export class FireMission {
     }
 
     _lineReady(team) {
-        if (team === 'BAT') return this._done.has('BAT-line');
-        return this.divisionReady && this.ladderReady;
+        return Boolean(this.divisionConnected && this._lines[team] && this._done.has(`${team}-line`));
     }
 
     // L’équipier proche soutient le jet et protège la progression.
@@ -315,7 +512,7 @@ export class FireMission {
     }
 
     _search(room) {
-        room.searched = true;
+        room.searched = true; this._lastProgressTime = this._missionTime;
         const leaderId = `${room.team.toLowerCase()}-chief`;
         this._talkOnce(`search-${room.team}`, leaderId, 'Première pièce reconnue. Nous poursuivons.');
         for (const victim of this.victims.filter((v) => v.roomId === room.id)) {
@@ -326,13 +523,27 @@ export class FireMission {
     }
 
     _climb(actor, upstairs) {
-        actor.floor = upstairs ? 1 : 0;
+        if (actor.team !== 'BAL' || !this.balReconOrdered || !this.ladderReady || !this._lineReady('BAL')) return false;
+        const line = this._lines.BAL;
+        const approach = upstairs ? this.map.ladder : this.map.ladder.landing;
+        if (!this._place(actor, approach)) return false;
+        if (upstairs && hoseLength(line.groundPath) + this.map.ladder.heightMeters * PIXELS_PER_METER > HOSE_MAX_METERS * PIXELS_PER_METER) {
+            this.message = 'Les 60 m ne permettent pas cette montée. Ramenez la ligne à la DAT avant de repartir.';
+            return false;
+        }
+        actor.floor = upstairs ? 2 : 0;
         const p = upstairs ? this.map.ladder.landing : this.map.ladder;
         actor.x = p.x; actor.y = p.y; actor._routeKey = null;
         const partner = this.crew.find((a) => a.team === actor.team && a !== actor);
         partner.floor = actor.floor; partner.x = actor.x + (upstairs ? 26 : -28); partner.y = actor.y + 18; partner._routeKey = null;
-        actor._hosePath = [point(p)]; actor._hoseFloor = actor.floor;
-        if (actor === this.player) { this.floor = actor.floor; this.hosePath = [point(p)]; }
+        line.upperPath = upstairs ? [point(p)] : [];
+        line.limited = false;
+        if (actor === this.player) this.floor = actor.floor;
+        this._refreshHoses();
+        this._talkOnce(upstairs ? 'bal-up' : 'bal-down', actor.id, upstairs
+            ? 'BAL au deuxième étage. La hauteur de l’échelle compte dans nos 60 mètres.'
+            : 'BAL de retour au sol. Le tuyau nous suit, la DAT reste en place.');
+        return true;
     }
 
     _carry(actor, victim) {
@@ -352,34 +563,50 @@ export class FireMission {
     _interact() {
         const p = this.player, near = (q, radius = 54) => distance(p, q) <= radius;
         const mark = (id, message) => { this._mark(id); this.message = message; this._talk(p.id, message); };
-        if (this.team === 'BAL' && this.ladderReady) {
-            if (this.floor === 1 && near(this.map.ladder.landing, 48)) { this._climb(p, false); this.message = 'Retour au sol par l’échelle.'; return; }
-            if (this.floor === 0 && near(this.map.ladder, 48)) { this._climb(p, true); this.message = 'Vous êtes au premier étage.'; return; }
+        if (this.team === 'BAL' && this.ladderReady && this._lineReady('BAL')) {
+            if (this.floor === 2 && near(this.map.ladder.landing, 48)) {
+                if (this._climb(p, false)) this.message = 'Retour au sol par l’échelle ; le tuyau est ramené avec vous.';
+                return;
+            }
+            if (this.floor === 0 && near(this.map.ladder, 48)) {
+                if (this._climb(p, true)) this.message = 'Deuxième étage : les 6 m de montée sont compris dans les 60 m de votre LAT.';
+                return;
+            }
         }
         if (p.carrying) { this.message = 'Rejoignez la zone sûre ; l’évacuation y est automatique.'; return; }
         if (this.team === 'BAT') {
             if (!this._done.has('BAT-gear')) {
                 if (near(this.map.equipment)) {
                     this.attackHoseStarted = true;
-                    mark('BAT-gear', 'Ligne prise. Rejoignez le repère d’attaque.');
+                    mark('BAT-gear', 'LAT prise : 3 tuyaux de 20 m. Rejoignez la DAT au pied de l’habitation.');
                 }
                 else this.message = 'Prenez d’abord la ligne au repère du FPT.';
                 return;
             }
             if (!this._done.has('BAT-line')) {
-                if (!near(this.map.entry)) this.message = 'Rejoignez le repère d’attaque avant d’établir la ligne.';
-                else if (!this.supplyConnected) this.message = 'Le conducteur raccorde encore la pompe.';
+                if (!near(this.map.division)) this.message = 'Raccordez votre lance à la DAT au pied de l’habitation.';
+                else if (!this.divisionReady) this.message = 'Le BAL doit d’abord établir la DAT et son alimentation.';
+                else if (!this.divisionConnected) this.message = 'Le conducteur doit raccorder la DAT au refoulement du fourgon.';
                 else {
-                    this.hoseEstablished = true;
-                    this.hosePath = [point(this.map.equipment), ...this._route({ ...p, x: this.map.equipment.x, y: this.map.equipment.y }, this.map.entry)];
-                    mark('BAT-line', 'Ligne établie. Visez les foyers et maintenez le jet.');
+                    this._establishLine(p);
+                    this.message = 'Lance établie sur la DAT. Reconnaissance du RDC, avec 60 m de tuyau maximum.';
                 }
                 return;
             }
         } else {
+            if (!this._done.has('BAL-division-gear')) {
+                if (near(this.map.equipment)) { this._startFeeder(p); this.message = 'DAT prise. Déroulez son alimentation jusqu’au pied de l’habitation.'; }
+                else this.message = 'Prenez d’abord la DAT et son alimentation au repère du FPT.';
+                return;
+            }
             if (!this.divisionReady) {
-                if (near(this.map.division)) { this.divisionReady = true; mark('BAL-division', 'Division installée. Prenez maintenant l’échelle.'); }
-                else this.message = 'Installez d’abord la division au repère extérieur.';
+                if (near(this.map.division) && this._installDivision(p)) this.message = 'DAT posée. Le conducteur raccorde le refoulement ; le BAT peut préparer sa lance.';
+                else this.message = 'Établissez la DAT au repère au pied de l’habitation.';
+                return;
+            }
+            if (!this.balReconOrdered) {
+                this.message = !this.divisionConnected ? 'Attendez le raccordement de la DAT au refoulement par le conducteur.'
+                    : 'Alimentation prête. Attendez que le BAT raccorde sa lance et que le chef donne le nouvel ordre.';
                 return;
             }
             if (!this._done.has('BAL-ladder-gear')) {
@@ -388,8 +615,18 @@ export class FireMission {
                 return;
             }
             if (!this.ladderReady) {
-                if (near(this.map.ladder)) { this.ladderReady = true; this.hoseEstablished = true; mark('BAL-ladder', 'Échelle dressée. E au pied pour monter ou au palier pour descendre.'); }
+                if (near(this.map.ladder)) { this.ladderReady = true; mark('BAL-ladder', 'Échelle dressée vers le deuxième étage. Prenez votre LAT au FPT.'); }
                 else this.message = 'Dressez l’échelle au repère de façade.';
+                return;
+            }
+            if (!this._done.has('BAL-gear')) {
+                if (near(this.map.equipment)) mark('BAL-gear', 'LAT prise : trois tuyaux de 20 m. Raccordez-la à la DAT.');
+                else this.message = 'Prenez votre LAT au FPT avant la reconnaissance au deuxième étage.';
+                return;
+            }
+            if (!this._done.has('BAL-line')) {
+                if (near(this.map.division) && this._establishLine(p)) this.message = 'Lance raccordée à la DAT. Rejoignez l’échelle : E pour monter au deuxième étage.';
+                else this.message = 'Raccordez la LAT à la DAT avant de monter par l’échelle.';
                 return;
             }
         }
@@ -414,23 +651,27 @@ export class FireMission {
             const delta = Math.atan2(Math.sin(Math.atan2(fire.y - actor.y, fire.x - actor.x) - angle), Math.cos(Math.atan2(fire.y - actor.y, fire.x - actor.x) - angle));
             if (Math.abs(delta) > JET_ANGLE || !this._clear(actor, fire, actor.floor)) continue;
             fire.hp = Math.max(0, fire.hp - rate * dt);
-            if (fire.hp === 0) { fire.extinguished = true; this._syncTasks(); }
+            if (fire.hp === 0) { fire.extinguished = true; this._lastProgressTime = this._missionTime; this._syncTasks(); }
         }
     }
 
     _buildActions(team) {
         const a = [], add = (kind, goal, extra = {}) => a.push({ kind, goal, ...extra });
-        if (team === 'BAT') { add('gear', this.map.equipment, { task: 'BAT-gear' }); add('line', this.map.entry, { task: 'BAT-line' }); }
+        if (team === 'BAT') { add('gear', this.map.equipment, { task: 'BAT-gear' }); add('line', this.map.division, { task: 'BAT-line' }); }
         else {
+            add('division-gear', this.map.equipment, { task: 'BAL-division-gear' });
             add('division', this.map.division, { task: 'BAL-division' });
+            add('feed', this.map.division, { task: 'BAL-feed' });
             add('work', this.map.ladder.equipment, { task: 'BAL-ladder-gear' });
-            add('ladder', this.map.ladder, { task: 'BAL-ladder' }); add('up', this.map.ladder);
+            add('ladder', this.map.ladder, { task: 'BAL-ladder' });
+            add('gear', this.map.equipment, { task: 'BAL-gear' });
+            add('line', this.map.division, { task: 'BAL-line' }); add('up', this.map.ladder);
         }
         for (const fire of this.fires.filter((f) => f.team === team)) add('fire', fire.work, { fire });
         for (const room of this.rooms.filter((r) => r.team === team)) add('search', { x: room.searchX, y: room.searchY }, { room });
         for (const victim of this.victims.filter((v) => v.team === team)) {
             add('take', victim, { victim });
-            if (victim.floor === 1) add('down', this.map.ladder.landing);
+            if (victim.floor === 2) add('down', this.map.ladder.landing);
             add('evacuate', { x: this.map.safeZone.x + 65, y: this.map.safeZone.y + 48 });
         }
         add('finish', team === 'BAT' ? { x: 540, y: 715 } : { x: 555, y: 390 });
@@ -439,20 +680,24 @@ export class FireMission {
 
     _driver(dt) {
         const actor = this.crew.find((a) => a.id === 'driver');
-        if (this._driverStep >= 2) { actor.activity = 'Surveille la pompe et l’alimentation'; actor.walking = false; return; }
-        actor.activity = this._driverStep === 0 ? 'Raccorde la borne' : 'Met la pompe en service';
-        const goal = this._driverStep === 0 ? this.map.hydrant : this.map.pump;
-        if (!this._walk(actor, goal, dt, 165)) { if (this.supplyHoseStarted) this._append(this.supplyPath, actor); return; }
+        if (this._driverStep >= 3) { actor.activity = 'Surveille l’alimentation arrière et le refoulement vers la DAT'; actor.walking = false; return; }
+        actor.activity = ['Raccorde la borne', 'Alimente le fourgon par sa prise arrière', 'Raccorde la DAT au refoulement du fourgon'][this._driverStep];
+        const goal = [this.map.hydrant, this.map.intake, this.map.discharge][this._driverStep];
+        if (!this._walk(actor, goal, dt, 165)) return;
+        if (this._driverStep === 2 && !this.divisionReady) { actor.activity = 'Attend la DAT du BAL au refoulement'; return; }
         this._driverWait += dt;
         if (this._driverWait < 1.2) return;
         this._driverWait = 0;
-        if (this._driverStep === 0) { this.supplyHoseStarted = true; this.supplyPath = [point(this.map.hydrant)]; }
-        else { this.supplyConnected = true; this._append(this.supplyPath, actor); this._talkOnce('water-ready', 'driver', 'La pompe est alimentée. Vous avez de l’eau.'); }
+        if (this._driverStep === 0) {
+            this.supplyHoseStarted = true; this.supplyPath = [point(this.map.hydrant), point(actor)];
+        } else if (this._driverStep === 1) {
+            this._place(actor, this.map.intake); this.supplyConnected = true;
+            this._talkOnce('water-ready', 'driver', 'Fourgon alimenté à l’arrière. Je raccorde maintenant la DAT au refoulement.');
+        } else {
+            this.divisionConnected = true;
+            this._talkOnce('dat-water-ready', 'driver', 'DAT raccordée au refoulement. Alimentation du BAT disponible.');
+        }
         this._driverStep++;
-    }
-
-    _append(path, actor) {
-        if (!path.length || distance(path[path.length - 1], actor) > 10) path.push(point(actor));
     }
 
     _npc(dt) {
@@ -461,13 +706,33 @@ export class FireMission {
         const action = this._npcActions[this._npcStep];
         if (!action) { actor.walking = false; actor.activity = 'Secteur traité, reste disponible'; return; }
         if (this._missionTime < 2) { actor.activity = 'Reçoit son ordre'; return; }
-        actor.activity = { gear: 'Prend la ligne', line: 'Établit la ligne', division: 'Installe la division',
-            ladder: 'Dresse l’échelle', up: 'Monte à l’étage', down: 'Redescend avec la victime',
+        actor.activity = { gear: 'Prend une LAT de trois tuyaux de 20 m', line: 'Raccorde la lance sur la DAT',
+            'division-gear': 'Prend la DAT et son alimentation', division: 'Établit la DAT au pied de l’habitation',
+            feed: 'Attend le raccordement du BAT et le nouvel ordre du chef',
+            ladder: 'Dresse l’échelle à coulisse', up: 'Monte au deuxième étage', down: 'Redescend avec la victime',
             fire: 'Attaque un foyer', search: 'Reconnaît les lieux', take: 'Prend une victime',
             evacuate: 'Évacue vers la zone sûre', work: 'Prépare le soutien', finish: 'Rend compte au chef' }[action.kind];
-        if (!this._walk(actor, action.goal, dt, actor.carrying ? 125 : 205)) return;
-        if (action.kind === 'line' && !this.supplyConnected) return;
+        if (action.kind === 'feed' && !this.balReconOrdered) { actor.walking = false; return; }
+        if (actor.team === 'BAL' && ['work', 'ladder', 'gear', 'line', 'up'].includes(action.kind) && !this.balReconOrdered) return;
+        if (actor._hoseRecovery) {
+            actor.activity = 'Ramène la LAT pour reprendre du mou';
+            if (this._walk(actor, actor._hoseRecovery, dt, 180)) { actor._hoseRecovery = null; actor._routeKey = null; }
+            return;
+        }
+        const before = point(actor);
+        if (!this._walk(actor, action.goal, dt, actor.carrying ? 125 : 205)) {
+            const line = this._lines[actor.team];
+            actor._hoseStall = line?.limited && distance(before, actor) < 0.01 ? (actor._hoseStall || 0) + dt : 0;
+            if (actor._hoseStall > 0.8) {
+                actor._hoseStall = 0; actor._hoseRecovery = point(actor.floor === 2 ? this.map.ladder.landing : this.map.division);
+                actor._routeKey = null;
+                this._talkOnce(`hose-recovery-${actor.team}`, actor.id, 'LAT tendue. Nous revenons sur notre chemin pour ramener le tuyau.');
+            }
+            return;
+        }
+        if (action.kind === 'line' && !this.divisionConnected) return;
         if (action.kind === 'fire') {
+            if (!this._lineReady(actor.team)) return;
             if (!action.fire.extinguished) {
                 actor.spraying = true; actor.aim = point(action.fire);
                 this._jet(actor, actor.aim, dt, this.supplyConnected ? (this._supported(actor) ? 38 : 31) : 20);
@@ -477,18 +742,13 @@ export class FireMission {
         this._npcWait += dt;
         if (this._npcWait < (['ladder', 'search'].includes(action.kind) ? 1.3 : 0.7)) return;
         this._npcWait = 0;
-        if (action.kind === 'gear') {
-            this.attackHoseStarted = true;
-        }
-        if (action.kind === 'line') {
-            this.hoseEstablished = true;
-            actor._hosePath = [point(this.map.equipment), ...this._route({ ...actor, ...point(this.map.equipment) }, this.map.entry)];
-            actor._hoseFloor = actor.floor;
-        }
-        if (action.kind === 'division') this.divisionReady = true;
-        if (action.kind === 'ladder') { this.ladderReady = true; this.hoseEstablished = true; }
-        if (action.kind === 'up') this._climb(actor, true);
-        if (action.kind === 'down') this._climb(actor, false);
+        if (action.kind === 'gear') this.attackHoseStarted = true;
+        if (action.kind === 'line' && !this._establishLine(actor)) return;
+        if (action.kind === 'division-gear') this._startFeeder(actor);
+        if (action.kind === 'division' && !this._installDivision(actor)) return;
+        if (action.kind === 'ladder') this.ladderReady = true;
+        if (action.kind === 'up' && !this._climb(actor, true)) return;
+        if (action.kind === 'down' && !this._climb(actor, false)) return;
         if (action.kind === 'search') this._search(action.room);
         if (action.kind === 'take') this._carry(actor, action.victim);
         if (action.kind === 'evacuate') this._evacuate(actor);
@@ -534,15 +794,13 @@ export class FireMission {
             if (arrived === 6) {
                 if (this._rallyHold === 0) this._talkOnce('assembled', 'chief', 'Tout le monde est là. Écoutez les ordres.');
                 this._rallyHold += dt;
-                if (this._rallyHold >= 3) { this._enter('orders', 'Choisissez BAT ou BAL pour recevoir votre mission.'); this._talkOnce('orders', 'chief', 'BAT au RDC, BAL à l’étage. Conducteur, alimentation.'); }
+                if (this._rallyHold >= 3) { this._enter('orders', 'Choisissez BAT ou BAL pour recevoir votre mission.'); this._talkOnce('orders', 'chief', 'Conducteur, alimentation arrière. BAL, DAT pour alimenter le BAT. BAT, préparez la lance pour le RDC.'); }
             }
             return;
         }
         if (this.phase === 'orders') return;
         this._missionTime += dt;
         this._driver(dt); this._npc(dt);
-        const chief = this.crew.find((a) => a.id === 'chief');
-        chief.activity = 'Coordonne BAT, BAL et le conducteur'; chief.walking = false;
         this._move(input, dt);
         this.aim.x = Number.isFinite(input.aimX) ? input.aimX : this.aim.x;
         this.aim.y = Number.isFinite(input.aimY) ? input.aimY : this.aim.y;
@@ -555,7 +813,6 @@ export class FireMission {
         }
         this.player.activity = this.player.carrying ? 'Évacue une victime' : this.spraying ? 'Attaque au jet' : this.player.walking ? 'Progresse dans son secteur' : 'Attend votre action';
         if (input.interact) this._interact();
-        if (this._lineReady(this.team)) this._append(this.hosePath, this.player);
         for (const actor of this.crew) {
             if (actor.carrying) {
                 const victim = this.victims.find((v) => v.id === actor.carrying);
@@ -564,16 +821,7 @@ export class FireMission {
             this._evacuate(actor);
         }
         this._followers(dt);
-        if (this._lineReady(this._npcTeam)) {
-            if (!this._npcLeader._hosePath || this._npcLeader._hoseFloor !== this._npcLeader.floor) {
-                this._npcLeader._hoseFloor = this._npcLeader.floor;
-                this._npcLeader._hosePath = [point(this._npcLeader)];
-            }
-            this._append(this._npcLeader._hosePath, this._npcLeader);
-        }
-        this.npcHoses = [{ team: this._npcTeam, actorId: this._npcLeader.id, floor: this._npcLeader.floor,
-            path: this._npcLeader._hosePath || [],
-            spraying: this._npcLeader.spraying, x: this._npcLeader.x, y: this._npcLeader.y, aim: point(this._npcLeader.aim) }];
+        this._refreshHoses();
         for (const fire of this.fires) {
             if (!fire.extinguished && fire.floor === this.floor && distance(this.player, fire) < 78 && this._clear(this.player, fire, this.floor))
                 this.health = Math.max(0, this.health - dt * 8 * (1 - distance(this.player, fire) / 100) * (this._supported(this.player) ? 0.8 : 1));
@@ -585,6 +833,7 @@ export class FireMission {
         this.smoke = this.fires.filter((f) => f.floor === this.floor && !f.extinguished).reduce((sum, f) => sum + f.hp / f.maxHp, 0)
             / Math.max(1, this.fires.filter((f) => f.floor === this.floor).length) * 0.8;
         this._syncTasks();
+        this._commander();
         if (this.health <= 0) { this._enter('lost', 'Votre santé est épuisée. Gardez vos distances face aux flammes.'); this._finalTalk('Repli immédiat. Nous reprenons depuis le FPT.'); }
         else if (this.tasks.every((task) => task.done)) { this._enter('won', 'Intervention terminée : les deux binômes ont traité leurs secteurs.'); this._finalTalk('Les deux secteurs sont sûrs. Bon travail à tous.'); }
     }

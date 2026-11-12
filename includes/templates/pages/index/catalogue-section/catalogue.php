@@ -1,5 +1,5 @@
 <?php
-// Prépare les données et l'affichage du catalogue.
+/* Prépare les données et l'affichage du catalogue. */
 
 require_once dirname(__DIR__, 4) . '/libs/db.php';
 require_once __DIR__ . '/card.php';
@@ -49,7 +49,7 @@ function getCatalogue(?int $userId = null): void
     ];
     $media_count = 0;
 
-    // Construit les fiches et leurs compteurs de catégories.
+    /* Construit les fiches et leurs compteurs de catégories. */
     while ($media = $query->fetch()) {
         $content .= renderCatalogueCard($media);
 
@@ -61,7 +61,7 @@ function getCatalogue(?int $userId = null): void
     }
 
 
-    // Prévoit un message adapté lorsque la sélection est vide.
+    /* Prévoit un message adapté lorsque la sélection est vide. */
     if ($content === '' || $media_count === 0) {
         $content = $userId === null
             ? "<p class='empty-text'>Aucun média dans le catalogue.</p>"

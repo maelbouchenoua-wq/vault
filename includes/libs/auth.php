@@ -1,6 +1,6 @@
 <?php
 
-// Construit un chemin interne depuis la racinne du projet.
+/* Construit un chemin interne depuis la racinne du projet. */
 function authUrl(string $path): string
 {
     $directory = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/index.php'));
@@ -10,7 +10,7 @@ function authUrl(string $path): string
     return $base . '/' . ltrim($path, '/');
 }
 
-// Ouvre la session et configure son cookie.
+/* Ouvre la session et configure son cookie. */
 function startSession(): void
 {
     if (session_status() === PHP_SESSION_NONE) {
@@ -34,7 +34,7 @@ function startSession(): void
     }
 }
 
-// Récupère l’utilisateur connecté depuis les données de session.
+/* Récupère l’utilisateur connecté depuis les données de session. */
 function currentUser(): ?array
 {
     startSession();
@@ -51,7 +51,7 @@ function currentUser(): ?array
     return $user;
 }
 
-// Redirige les visiteur avant d’afficher une page personnelle.
+/* Redirige les visiteur avant d’afficher une page personnelle. */
 function requireLogin(): void
 {
     if (currentUser() === null) {
@@ -60,7 +60,7 @@ function requireLogin(): void
     }
 }
 
-// Réserve l’accès aux utilisateurs possédant le rôle admin.
+/* Réserve l’accès aux utilisateurs possédant le rôle admin. */
 function requireAdmin(): void
 {
     requireLogin();
@@ -71,7 +71,7 @@ function requireAdmin(): void
     }
 }
 
-// Crée ou réutilise le jeton CSRF de session.
+/* Crée ou réutilise le jeton CSRF de session. */
 function csrfToken(): string
 {
     startSession();
@@ -83,7 +83,7 @@ function csrfToken(): string
     return $_SESSION['csrf_token'];
 }
 
-// Compare le jeton reçus avec celui de session.
+/* Compare le jeton reçus avec celui de session. */
 function verifyCsrfToken(mixed $token): bool
 {
     startSession();
