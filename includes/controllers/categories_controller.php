@@ -44,9 +44,9 @@ function get_categories_list(): ?array
 function get_display_category(string $category): string
 {
     return match ($category) {
-        'film' => "Film",
-        'game' => "Jeu video",
-        'series' => "Série"
+        'film', "1" => "Film",
+        'game', "2" => "Jeu video",
+        'series', "3" => "Série"
     };
 }
 

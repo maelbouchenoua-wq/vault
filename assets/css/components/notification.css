@@ -1,0 +1,30 @@
+.notification-container {
+    position: fixed;
+    right: 50px;
+    top: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+.notification-container .notification {
+    padding: 20px;
+    border-radius: 9px;
+    width: 100%;
+    color: white;
+
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.notification-container .notification.success {
+    border: 1px solid #22aa66;
+    background-color: rgb(16 55 19 / 0.95);
+}
+
+.notification-container .notification.error {
+    border: 1px solid #cd2b2b;
+    background-color: rgb(81 29 29 / 0.95);
+}

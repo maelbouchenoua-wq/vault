@@ -35,13 +35,13 @@ if ($loginError === '' && currentUser() !== null) {
         <?php endif; ?>
 
         <!-- POST envoie les identifiants avec un jeton CSRF lié à la session. -->
-        <form id="loginForm" method="POST" novalidate>
+        <form id="loginForm" action="<?= authUrl('includes/actions/login_action.php') ?>" method="POST" novalidate>
 
-            <input type="hidden" name="csrf_token" value="">
+            <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>">
 
             <label for="email">E-mail</label>
-            <input type="email" id="email" name="email">
-
+            <input type="email" id="email" name="email" maxlength="80" autocomplete="email"
+                   value="<?= htmlspecialchars($loginEmail, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" required>
             <small id="emailError" class="error"></small>
 
             <label for="password">Mot de passe</label>
@@ -50,7 +50,6 @@ if ($loginError === '' && currentUser() !== null) {
             <small id="passwordError" class="error"></small>
 
             <button type="submit">Se connecter</button>
-
         </form>
 
         <p>Pas encore de compte ? <a href="<?= authUrl('register.php') ?>">S'inscrire</a></p>
@@ -59,6 +58,5 @@ if ($loginError === '' && currentUser() !== null) {
 </main>
 <?php require_once __DIR__ . '/includes/templates/layout/fire-game.php'; ?>
 <script src="./assets/js/formulaire.js" defer></script>
-
 </body>
 </html>

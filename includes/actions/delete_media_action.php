@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../libs/auth.php';
-require_once __DIR__ . '/../libs/router-helper.php';
 require_once __DIR__ . '/../controllers/media_controller.php';
+require_once __DIR__ . '/action-helper.php';
 
 /**
  * Action for deleting a media.
@@ -12,15 +12,15 @@ requireAdmin();
 
 $media_id = $_GET["media_id"];
 if ($media_id === null) {
-    redirect("/admin.php");
+    respond_error(400, "No media id was provided.");
 } else $media_id = intval($media_id);
 
 
 try {
     delete_media($media_id);
-    redirect_successful("/admin.php", "Nous avons bien supprimé votre média.");
+    respond_success("Nous avons bien supprimé le média.");
 } catch (Exception $error) {
     if ($error->getMessage() == "La base de donnée à renvoyé une erreur.")
-        redirect_error("/admin.php", 500, $error->getMessage());
-    else redirect_error("/admin.php");
+        respond_error(500, $error->getMessage());
+    else respond_error();
 }

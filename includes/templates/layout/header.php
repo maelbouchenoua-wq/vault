@@ -64,5 +64,5 @@ $currentLevel1 = $result1['level'];
             <?php endif; ?>
         </div>
     </div>
-    <script src="../../../assets/js/filter_header.js" defer></script>
+    <script src="../../../assets/js/page/index/filter_header.js" defer></script>
 </header>
