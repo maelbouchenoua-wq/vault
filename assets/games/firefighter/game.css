@@ -170,3 +170,53 @@ button.fire-launcher:focus-visible { outline: 3px solid #6bd4dc; outline-offset:
     #fire-game .fire-home-copy { gap: 4px; margin: auto; }
     #fire-game .fire-home-mark { display: none; }
 }
+
+/* Défi court : une cible native dans la zone d'entraînement. */
+#fire-game #fire-challenge-open { grid-column: 1 / -1; width: 100%; }
+#fire-game .fire-challenge { z-index: 6; padding: 24px 24px 48px; background: #07141df5; }
+#fire-game .fire-challenge-shell { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; width: min(860px, 100%); min-width: 0; margin: 0 auto; }
+#fire-game .fire-challenge-heading h2 { color: #fff0cb; font-size: clamp(24px, 4vw, 38px); font-weight: 900; line-height: 1.15; letter-spacing: 1px; }
+#fire-game .fire-challenge-heading > p:last-child { max-width: 76ch; margin-top: 8px; color: #b7d0d5; font-size: 12px; line-height: 1.6; }
+#fire-game .fire-challenge-hud { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; min-width: 0; margin: 0; padding: 0; }
+#fire-game .fire-challenge-hud > div { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; min-width: 0; padding: 9px 14px; border-bottom: 2px solid #365967; background: #102b37; }
+#fire-game .fire-challenge-hud dt { color: #a8c4cb; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+#fire-game .fire-challenge-hud dd { margin: 0; color: #ffb266; font-size: 26px; font-weight: 900; line-height: 1.1; font-variant-numeric: tabular-nums; }
+#fire-game .fire-challenge-hud dd > span { color: #8ebac2; font-size: 12px; }
+#fire-game .fire-challenge-arena { position: relative; width: 100%; min-width: 0; height: clamp(160px, 36vh, 340px); overflow: hidden; border: 2px solid #3e6474; background-color: #0a2530; background-image: linear-gradient(#42647722 1px, transparent 1px), linear-gradient(90deg, #42647722 1px, transparent 1px); background-size: 24px 24px; box-shadow: inset 0 -18px 0 #123641; }
+#fire-game .fire-challenge-arena-hint { position: absolute; inset: 0; display: grid; place-content: center; padding: 16px; color: #91b4be; font-size: 12px; line-height: 1.6; text-align: center; pointer-events: none; }
+#fire-game #fire-challenge-target { position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 84px; max-width: calc(100% - 16px); height: 84px; min-height: 44px; padding: 6px; border: 2px solid #ffb266; border-radius: 0; background: #0b1a23; color: #fff0cb; font-size: 11px; font-weight: 700; line-height: 1.2; box-shadow: 3px 3px 0 #02090f; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+#fire-game #fire-challenge-target svg { width: 36px; height: 36px; pointer-events: none; }
+#fire-game #fire-challenge-target:focus-visible { outline-color: #6bd4dc; outline-offset: -5px; }
+#fire-game #fire-challenge-target:hover { background: #17303a; }
+#fire-game .fire-challenge-controls, #fire-game .fire-challenge-result-buttons { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+#fire-game .fire-challenge-controls .fire-button, #fire-game .fire-challenge-result-buttons .fire-button { min-width: 0; min-height: 42px; max-width: 100%; padding: 10px 12px; font-size: 11px; white-space: normal; }
+#fire-game .fire-challenge-result { min-width: 0; padding: 14px 16px; border-left: 3px solid #ff9139; background: #102b37; }
+#fire-game .fire-challenge-result > p:first-child { margin-bottom: 12px; color: #d5e8e5; font-size: 14px; }
+#fire-game #fire-challenge-final-score { color: #ffb266; font-size: 24px; font-variant-numeric: tabular-nums; }
+#fire-game .fire-challenge-login { margin-top: 12px; color: #a8c4cb; font-size: 11px; line-height: 1.6; }
+#fire-game .fire-challenge-message { min-height: 1.5em; color: #b5e7e8; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+#fire-game .fire-challenge-message.is-error { color: #ffc0ac; }
+#fire-game .fire-challenge-clock-note { color: #8daab8; font-size: 10px; line-height: 1.5; }
+#fire-game .fire-challenge-menu-note { margin-top: 12px; color: #ffbb80; font-size: 11px; line-height: 1.5; }
+#fire-game #fire-challenge[data-phase="finished"] .fire-challenge-arena { display: none; }
+@media (max-width: 600px) {
+    #fire-game .fire-challenge { padding: 18px 14px 46px; }
+    #fire-game .fire-challenge-shell { gap: 10px; }
+    #fire-game .fire-challenge-hud { gap: 8px; }
+    #fire-game .fire-challenge-hud > div { padding: 8px 10px; }
+    #fire-game .fire-challenge-hud dt { font-size: 8px; letter-spacing: .4px; }
+    #fire-game .fire-challenge-hud dd { font-size: 24px; }
+    #fire-game .fire-challenge-heading > p:last-child { font-size: 11px; }
+}
+@media (max-height: 520px) {
+    #fire-game .fire-challenge { padding: 12px 16px 40px; }
+    #fire-game .fire-challenge-shell { gap: 8px; }
+    #fire-game .fire-challenge-heading h2 { font-size: 24px; }
+    #fire-game .fire-challenge-heading .fire-eyebrow { margin-bottom: 4px; }
+    #fire-game .fire-challenge-heading > p:last-child { margin-top: 5px; font-size: 10px; }
+    #fire-game .fire-challenge-hud > div { padding: 6px 10px; }
+    #fire-game .fire-challenge-hud dd { font-size: 22px; }
+    #fire-game .fire-challenge-arena { height: 150px; }
+    #fire-game .fire-challenge-message { font-size: 10px; }
+    #fire-game .fire-challenge-clock-note { font-size: 9px; }
+}

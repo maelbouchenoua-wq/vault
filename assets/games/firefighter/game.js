@@ -1,5 +1,6 @@
 import { MAP, FireMission } from './mission.js';
 import { FireRenderer } from './renderer.js';
+import { FireChallenge } from './challenge.js';
 import { dailyGuard, newGuard, formatTime, bestTime, recordVictory } from './guards.js';
 
 const dialog = document.getElementById('fire-game');
@@ -13,8 +14,13 @@ function initialize() {
         'result', 'result-title', 'result-text', 'result-replay', 'resume', 'paused',
         'orders', 'order-bat', 'order-bal', 'notice', 'dialogue-live', 'menu-title',
         'daily', 'random', 'guard-info', 'duty-label', 'result-next', 'result-duty',
-        'report-name', 'report-time', 'report-crew', 'report-best'];
+        'report-name', 'report-time', 'report-crew', 'report-best', 'challenge-open', 'challenge', 'challenge-menu-note'];
     const ui = Object.fromEntries(ids.map(id => [id, document.getElementById(`fire-${id}`)]));
+    const challenge = new FireChallenge(ui.challenge, {
+        apiUrl: dialog.dataset.challengeApi,
+        csrfToken: dialog.dataset.csrfToken,
+        isLoggedIn: dialog.dataset.challengeUser === '1'
+    });
     const assets = {};
     const renderer = new FireRenderer(context, assets);
     const base = new URL(dialog.dataset.assets, location.href);
@@ -93,12 +99,14 @@ function initialize() {
         dialog.dataset.state = state;
         for (const child of dialog.children) child.inert = state === 'paused' && child !== ui.paused;
         ui.home.hidden = state !== 'home';
+        ui.challenge.hidden = state !== 'challenge' && !(state === 'paused' && pausedFrom === 'challenge');
+        ui['challenge-menu-note'].hidden = state !== 'paused' || pausedFrom !== 'challenge';
         ui.intro.hidden = state !== 'intro' && !(state === 'paused' && pausedFrom === 'intro');
         ui.paused.hidden = state !== 'paused';
         ui.result.hidden = state !== 'result';
         ui.orders.hidden = !(state === 'playing' && mission.phase === 'orders');
         ui.skip.hidden = state !== 'intro';
-        ui.restart.disabled = state === 'paused' && pausedFrom === 'home';
+        ui.restart.disabled = state === 'paused' && (pausedFrom === 'home' || pausedFrom === 'challenge');
         write(ui.resume, pausedFrom === 'home' ? 'Retour' : 'Reprendre');
         write(ui['menu-title'], 'MENU');
         if (ui.notice) ui.notice.hidden = true;
@@ -301,6 +309,7 @@ function initialize() {
     function close() { if (dialog.open) { dialog.close(); cleanup(); } }
 
     function cleanup() {
+        challenge.cancel();
         if (animation !== null) cancelAnimationFrame(animation);
         if (resizeRequest !== null) cancelAnimationFrame(resizeRequest);
         animation = null; resizeRequest = null; previousTime = null;
@@ -316,6 +325,7 @@ function initialize() {
     }
 
     function start() {
+        if (challenge.active || state === 'challenge' || (state === 'paused' && pausedFrom === 'challenge')) return;
         freshMission(); introElapsed = 0; setState('intro'); updateIntro();
         ui.skip.focus({ preventScroll: true });
     }
@@ -330,6 +340,7 @@ function initialize() {
     function resume() {
         if (state !== 'paused') return;
         setState(pausedFrom); previousTime = null;
+        if (state === 'challenge') { challenge.focus(); return; }
         const target = state === 'home' ? ui.daily : state === 'intro' ? ui.skip : state === 'result' ? ui['result-replay']
             : mission.phase === 'orders' ? dialog.querySelector('[data-fire-team="BAT"]') : canvas;
         target?.focus({ preventScroll: true });
@@ -366,7 +377,7 @@ function initialize() {
         if (key === 'escape' || key === 'p') {
             event.preventDefault(); event.stopPropagation(); if (!event.repeat) toggleMenu(); return;
         }
-        if (key === 'r' && state === 'paused' && pausedFrom !== 'home' && !event.repeat) { event.preventDefault(); start(); return; }
+        if (key === 'r' && state === 'paused' && pausedFrom !== 'home' && pausedFrom !== 'challenge' && !event.repeat) { event.preventDefault(); start(); return; }
         if (!playable()) return;
         const direction = directionFor(key);
         if (direction) { event.preventDefault(); pressed.set(identity, direction); }
@@ -418,7 +429,12 @@ function initialize() {
     for (const button of dialog.querySelectorAll('[data-fire-quit]')) button.addEventListener('click', close);
     for (const button of dialog.querySelectorAll('[data-fire-pause]')) button.addEventListener('click', toggleMenu);
     for (const button of dialog.querySelectorAll('[data-fire-home]')) button.addEventListener('click', () => {
+        challenge.cancel();
         guard = null; refreshGuardHome(); freshMission(); setState('home'); ui.daily.focus({ preventScroll: true });
+    });
+    ui['challenge-open'].addEventListener('click', () => {
+        if (!dialog.open || state !== 'home') return;
+        challenge.open(); setState('challenge'); challenge.focus();
     });
     const startRandom = () => { guard = newGuard(guard?.seed); start(); };
     ui.daily.addEventListener('click', () => { guard = dailyGuard(); start(); });
@@ -438,6 +454,7 @@ function initialize() {
     });
     dialog.addEventListener('cancel', event => { event.preventDefault(); toggleMenu(); });
     dialog.addEventListener('close', () => { if (!dialog.open) cleanup(); });
+    window.addEventListener('pagehide', () => challenge.cancel());
     window.addEventListener('blur', () => {
         resetLogoTrigger(); sequence = 0; consumed.clear(); resetInput(); if (['intro', 'playing'].includes(state)) pause();
     });

@@ -2,12 +2,18 @@
 // Chemins du jeu adaptés à la racine du site et à ses sous-dossiers.
 require_once __DIR__ . '/../../auth.php';
 $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('assets/games/firefighter/' . $path), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$fireChallengeApi = htmlspecialchars(authUrl('includes/actions/fire_challenge_action.php'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$fireChallengeToken = htmlspecialchars(csrfToken(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$fireChallengeUser = '0';
+if (currentUser() !== null) {
+    $fireChallengeUser = '1';
+}
 ?>
 <link rel="stylesheet" href="<?= $fireAssetUrl('game.css') ?>">
 
 <button type="button" class="fire-launcher" data-fire-open hidden aria-haspopup="dialog" aria-controls="fire-game">Rejouer à Intervention</button>
 
-<dialog id="fire-game" class="fire-game" data-state="home" data-phase="arrival" data-assets="<?= $fireAssetUrl('') ?>" aria-labelledby="fire-title">
+<dialog id="fire-game" class="fire-game" data-state="home" data-phase="arrival" data-assets="<?= $fireAssetUrl('') ?>" data-challenge-api="<?= $fireChallengeApi ?>" data-csrf-token="<?= $fireChallengeToken ?>" data-challenge-user="<?= $fireChallengeUser ?>" aria-labelledby="fire-title">
     <canvas id="fire-canvas" width="1440" height="900" tabindex="0" aria-label="Terrain du jeu. Flèches ou ZQSD pour se déplacer, E pour agir, souris pour viser, clic gauche ou Espace pour arroser. Échap ouvre le menu." aria-describedby="fire-menu-controls">Votre navigateur ne peut pas afficher le terrain de jeu.</canvas>
 
     <!-- Le terrain reste libre ; seuls les choix interrompent l'action. -->
@@ -21,7 +27,41 @@ $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('ass
                 <p id="fire-guard-info" class="fire-guard-info">Une même intervention à rejouer aujourd’hui. Record par binôme.</p>
                 <button type="button" id="fire-random" class="fire-button fire-button-light">Nouvelle garde</button>
                 <button type="button" id="fire-start" class="fire-button fire-training">Exercice classique</button>
+                <button type="button" id="fire-challenge-open" class="fire-button fire-button-cyan">Défi 10 secondes</button>
             </div>
+        </div>
+    </section>
+
+    <!-- Le défi conserve son propre chrono, indépendant de l'intervention. -->
+    <section id="fire-challenge" class="fire-challenge fire-overlay" data-phase="idle" aria-labelledby="fire-challenge-title" hidden>
+        <div class="fire-challenge-shell">
+            <div class="fire-challenge-heading">
+                <p class="fire-eyebrow">ENTRAÎNEMENT À LA CASERNE</p>
+                <h2 id="fire-challenge-title">DÉFI 10 SECONDES</h2>
+                <p id="fire-challenge-help">Cliquez sur le feu ou utilisez Entrée / Espace. Chaque activation éteint un feu et rapporte un point.</p>
+            </div>
+            <dl class="fire-challenge-hud">
+                <div><dt>FEUX ÉTEINTS</dt><dd><output id="fire-challenge-score" aria-live="off">0</output></dd></div>
+                <div><dt>TEMPS RESTANT</dt><dd><output id="fire-challenge-time" aria-live="off">10.0</output><span> s</span></dd></div>
+            </dl>
+            <div id="fire-challenge-arena" class="fire-challenge-arena" aria-label="Zone d’entraînement">
+                <p id="fire-challenge-arena-hint" class="fire-challenge-arena-hint">Appuyez sur Démarrer pour commencer.</p>
+                <button type="button" id="fire-challenge-target" aria-describedby="fire-challenge-help" disabled hidden><svg viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true"><path d="M14 2h6v8h4v6h4v10h-4v4H8v-4H4V16h4v-6h4v10h4v-8h-2Z" fill="#ff9139"/><path d="M14 20h6v6h-6Z" fill="#fff1b8"/></svg><span>Éteindre</span></button>
+            </div>
+            <div id="fire-challenge-result" class="fire-challenge-result" hidden>
+                <p>Score final : <strong id="fire-challenge-final-score">0</strong> feux éteints.</p>
+                <div class="fire-challenge-result-buttons">
+                    <button type="button" id="fire-challenge-save" class="fire-button fire-button-cyan" hidden>Sauvegarder mon score</button>
+                    <button type="button" id="fire-challenge-replay" class="fire-button fire-button-light">Rejouer</button>
+                </div>
+                <p id="fire-challenge-login" class="fire-challenge-login" hidden><a href="<?= htmlspecialchars(authUrl('login.php'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">Connectez-vous avant votre prochain défi</a> pour pouvoir sauvegarder son score.</p>
+            </div>
+            <div class="fire-challenge-controls">
+                <button type="button" id="fire-challenge-start" class="fire-button fire-button-primary">Démarrer</button>
+                <button type="button" class="fire-button fire-button-light" data-fire-home>Retour caserne</button>
+            </div>
+            <p id="fire-challenge-message" class="fire-challenge-message" role="status" aria-live="polite" aria-atomic="true"></p>
+            <p class="fire-challenge-clock-note">Les 10 secondes continuent pendant le menu Échap.</p>
         </div>
     </section>
 
@@ -69,6 +109,7 @@ $fireAssetUrl = static fn(string $path): string => htmlspecialchars(authUrl('ass
                 <button type="button" id="fire-close" class="fire-button fire-button-quit">Quitter</button>
             </div>
             <p id="fire-menu-controls" class="fire-menu-controls"><kbd>Flèches</kbd> ou <kbd>ZQSD</kbd> : déplacement<br><kbd>E</kbd> : agir près d’un repère<br>Souris : viser · Clic ou <kbd>Espace</kbd> : arroser<br>LAT : 3 tuyaux de 20 m, soit 60 m maximum. Le tuyau suit le binôme au retour.<br><kbd>Échap</kbd> : menu / reprendre</p>
+            <p id="fire-challenge-menu-note" class="fire-challenge-menu-note" hidden>Défi : les 10 secondes continuent pendant ce menu.</p>
             <details class="fire-credits">
                 <summary>Crédits et licences</summary>
                 <div>
