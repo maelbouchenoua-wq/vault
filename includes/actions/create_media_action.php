@@ -68,8 +68,14 @@ if (is_optional_string_valid($description, 2000)) {
 
 # -- Add the media
 try {
-    add_new_media($data);
-    respond_success("Nous avons bien ajouté votre média.");
+    $media = add_new_media($data);
+    ob_start();
+    include(__DIR__ . '/../templates/pages/admin/media-management-section/table-row.php');
+    $render = ob_get_clean();
+    respond_success_with_content([
+        'message' => "Nous avons bien ajouté votre média.",
+        'new_row' => (string)$render
+    ]);
 } catch (Exception $error) {
     if ($error->getMessage() == "La base de donnée à renvoyé une erreur.")
         respond_error(500, $error->getMessage());

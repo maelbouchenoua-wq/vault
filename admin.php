@@ -31,7 +31,7 @@ header('Cache-Control: no-store');
     <link rel="stylesheet" href="./assets/css/components/modal.css">
     <script src="./includes/js/form_action.js" defer></script>
     <script src="./includes/components/modal/modal_utils.js" defer></script>
-    <script src="./includes/js/admin-collection-delete.js" defer></script>
+    <script src="includes/js/page/admin.js" defer></script>
 </head>
 <body class="admin_page">
 
@@ -55,7 +55,7 @@ header('Cache-Control: no-store');
                 </a>
             </li>
             <li>
-                <a href="#record_form">
+                <a href="#add_media_form">
                     <img src="./assets/images/Icon admin 2.png" alt="">
                     Gestion Œuvres
                 </a>
@@ -77,7 +77,6 @@ header('Cache-Control: no-store');
 </aside>
 
 <main class="top_bar">
-
     <div class="console">
         <div class="console_title">
             <span class="console_mode">MODE ADMINISTRATEUR</span>
@@ -112,7 +111,7 @@ header('Cache-Control: no-store');
                         <img class="small_icon" src="./assets/images/coche_valider 2.png" alt="">
                         MODE ADMINISTRATEUR (RÔLE : ADMIN)
                     </span>
-                <a href="#record_form" class="new_button" type="button">
+                <a href="#add_media_form" class="new_button" type="button">
                     <img class="small_icon" src="./assets/images/plus_entouré.png" alt="">
                     + Nouvelle fiche
                 </a>
@@ -120,7 +119,7 @@ header('Cache-Control: no-store');
         </section>
 
         <div class="dashboard_content">
-            <form class="record_form" id="record_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title" enctype="multipart/form-data">
+            <form class="record_form" id="add_media_form" action="./includes/actions/create_media_action.php" method="POST" aria-labelledby="form_title" enctype="multipart/form-data">
                 <div class="form_tabs">
                     <input id="create" name="operation_type" type="radio" checked>
                     <label for="create" class="tab_active">⊕ Créer une œuvre</label>
@@ -199,7 +198,6 @@ header('Cache-Control: no-store');
                     </button>
                 </div>
             </form>
-
             <!-- Statistiques de démonstration -->
             <section class="catalog_stats" aria-label="Statistiques du catalogue">
                 <div class="stats_cards">
@@ -254,7 +252,7 @@ header('Cache-Control: no-store');
                     <span class="records_count">12 Fiches</span>
                 </div>
                 <div class="records_tools">
-                    <a class="records_add" href="#record_form">
+                    <a class="records_add" href="#add_media_form">
                         <span aria-hidden="true">＋</span>
                         Ajouter une fiche
                     </a>

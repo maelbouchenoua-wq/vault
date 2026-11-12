@@ -10,50 +10,54 @@
  * If not `method` is set on the HTML form, POST will be used.
  */
 function sendForm(event) {
-    // Infer request data
-    const formElement = event.target;
-    if (formElement === undefined) throw new Error("Cannot send the form: Cannot infer request data from the form: Cannot locate the Form HTML element from the provided event.");
+    return new Promise((resolve) => {
 
-    const targetPath = formElement.action;
-    if (targetPath === undefined || targetPath.length === 0) throw new Error("Cannot send the form: Cannot infer the request taget path from the form element. \n Set an 'action' attribute to the form element.");
+        // Infer request data
+        const formElement = event.target;
+        if (formElement === undefined) throw new Error("Cannot send the form: Cannot infer request data from the form: Cannot locate the Form HTML element from the provided event.");
 
-    const method = formElement.method ?? "POST";
+        const targetPath = formElement.action;
+        if (targetPath === undefined || targetPath.length === 0) throw new Error("Cannot send the form: Cannot infer the request taget path from the form element. \n Set an 'action' attribute to the form element.");
 
-    // Get form data
-    const data = new FormData(formElement);
+        const method = formElement.method ?? "POST";
 
-    const request = {body: data, method: method};
+        // Get form data
+        const data = new FormData(formElement);
 
-    notification_displayer?.clearAllError();
-    try {
-        // Send
-        fetch(targetPath, request)
-            .then(async response => {
-                if (!response.ok) {
-                    const data = await parse_response_data(response);
-                    const message = data?.message;
-                    display_error(new Error(message));
-                } else {
-                    const data = await parse_response_data(response);
-                    let message = data?.message ?? "L'action a été transmise correctement.";
+        const request = {body: data, method: method};
 
-                    // If request was redirected, redirect user to the specified location.
-                    if (response.redirected) {
-                        setTimeout(async () => {
-                            const location_path = response.url;
-                            window.location.assign(location_path);
-                        }, 3000);
-                        message += " Redirection...";
+        notification_displayer?.clearAllError();
+        try {
+            // Send
+            fetch(targetPath, request)
+                .then(async response => {
+                    if (!response.ok) {
+                        const data = await parse_response_data(response);
+                        const message = data?.message;
+                        display_error(new Error(message));
+                    } else {
+                        const data = await parse_response_data(response);
+                        let message = data?.message ?? "L'action a été transmise correctement.";
+
+                        // If request was redirected, redirect user to the specified location.
+                        if (response.redirected) {
+                            setTimeout(async () => {
+                                const location_path = response.url;
+                                window.location.assign(location_path);
+                            }, 3000);
+                            message += " Redirection...";
+                        }
+                        display_success(message);
+                        resolve(data);
                     }
-                    display_success(message);
-                }
-            })
-            .catch(error => {
-                display_error(error);
-            })
-    } catch (error) {
-        display_error(error);
-    }
+                })
+                .catch(error => {
+                    display_error(error);
+                })
+        } catch (error) {
+            display_error(error);
+        }
+    });
 }
 
 const display_error = (error) => {
@@ -76,7 +80,11 @@ async function parse_response_data(response) {
     }
 }
 
+/*
 document.addEventListener('submit', (event) => {
     event.preventDefault();
-    sendForm(event);
-});
+
+    const finishedCallback = event.target.getAttribute("whenFinished");
+
+    sendForm(event, finishedCallback);
+});*/
