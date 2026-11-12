@@ -413,6 +413,24 @@ export class FireMission {
         this._talk('chief', text);
     }
 
+    // Commence sur place, sans arrivée ni temps simulé.
+    startOnScene(team = 'BAT') {
+        if (!['BAT', 'BAL'].includes(team)) return false;
+        this.reset();
+        this.truckX = this.map.truck.x;
+        for (const actor of this.crew) {
+            const position = this.map.rallyPoints[actor.id];
+            actor.x = position.x;
+            actor.y = position.y;
+            actor.visible = true;
+            actor.walking = false;
+            actor.floor = 0;
+            actor.activity = 'Prêt pour l’intervention';
+        }
+        this._enter('orders', 'Intervention en cours.');
+        return this.chooseTeam(team);
+    }
+
     // Le choix du binôme lance une mission différente.
     chooseTeam(team) {
         if (this.phase !== 'orders' || !['BAT', 'BAL'].includes(team)) return false;
