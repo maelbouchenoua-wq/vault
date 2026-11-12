@@ -22,7 +22,6 @@ mediaSearch1?.addEventListener('keyup', function(event) {
         }
     })
 });
-//
 const searchBar = document.querySelector(".search-bar1");
 
 document.addEventListener("keydown", function(event) {
