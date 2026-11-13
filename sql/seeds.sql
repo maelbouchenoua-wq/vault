@@ -16,7 +16,7 @@ VALUES (1, 'Blade Runner 2049', 2017, 'Trente ans après les événements du pre
        (2, 'The Crown', 2016, 'L''histoire de la reine Elizabeth II et de sa famille au cours du XXe siècle.', 'the_crown_cover.jpg'),
        (3, 'The Legend of Zelda: Breath of the Wild', 2017, 'Link explore le royaume d''Hyrule dans ce jeu d''aventure en monde ouvert.', 'zelda_botw_cover.jpg'),
        (3, 'The Witcher 3: Wild Hunt', 2015, 'Geralt de Rivia voyage à travers un monde en pleine guerre à la recherche de sa fille adoptive.', 'witcher_3_cover.jpg'),
-       (3, 'The Elder Scrolls V: Skyrim', 2011, 'Joueur incarne un chevalier dans le monde de Tamriel, où il peut choisir son chemin et ses alliances.', 'skyrim_cover.jpg'),
+       (3, 'The Elder Scrolls V: Skyrim', 2011, 'Joueur incarne un chevalier dans le monde de Tamriel, où il peut choisir son chemin et ses alliances.', 'skyrim_cover.png'),
        (3, 'Red Dead Redemption 2', 2018, 'Un cow-boy dans le Far West à la fin du XIXe siècle, confronté aux changements de société.', 'rdr2_cover.jpg')
 ;
 
