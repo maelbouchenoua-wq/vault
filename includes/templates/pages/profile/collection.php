@@ -260,8 +260,8 @@ if ($collectionError !== null) {
         </div>
         <div class="export">
             <p>Exporter :</p>
-            <a class="button" href="<?= collectionHtml(authUrl('includes/actions/export_collection.php?format=json')) ?>" aria-label="Exporter ma collection au format JSON">JSON</a>
-            <a class="button" href="<?= collectionHtml(authUrl('includes/actions/export_collection.php?format=csv')) ?>" aria-label="Exporter ma collection au format CSV">CSV</a>
+            <a class="button" href="<?= collectionHtml(authUrl('includes/actions/export_collection_action.php?format=json')) ?>" aria-label="Exporter ma collection au format JSON">JSON</a>
+            <a class="button" href="<?= collectionHtml(authUrl('includes/actions/export_collection_action.php?format=csv')) ?>" aria-label="Exporter ma collection au format CSV">CSV</a>
         </div>
     </div>
 </section>
